@@ -10,7 +10,6 @@ public class Game {
     static Set<String> charNotPlace = new TreeSet<>();
     static Random randomizer = new Random();
     static Set<Character> missingLetters = new TreeSet<>();
-    static Scanner console = new Scanner(System.in);
 
     static final int numberOfAttempts = 5;
     private static Storage storage = new Storage();

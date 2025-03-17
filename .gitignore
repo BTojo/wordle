@@ -26,4 +26,8 @@ bin/
 .vscode/
 
 ### Mac OS ###
-.DS_Store.idea/
+.DS_Store
+.idea/
+
+Wordle.iml
+runToJar.bat

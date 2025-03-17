@@ -10,20 +10,13 @@ public class Storage {
     private static String threeDots = "...";
     private static ArrayList<String> answer = new ArrayList<>(List.of(threeDots, threeDots, threeDots, threeDots, threeDots));
 
-
-    static Set<String> charNotPlace = new TreeSet<>();
     static Random randomizer = new Random();
-    static Set<Character> missingLetters = new TreeSet<>();
-    static Scanner console = new Scanner(System.in);
-
     public static List<String> words = new ArrayList<>();
-
 
     public Storage()  {
         loadWorlds();
         setRandomWord();
     }
-
 
     private void loadWorlds()  {
 
