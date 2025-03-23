@@ -6,24 +6,14 @@ import java.io.IOException;
 import java.util.*;
 
 public class Storage {
-    static String randomWord;
-    private static String threeDots = "...";
-    private static ArrayList<String> answer = new ArrayList<>(List.of(threeDots, threeDots, threeDots, threeDots, threeDots));
-
-
-    static Set<String> charNotPlace = new TreeSet<>();
+    String randomWord;
     static Random randomizer = new Random();
-    static Set<Character> missingLetters = new TreeSet<>();
-    static Scanner console = new Scanner(System.in);
-
-    public static List<String> words = new ArrayList<>();
-
+    public List<String> words = new ArrayList<>();
 
     public Storage()  {
         loadWorlds();
         setRandomWord();
     }
-
 
     private void loadWorlds()  {
 
@@ -47,13 +37,5 @@ public class Storage {
 
     public String getRandomWord() {
         return randomWord;
-    }
-
-    public ArrayList<String> getAnswer(){
-        return answer;
-    }
-
-    public String getThreeDots(){
-        return threeDots;
     }
 }

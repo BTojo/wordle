@@ -5,80 +5,90 @@ import presentation.OutputToConsole;
 
 import java.util.*;
 
+enum GameStatus {
+    WIN,
+    LOSE,
+    PROCESS
+}
+
 public class Game {
 
-    static Set<String> charNotPlace = new TreeSet<>();
-    static Random randomizer = new Random();
-    static Set<Character> missingLetters = new TreeSet<>();
-    static Scanner console = new Scanner(System.in);
+    Set<String> charNotPlace = new TreeSet<>();
+    Set<Character> missingLetters = new TreeSet<>();
 
-    static final int numberOfAttempts = 5;
-    private static Storage storage = new Storage();
-    static ArrayList<String> answer = storage.getAnswer();
+    static final int NUNBER_OF_ATTEMPTS = 5;
+    private Storage storage = new Storage();
 
+    private String threeDots = "...";
+    private ArrayList<String> answerEmpty = new ArrayList<>(List.of(threeDots, threeDots, threeDots, threeDots, threeDots));
 
     private static OutputToConsole outputToConsole = new OutputToConsole();
 
-    private static String getReturnString() {
+    private String getReturnString() {
         return "Answer:  \"" +
-                answer.toString() + "\" There are such letters: \"" +
+                answerEmpty.toString() + "\" There are such letters: \"" +
                 charNotPlace + "\" There are no such letters in the word: \"" +
                 missingLetters + "\"";
     }
 
-    public static void start() {
+    public void start() {
+        GameStatus gameStatus = GameStatus.PROCESS;
+        outputToConsole.showHello();
 
-        outputToConsole.getHello();
-
-        for (int i = 0; i <= numberOfAttempts; i++) {
-            if (i == numberOfAttempts) {
-                outputToConsole.getFall(storage.getRandomWord());
+        for (int i = 0; i <= NUNBER_OF_ATTEMPTS; i++) {
+            if (i == NUNBER_OF_ATTEMPTS) {
+                gameStatus = GameStatus.LOSE;
                 break;
             }
             enterWord();
 
-            if (matched(storage.getRandomWord(), outputToConsole.getEnterWord())) {
-                outputToConsole.getWin();
+            if (isMatched(storage.getRandomWord(), outputToConsole.getEnterWord())) {
+                gameStatus = GameStatus.WIN;
                 break;
             }
             check(storage.getRandomWord(), outputToConsole.getEnterWord());
         }
+        if (gameStatus == GameStatus.WIN) {
+            outputToConsole.showWin();
+        } else {
+            outputToConsole.showFall(storage.getRandomWord());
+        }
     }
 
-    public static boolean matched(String randomWord, String enterWord) {
+    public boolean isMatched(String randomWord, String enterWord) {
         boolean b = randomWord.equals(enterWord);
         return b;
     }
 
-    public static String enterWord() {
+    public String enterWord() {
         while (true) {
-            outputToConsole.getMessageEnterWord();
+            outputToConsole.showMessageEnterWord();
             outputToConsole.setEnterWord();
 
             if (storage.words.contains(outputToConsole.getEnterWord())) {
                 break;
             } else {
-                outputToConsole.getIsNoWord();
+                outputToConsole.showIsNoWord();
             }
         }
         return outputToConsole.getEnterWord();
     }
 
-    public static boolean charIsInItsPlace(char randomWord, char enterWord) {
+    public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
         if (randomWord == enterWord) {
             return true;
         }
         return false;
     }
 
-    public static boolean charBelongsWord(String word, char ch) {
+    public boolean isCharBelongsWord(String word, char ch) {
         if (word.contains(String.valueOf(ch))) {
             return true;
         }
         return false;
     }
 
-    public static int countingСhar(String str, char ch) {
+    public int countingСhar(String str, char ch) {
         int count = 0;
         for (char c : str.toCharArray()) {
             if (c == ch) {
@@ -88,7 +98,7 @@ public class Game {
         return count;
     }
 
-    public static void check(String randomWord, String enterWord) {
+    public void check(String randomWord, String enterWord) {
         char r;
         char e;
 
@@ -96,13 +106,13 @@ public class Game {
             r = randomWord.charAt(i);
             e = enterWord.charAt(i);
 
-            if (charIsInItsPlace(r, e) && (storage.getThreeDots().equals(answer.get(i)))) {
-                answer.set(i, String.valueOf(r));
+            if (isCharIsInItsPlace(r, e) && (getThreeDots().equals(answerEmpty.get(i)))) {
+                answerEmpty.set(i, String.valueOf(r));
             }
 
-            if (charBelongsWord(randomWord, e)) {
+            if (isCharBelongsWord(randomWord, e)) {
                 charNotPlace.add(String.valueOf(e));
-                if (countingСhar(String.valueOf(answer), e) == (countingСhar(String.valueOf(randomWord), e))) {
+                if (countingСhar(String.valueOf(answerEmpty), e) == (countingСhar(String.valueOf(randomWord), e))) {
                     charNotPlace.remove(String.valueOf(e));
                 }
             } else {
@@ -110,5 +120,13 @@ public class Game {
             }
         }
         System.out.println(getReturnString());
+    }
+
+    public ArrayList<String> getAnswerEmpty() {
+        return answerEmpty;
+    }
+
+    public String getThreeDots() {
+        return threeDots;
     }
 }
