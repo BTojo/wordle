@@ -12,7 +12,7 @@ public class Storage {
 
     public Storage()  {
         loadWorlds();
-        setRandomWord();
+        getRandomWord();
     }
 
     private void loadWorlds()  {
@@ -29,13 +29,16 @@ public class Storage {
             System.exit(0);
         }
     }
-    private String setRandomWord() {
-
+    private String getRandomWord() {
         randomWord = words.get(randomizer.nextInt(words.size()));
         return randomWord;
     }
 
-    public String getRandomWord() {
+    public String getHiddenWord() {
         return randomWord;
+    }
+
+    public boolean isExists (String str) {
+        return words.contains(str);
     }
 }

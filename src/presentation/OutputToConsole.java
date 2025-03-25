@@ -2,7 +2,7 @@ package presentation;
 import java.util.*;
 
 public class OutputToConsole {
-    private String enterWord;
+//    private String enterWord;
 
     static Scanner console = new Scanner(System.in);
 
@@ -17,12 +17,12 @@ public class OutputToConsole {
     private static final String MESSAGE_ENTER_WORD = "Enter the word: ";
 
 
-    public void setEnterWord() {
-        enterWord = console.nextLine().trim().toLowerCase();
-    }
+  //  public void setEnterWord() {
+  //      enterWord = console.nextLine().trim().toLowerCase();
+ //   }
 
     public String getEnterWord() {
-        return enterWord;
+        return console.nextLine().trim().toLowerCase();
     }
 
     public void showIsNoWord() {

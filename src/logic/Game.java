@@ -1,28 +1,20 @@
 package logic;
-
 import datastorage.Storage;
 import presentation.OutputToConsole;
-
 import java.util.*;
-
-enum GameStatus {
-    WIN,
-    LOSE,
-    PROCESS
-}
 
 public class Game {
 
     Set<String> charNotPlace = new TreeSet<>();
     Set<Character> missingLetters = new TreeSet<>();
-
     static final int NUNBER_OF_ATTEMPTS = 5;
     private Storage storage = new Storage();
-
     private String threeDots = "...";
     private ArrayList<String> answerEmpty = new ArrayList<>(List.of(threeDots, threeDots, threeDots, threeDots, threeDots));
-
     private static OutputToConsole outputToConsole = new OutputToConsole();
+    GameStatus gameStatus = GameStatus.PROCESS;
+
+    String enterWord;
 
     private String getReturnString() {
         return "Answer:  \"" +
@@ -32,7 +24,7 @@ public class Game {
     }
 
     public void start() {
-        GameStatus gameStatus = GameStatus.PROCESS;
+
         outputToConsole.showHello();
 
         for (int i = 0; i <= NUNBER_OF_ATTEMPTS; i++) {
@@ -42,16 +34,16 @@ public class Game {
             }
             enterWord();
 
-            if (isMatched(storage.getRandomWord(), outputToConsole.getEnterWord())) {
+            if (isMatched(storage.getHiddenWord(), enterWord)) {
                 gameStatus = GameStatus.WIN;
                 break;
             }
-            check(storage.getRandomWord(), outputToConsole.getEnterWord());
+            check(storage.getHiddenWord(), enterWord);
         }
         if (gameStatus == GameStatus.WIN) {
             outputToConsole.showWin();
         } else {
-            outputToConsole.showFall(storage.getRandomWord());
+            outputToConsole.showFall(storage.getHiddenWord());
         }
     }
 
@@ -63,15 +55,15 @@ public class Game {
     public String enterWord() {
         while (true) {
             outputToConsole.showMessageEnterWord();
-            outputToConsole.setEnterWord();
+            enterWord = outputToConsole.getEnterWord();
 
-            if (storage.words.contains(outputToConsole.getEnterWord())) {
+            if (storage.isExists(enterWord)) {
                 break;
             } else {
                 outputToConsole.showIsNoWord();
             }
         }
-        return outputToConsole.getEnterWord();
+        return enterWord;
     }
 
     public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
@@ -82,10 +74,7 @@ public class Game {
     }
 
     public boolean isCharBelongsWord(String word, char ch) {
-        if (word.contains(String.valueOf(ch))) {
-            return true;
-        }
-        return false;
+        return (word.contains(String.valueOf(ch)));
     }
 
     public int countingСhar(String str, char ch) {

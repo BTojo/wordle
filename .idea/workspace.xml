@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4fac1ae8-65d8-45e9-9d14-9aa93002bd6d" name="Changes" comment="corrected all the comments">
+      <change afterPath="$PROJECT_DIR$/src/logic/GameStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyJar.jar" beforeDir="false" afterPath="$PROJECT_DIR$/MyJar.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/datastorage/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/datastorage/Storage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logic/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/logic/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/presentation/OutputToConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/presentation/OutputToConsole.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,6 +22,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
