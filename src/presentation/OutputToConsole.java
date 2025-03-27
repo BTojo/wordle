@@ -1,25 +1,15 @@
 package presentation;
-import java.util.*;
+
+import java.util.Scanner;
 
 public class OutputToConsole {
-//    private String enterWord;
 
-    static Scanner console = new Scanner(System.in);
-
+    private static Scanner console = new Scanner(System.in);
     private static final String HELLO = "The word is hidden...";
     private static final String FALL = "You lose! :( \nThe hidden word was: ";
-
     private static final String IS_NO_WORD = "There is no such word in the dictionary :(";
-
     private static final String WIN = "YOU WIN!";
-
-
     private static final String MESSAGE_ENTER_WORD = "Enter the word: ";
-
-
-  //  public void setEnterWord() {
-  //      enterWord = console.nextLine().trim().toLowerCase();
- //   }
 
     public String getEnterWord() {
         return console.nextLine().trim().toLowerCase();

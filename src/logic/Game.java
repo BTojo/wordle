@@ -1,18 +1,24 @@
 package logic;
+
 import datastorage.Storage;
 import presentation.OutputToConsole;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 
 public class Game {
 
-    Set<String> charNotPlace = new TreeSet<>();
-    Set<Character> missingLetters = new TreeSet<>();
+    private Set<String> charNotPlace = new TreeSet<>();
+    private Set<Character> missingLetters = new TreeSet<>();
     static final int NUNBER_OF_ATTEMPTS = 5;
     private Storage storage = new Storage();
     private String threeDots = "...";
     private ArrayList<String> answerEmpty = new ArrayList<>(List.of(threeDots, threeDots, threeDots, threeDots, threeDots));
     private static OutputToConsole outputToConsole = new OutputToConsole();
-    GameStatus gameStatus = GameStatus.PROCESS;
+    private GameStatus gameStatus = GameStatus.PROCESS;
 
     String enterWord;
 
@@ -24,9 +30,7 @@ public class Game {
     }
 
     public void start() {
-
         outputToConsole.showHello();
-
         for (int i = 0; i <= NUNBER_OF_ATTEMPTS; i++) {
             if (i == NUNBER_OF_ATTEMPTS) {
                 gameStatus = GameStatus.LOSE;
@@ -67,14 +71,11 @@ public class Game {
     }
 
     public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
-        if (randomWord == enterWord) {
-            return true;
-        }
-        return false;
+        return randomWord == enterWord;
     }
 
-    public boolean isCharBelongsWord(String word, char ch) {
-        return (word.contains(String.valueOf(ch)));
+    public boolean isCharBelongsWord(char ch) {   //
+        return (storage.getHiddenWord().contains(String.valueOf(ch)));
     }
 
     public int countingСhar(String str, char ch) {
@@ -89,30 +90,26 @@ public class Game {
 
     public void check(String randomWord, String enterWord) {
         char r;
-        char e;
+        char ch;
 
         for (int i = 0; i < randomWord.length(); i++) {
             r = randomWord.charAt(i);
-            e = enterWord.charAt(i);
+            ch = enterWord.charAt(i);
 
-            if (isCharIsInItsPlace(r, e) && (getThreeDots().equals(answerEmpty.get(i)))) {
+            if (isCharIsInItsPlace(r, ch) && (getThreeDots().equals(answerEmpty.get(i)))) {
                 answerEmpty.set(i, String.valueOf(r));
             }
 
-            if (isCharBelongsWord(randomWord, e)) {
-                charNotPlace.add(String.valueOf(e));
-                if (countingСhar(String.valueOf(answerEmpty), e) == (countingСhar(String.valueOf(randomWord), e))) {
-                    charNotPlace.remove(String.valueOf(e));
+            if (isCharBelongsWord(ch)) {
+                charNotPlace.add(String.valueOf(ch));
+                if (countingСhar(String.valueOf(answerEmpty), ch) == (countingСhar(String.valueOf(randomWord), ch))) {
+                    charNotPlace.remove(String.valueOf(ch));
                 }
             } else {
                 missingLetters.add(enterWord.charAt(i));
             }
         }
         System.out.println(getReturnString());
-    }
-
-    public ArrayList<String> getAnswerEmpty() {
-        return answerEmpty;
     }
 
     public String getThreeDots() {
