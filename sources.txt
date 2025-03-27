@@ -1,4 +1,0 @@
-c:\Users\user\IdeaProjects\Wordle\src\Main.java
-c:\Users\user\IdeaProjects\Wordle\src\datastorage\Storage.java
-c:\Users\user\IdeaProjects\Wordle\src\logic\Game.java
-c:\Users\user\IdeaProjects\Wordle\src\presentation\OutputToConsole.java
