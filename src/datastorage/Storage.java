@@ -32,14 +32,11 @@ public class Storage {
             System.exit(0);
         }
     }
-    private String getRandomWord() {
+    public String getRandomWord() {
         randomWord = words.get(randomizer.nextInt(words.size()));
         return randomWord;
     }
 
-    public String getHiddenWord() {
-        return randomWord;
-    }
 
     public boolean isExists (String str) {
         return words.contains(str);

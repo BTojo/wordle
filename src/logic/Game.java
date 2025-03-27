@@ -19,6 +19,7 @@ public class Game {
     private ArrayList<String> answerEmpty = new ArrayList<>(List.of(threeDots, threeDots, threeDots, threeDots, threeDots));
     private static OutputToConsole outputToConsole = new OutputToConsole();
     private GameStatus gameStatus = GameStatus.PROCESS;
+    private String hiddenWord;
 
     String enterWord;
 
@@ -30,6 +31,8 @@ public class Game {
     }
 
     public void start() {
+        hiddenWord = storage.getRandomWord();
+
         outputToConsole.showHello();
         for (int i = 0; i <= NUNBER_OF_ATTEMPTS; i++) {
             if (i == NUNBER_OF_ATTEMPTS) {
@@ -38,16 +41,16 @@ public class Game {
             }
             enterWord();
 
-            if (isMatched(storage.getHiddenWord(), enterWord)) {
+            if (isMatched(getHiddenWord(), enterWord)) {
                 gameStatus = GameStatus.WIN;
                 break;
             }
-            check(storage.getHiddenWord(), enterWord);
+            check(getHiddenWord(), enterWord);
         }
         if (gameStatus == GameStatus.WIN) {
             outputToConsole.showWin();
         } else {
-            outputToConsole.showFall(storage.getHiddenWord());
+            outputToConsole.showFall(getHiddenWord());
         }
     }
 
@@ -75,7 +78,7 @@ public class Game {
     }
 
     public boolean isCharBelongsWord(char ch) {   //
-        return (storage.getHiddenWord().contains(String.valueOf(ch)));
+        return (getHiddenWord().contains(String.valueOf(ch)));
     }
 
     public int countingСhar(String str, char ch) {
@@ -114,5 +117,9 @@ public class Game {
 
     public String getThreeDots() {
         return threeDots;
+    }
+
+    public String getHiddenWord() {
+        return hiddenWord;
     }
 }
