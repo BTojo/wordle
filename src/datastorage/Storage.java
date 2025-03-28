@@ -9,7 +9,6 @@ import java.util.Random;
 
 
 public class Storage {
-    private String randomWord;
     static Random randomizer = new Random();
     public List<String> words = new ArrayList<>();
 
@@ -33,8 +32,7 @@ public class Storage {
         }
     }
     public String getRandomWord() {
-        randomWord = words.get(randomizer.nextInt(words.size()));
-        return randomWord;
+        return words.get(randomizer.nextInt(words.size()));
     }
 
 
