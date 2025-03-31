@@ -41,7 +41,7 @@ public class Game {
             }
             enterWord();
 
-            if (isMatched(getHiddenWord(), enterWord)) {
+            if (isMatched(enterWord)) {
                 gameStatus = GameStatus.WIN;
                 break;
             }
@@ -54,9 +54,8 @@ public class Game {
         }
     }
 
-    public boolean isMatched(String randomWord, String enterWord) {
-        boolean b = randomWord.equals(enterWord);
-        return b;
+    public boolean isMatched(String enterWord) {
+        return getHiddenWord().equals(enterWord);
     }
 
     public String enterWord() {
@@ -65,19 +64,18 @@ public class Game {
             enterWord = outputToConsole.getEnterWord();
 
             if (storage.isExists(enterWord)) {
-                break;
+                return enterWord;
             } else {
                 outputToConsole.showIsNoWord();
             }
         }
-        return enterWord;
     }
 
     public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
         return randomWord == enterWord;
     }
 
-    public boolean isCharBelongsWord(char ch) {   //
+    public boolean isCharBelongsWord(char ch) {
         return (getHiddenWord().contains(String.valueOf(ch)));
     }
 

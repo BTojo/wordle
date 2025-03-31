@@ -14,7 +14,6 @@ public class Storage {
 
     public Storage()  {
         loadWorlds();
-        getRandomWord();
     }
 
     private void loadWorlds()  {
