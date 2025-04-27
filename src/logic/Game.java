@@ -13,80 +13,78 @@ public class Game {
 
     private Set<String> charNotPlace = new TreeSet<>();
     private Set<Character> missingLetters = new TreeSet<>();
+
     static final int NUNBER_OF_ATTEMPTS = 5;
+
+    static final int NUNBER_OF_LETTERS = 5;
     private Storage storage = new Storage();
     private String threeDots = "...";
     private ArrayList<String> answerEmpty = new ArrayList<>(List.of(threeDots, threeDots, threeDots, threeDots, threeDots));
     private static OutputToConsole outputToConsole = new OutputToConsole();
+
+    private int attemptNumber;
+
     private GameStatus gameStatus = GameStatus.PROCESS;
+
     private String hiddenWord;
+    private int attempt;
 
-    String enterWord;
+    private ArrayList usedAttempts = new ArrayList<>();
 
-    private String getReturnString() {
-        return "Answer:  \"" +
-                answerEmpty.toString() + "\" There are such letters: \"" +
-                charNotPlace + "\" There are no such letters in the word: \"" +
-                missingLetters + "\"";
+    public Game(String randomWord) {
+        this.hiddenWord = randomWord;
     }
 
-    public void start() {
-        hiddenWord = storage.getRandomWord();
+    public boolean isInProgress() {
+        return gameStatus == GameStatus.PROCESS;
+    }
 
-        outputToConsole.showHello();
-        for (int i = 0; i <= NUNBER_OF_ATTEMPTS; i++) {
-            if (i == NUNBER_OF_ATTEMPTS) {
-                gameStatus = GameStatus.LOSE;
-                break;
-            }
-            enterWord();
+    public boolean validateWord(String enterWord) {
+        return (isNumberOfCharacters(enterWord) && isEnglishAlphabetOnly(enterWord));
+    }
 
-            if (isMatched(enterWord)) {
-                gameStatus = GameStatus.WIN;
-                break;
-            }
-            check(getHiddenWord(), enterWord);
+    public boolean isEnglishAlphabetOnly(String enterWord) {
+        return enterWord.trim().matches("[A-Za-z]+");
+    }
+
+    public boolean isNumberOfCharacters(String enterWord) {
+        return enterWord.length() == NUNBER_OF_LETTERS;
+    }
+
+    public void addAttempts(String enterWord) {
+        usedAttempts.add(enterWord);
+    }
+
+    public int addAttempt() {
+        return ++attemptNumber;
+    }
+
+    public void makeAttempt(String enterWord) {
+        addAttempt();
+        addAttempts(enterWord);
+        if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS ) {
+            setGameStatus(GameStatus.LOSE);
         }
-        if (gameStatus == GameStatus.WIN) {
-            outputToConsole.showWin();
-        } else {
-            outputToConsole.showFall(getHiddenWord());
-        }
+    }
+
+    public GameStatus getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
+    }
+
+    public boolean isWin(){
+        return (getGameStatus() == GameStatus.WIN);
+    }
+
+    public String getHiddenWord() {
+        return hiddenWord;
     }
 
     public boolean isMatched(String enterWord) {
         return getHiddenWord().equals(enterWord);
-    }
-
-    public String enterWord() {
-        while (true) {
-            outputToConsole.showMessageEnterWord();
-            enterWord = outputToConsole.getEnterWord();
-
-            if (storage.isExists(enterWord)) {
-                return enterWord;
-            } else {
-                outputToConsole.showIsNoWord();
-            }
-        }
-    }
-
-    public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
-        return randomWord == enterWord;
-    }
-
-    public boolean isCharBelongsWord(char ch) {
-        return (getHiddenWord().contains(String.valueOf(ch)));
-    }
-
-    public int countingСhar(String str, char ch) {
-        int count = 0;
-        for (char c : str.toCharArray()) {
-            if (c == ch) {
-                count++;
-            }
-        }
-        return count;
     }
 
     public void check(String randomWord, String enterWord) {
@@ -113,11 +111,37 @@ public class Game {
         System.out.println(getReturnString());
     }
 
+    public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
+        return randomWord == enterWord;
+    }
+
     public String getThreeDots() {
         return threeDots;
     }
 
-    public String getHiddenWord() {
-        return hiddenWord;
+    public boolean isCharBelongsWord(char ch) {
+        return (getHiddenWord().contains(String.valueOf(ch)));
     }
+
+    public int countingСhar(String str, char ch) {
+        int count = 0;
+        for (char c : str.toCharArray()) {
+            if (c == ch) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private String getReturnString() {          //перенести в консоль
+        return "Answer:  \"" +
+                answerEmpty.toString() + "\" There are such letters: \"" +
+                charNotPlace + "\" There are no such letters in the word: \"" +
+                missingLetters + "\"";
+    }
+
+    public int getNunberOfAttempts() {
+        return attemptNumber;
+    }
+
 }
