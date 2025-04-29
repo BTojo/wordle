@@ -1,9 +1,7 @@
 package presentation;
 
 import logic.Game;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class OutputToConsole {
@@ -17,18 +15,20 @@ public class OutputToConsole {
     private static final String MESSAGE_ENTER_WORD = "Enter the word: ";
 
     private String threeDots = "...";
-    private ArrayList<String> answerEmpty = new ArrayList<>(List.of(threeDots,threeDots,threeDots,threeDots,threeDots));
     private ArrayList<String> answer = new ArrayList<>();
 
     public OutputToConsole () {
-         for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
-                    answer.add(i, threeDots);
-                }
+         isAnswerInitialized();
         System.out.println("OutputToConsole + answer:" + answer);
         }
 
-
+    private void isAnswerInitialized() {
+        for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
+            answer.add(i, threeDots);
+        }
+    }
     public String getEnterWord() {
+        showMessageEnterWord();
         return console.nextLine().trim().toLowerCase();
     }
 
@@ -52,7 +52,7 @@ public class OutputToConsole {
         System.out.println(WIN);
     }
 
-    public void wrongWord() {
+    public void showWrongWord() {
         System.out.println(WRONG_WORD);
     }
 

@@ -1,10 +1,7 @@
 package logic;
 
 import datastorage.Storage;
-import presentation.OutputToConsole;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,25 +16,20 @@ public class Game {
 
     public static final int NUNBER_OF_LETTERS = 5;
     private Storage storage = new Storage();
-
-    //   private String threeDots = "...";
-    private ArrayList<String> answer= new ArrayList<>();
-  //  private static OutputToConsole outputToConsole = new OutputToConsole();
-
+    private ArrayList<String> answer = new ArrayList<>();
     private int attemptNumber;
-
     private GameStatus gameStatus = GameStatus.PROCESS;
-
     private String hiddenWord;
-    private int attempt;
-
     private ArrayList usedAttempts = new ArrayList<>();
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
+        isAnswerInitialized();
+    }
 
-        for (int i = 0; i < NUNBER_OF_LETTERS; i++) {
-            answer.add(i,"");
+    private void isAnswerInitialized() {
+        for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
+            answer.add(i, "");
         }
     }
 
@@ -59,6 +51,7 @@ public class Game {
 
     public void addAttempts(String enterWord) {
         usedAttempts.add(enterWord);
+        attemptNumber++;
     }
 
     public int addAttempt() {
@@ -68,7 +61,7 @@ public class Game {
     public void makeAttempt(String enterWord) {
         addAttempt();
         addAttempts(enterWord);
-        if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS ) {
+        if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
             setGameStatus(GameStatus.LOSE);
         }
     }
@@ -81,7 +74,7 @@ public class Game {
         this.gameStatus = gameStatus;
     }
 
-    public boolean isWin(){
+    public boolean isWin() {
         return (getGameStatus() == GameStatus.WIN);
     }
 
@@ -114,17 +107,11 @@ public class Game {
                 missingLetters.add(enterWord.charAt(i));
             }
         }
-        System.out.println("getAnswer(): " + getAnswer());
-        System.out.println("getCharNotPlace(): " + getCharNotPlace());
     }
 
     public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
         return randomWord == enterWord;
     }
-
-//    public String getThreeDots() {
-//        return threeDots;
-//    }
 
     public boolean isCharBelongsWord(char ch) {
         return (getHiddenWord().contains(String.valueOf(ch)));
@@ -139,13 +126,6 @@ public class Game {
         }
         return count;
     }
-
-//    private String getReturnString() {          //перенести в консоль
-//        return "Answer:  \"" +
-//                answerEmpty.toString() + "\" There are such letters: \"" +
-//               charNotPlace + "\" There are no such letters in the word: \"" +
-//                missingLetters + "\"";
-//    }
 
     public int getNunberOfAttempts() {
         return attemptNumber;

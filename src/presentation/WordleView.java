@@ -3,9 +3,6 @@ package presentation;
 import logic.Game;
 import logic.GameStatus;
 import datastorage.Storage;
-import presentation.OutputToConsole;
-
-import java.util.ArrayList;
 
 public class WordleView {
 
@@ -24,7 +21,7 @@ public class WordleView {
             enterWord = outputToConsole.getEnterWord();
             result = game.validateWord(enterWord);
             if (!result) {
-                outputToConsole.wrongWord();
+                outputToConsole.showWrongWord();
                 continue;
             }
 
@@ -44,8 +41,9 @@ public class WordleView {
                 game.setGameStatus(GameStatus.WIN);
                 break;
             }
+
             game.check(game.getHiddenWord(), enterWord);
-           System.out.println(outputToConsole.getReturnString(game));
+            System.out.println(outputToConsole.getReturnString(game));
         }
 
         if (game.isWin()) {
@@ -54,5 +52,4 @@ public class WordleView {
             outputToConsole.showFall(game.getHiddenWord());
         }
     }
-
 }
