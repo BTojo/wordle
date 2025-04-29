@@ -1,5 +1,9 @@
 package presentation;
 
+import logic.Game;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class OutputToConsole {
@@ -11,6 +15,18 @@ public class OutputToConsole {
     private static final String IS_NO_WORD = "There is no such word in the dictionary :(";
     private static final String WIN = "YOU WIN!";
     private static final String MESSAGE_ENTER_WORD = "Enter the word: ";
+
+    private String threeDots = "...";
+    private ArrayList<String> answerEmpty = new ArrayList<>(List.of(threeDots,threeDots,threeDots,threeDots,threeDots));
+    private ArrayList<String> answer = new ArrayList<>();
+
+    public OutputToConsole () {
+         for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
+                    answer.add(i, threeDots);
+                }
+        System.out.println("OutputToConsole + answer:" + answer);
+        }
+
 
     public String getEnterWord() {
         return console.nextLine().trim().toLowerCase();
@@ -40,5 +56,22 @@ public class OutputToConsole {
         System.out.println(WRONG_WORD);
     }
 
-
+    public String getReturnString(Game game) {          //перенести в консоль
+        return "Answer:  \"" +
+                setAnswer(game).toString() + "\" There are such letters: \"" +
+                game.getCharNotPlace() + "\" There are no such letters in the word: \"" +
+                game.getMissingLetters() + "\"";
+    }
+    
+    public ArrayList setAnswer (Game game){
+        for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
+            if (game.getAnswer().get(i).isEmpty()) {
+                answer.set(i, threeDots);
+            } else {
+                answer.set(i, game.getAnswer().get(i));
+            }
+        }
+        return answer;
+    }
+    
 }

@@ -1,4 +1,4 @@
-import datastorage.WordleView;
+import presentation.WordleView;
 import logic.Game;
 
 public class Main {

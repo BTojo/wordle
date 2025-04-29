@@ -12,15 +12,17 @@ import java.util.TreeSet;
 public class Game {
 
     private Set<String> charNotPlace = new TreeSet<>();
+
     private Set<Character> missingLetters = new TreeSet<>();
 
     static final int NUNBER_OF_ATTEMPTS = 5;
 
-    static final int NUNBER_OF_LETTERS = 5;
+    public static final int NUNBER_OF_LETTERS = 5;
     private Storage storage = new Storage();
-    private String threeDots = "...";
-    private ArrayList<String> answerEmpty = new ArrayList<>(List.of(threeDots, threeDots, threeDots, threeDots, threeDots));
-    private static OutputToConsole outputToConsole = new OutputToConsole();
+
+    //   private String threeDots = "...";
+    private ArrayList<String> answer= new ArrayList<>();
+  //  private static OutputToConsole outputToConsole = new OutputToConsole();
 
     private int attemptNumber;
 
@@ -33,6 +35,10 @@ public class Game {
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
+
+        for (int i = 0; i < NUNBER_OF_LETTERS; i++) {
+            answer.add(i,"");
+        }
     }
 
     public boolean isInProgress() {
@@ -88,36 +94,37 @@ public class Game {
     }
 
     public void check(String randomWord, String enterWord) {
-        char r;
-        char ch;
+        char charIsRandomWord;
+        char charIsEnterWord;
 
         for (int i = 0; i < randomWord.length(); i++) {
-            r = randomWord.charAt(i);
-            ch = enterWord.charAt(i);
+            charIsRandomWord = randomWord.charAt(i);
+            charIsEnterWord = enterWord.charAt(i);
 
-            if (isCharIsInItsPlace(r, ch) && (getThreeDots().equals(answerEmpty.get(i)))) {
-                answerEmpty.set(i, String.valueOf(r));
+            if (isCharIsInItsPlace(charIsRandomWord, charIsEnterWord) && (answer.get(i).isEmpty())) {
+                answer.set(i, String.valueOf(charIsRandomWord));
             }
 
-            if (isCharBelongsWord(ch)) {
-                charNotPlace.add(String.valueOf(ch));
-                if (countingСhar(String.valueOf(answerEmpty), ch) == (countingСhar(String.valueOf(randomWord), ch))) {
-                    charNotPlace.remove(String.valueOf(ch));
+            if (isCharBelongsWord(charIsEnterWord)) {
+                charNotPlace.add(String.valueOf(charIsEnterWord));
+                if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(randomWord), charIsEnterWord))) {
+                    charNotPlace.remove(String.valueOf(charIsEnterWord));
                 }
             } else {
                 missingLetters.add(enterWord.charAt(i));
             }
         }
-        System.out.println(getReturnString());
+        System.out.println("getAnswer(): " + getAnswer());
+        System.out.println("getCharNotPlace(): " + getCharNotPlace());
     }
 
     public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
         return randomWord == enterWord;
     }
 
-    public String getThreeDots() {
-        return threeDots;
-    }
+//    public String getThreeDots() {
+//        return threeDots;
+//    }
 
     public boolean isCharBelongsWord(char ch) {
         return (getHiddenWord().contains(String.valueOf(ch)));
@@ -133,15 +140,26 @@ public class Game {
         return count;
     }
 
-    private String getReturnString() {          //перенести в консоль
-        return "Answer:  \"" +
-                answerEmpty.toString() + "\" There are such letters: \"" +
-                charNotPlace + "\" There are no such letters in the word: \"" +
-                missingLetters + "\"";
-    }
+//    private String getReturnString() {          //перенести в консоль
+//        return "Answer:  \"" +
+//                answerEmpty.toString() + "\" There are such letters: \"" +
+//               charNotPlace + "\" There are no such letters in the word: \"" +
+//                missingLetters + "\"";
+//    }
 
     public int getNunberOfAttempts() {
         return attemptNumber;
     }
 
+    public ArrayList<String> getAnswer() {
+        return answer;
+    }
+
+    public Set<Character> getMissingLetters() {
+        return missingLetters;
+    }
+
+    public Set<String> getCharNotPlace() {
+        return charNotPlace;
+    }
 }

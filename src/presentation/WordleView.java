@@ -1,7 +1,8 @@
-package datastorage;
+package presentation;
 
 import logic.Game;
 import logic.GameStatus;
+import datastorage.Storage;
 import presentation.OutputToConsole;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class WordleView {
                 break;
             }
             game.check(game.getHiddenWord(), enterWord);
-       //     System.out.println(outputToConsole.getReturnString(game));
+           System.out.println(outputToConsole.getReturnString(game));
         }
 
         if (game.isWin()) {
