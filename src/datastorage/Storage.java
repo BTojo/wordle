@@ -34,7 +34,6 @@ public class Storage {
         return words.get(randomizer.nextInt(words.size()));
     }
 
-
     public boolean isExists (String str) {
         return words.contains(str);
     }

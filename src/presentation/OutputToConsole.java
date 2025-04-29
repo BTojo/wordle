@@ -18,8 +18,7 @@ public class OutputToConsole {
     private ArrayList<String> answer = new ArrayList<>();
 
     public OutputToConsole () {
-         isAnswerInitialized();
-        System.out.println("OutputToConsole + answer:" + answer);
+        isAnswerInitialized();
         }
 
     private void isAnswerInitialized() {
@@ -73,5 +72,4 @@ public class OutputToConsole {
         }
         return answer;
     }
-    
 }

@@ -1,26 +1,21 @@
 package logic;
 
-import datastorage.Storage;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 public class Game {
 
-    private Set<String> charNotPlace = new TreeSet<>();
-
-    private Set<Character> missingLetters = new TreeSet<>();
-
     static final int NUNBER_OF_ATTEMPTS = 5;
-
     public static final int NUNBER_OF_LETTERS = 5;
-    private Storage storage = new Storage();
+    private Set<String> charNotPlace = new TreeSet<>();
+    private Set<Character> missingLetters = new TreeSet<>();
     private ArrayList<String> answer = new ArrayList<>();
-    private int attemptNumber;
-    private GameStatus gameStatus = GameStatus.PROCESS;
-    private String hiddenWord;
     private ArrayList usedAttempts = new ArrayList<>();
+    private GameStatus gameStatus = GameStatus.PROCESS;
+    private int attemptNumber;
+    private String hiddenWord;
+
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
@@ -54,12 +49,7 @@ public class Game {
         attemptNumber++;
     }
 
-    public int addAttempt() {
-        return ++attemptNumber;
-    }
-
     public void makeAttempt(String enterWord) {
-        addAttempt();
         addAttempts(enterWord);
         if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
             setGameStatus(GameStatus.LOSE);

@@ -31,7 +31,6 @@ public class WordleView {
             }
 
             game.makeAttempt(enterWord);
-            System.out.println(game.getGameStatus());
 
             if (game.getGameStatus() != GameStatus.PROCESS) {
                 break;

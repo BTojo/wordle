@@ -5,4 +5,3 @@ public enum GameStatus {
         LOSE,
         PROCESS
     }
-
