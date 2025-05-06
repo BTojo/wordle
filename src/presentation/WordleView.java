@@ -36,10 +36,6 @@ public class WordleView {
                 break;
             }
 
-            if (game.isMatched(enterWord)) {
-                game.setGameStatus(GameStatus.WIN);
-                break;
-            }
 
             game.check(game.getHiddenWord(), enterWord);
             System.out.println(outputToConsole.getReturnString(game));

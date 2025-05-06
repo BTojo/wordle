@@ -54,6 +54,11 @@ public class Game {
         if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
             setGameStatus(GameStatus.LOSE);
         }
+
+        if (isMatched(enterWord)) {
+            setGameStatus(GameStatus.WIN);
+
+        }
     }
 
     public GameStatus getGameStatus() {
