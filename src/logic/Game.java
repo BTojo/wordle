@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,6 +16,8 @@ public class Game {
     private GameStatus gameStatus = GameStatus.PROCESS;
     private int attemptNumber;
     private String hiddenWord;
+
+    private Attempt attempt = new Attempt();
 
 
     public Game(String randomWord) {
@@ -49,17 +52,7 @@ public class Game {
         attemptNumber++;
     }
 
-    public void makeAttempt(String enterWord) {
-        addAttempts(enterWord);
-        if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
-            setGameStatus(GameStatus.LOSE);
-        }
 
-        if (isMatched(enterWord)) {
-            setGameStatus(GameStatus.WIN);
-
-        }
-    }
 
     public GameStatus getGameStatus() {
         return gameStatus;
@@ -79,29 +72,6 @@ public class Game {
 
     public boolean isMatched(String enterWord) {
         return getHiddenWord().equals(enterWord);
-    }
-
-    public void check(String enterWord) {
-        char charIsRandomWord;
-        char charIsEnterWord;
-
-        for (int i = 0; i < hiddenWord.length(); i++) {
-            charIsRandomWord = hiddenWord.charAt(i);
-            charIsEnterWord = enterWord.charAt(i);
-
-            if (isCharIsInItsPlace(charIsRandomWord, charIsEnterWord) && (answer.get(i).isEmpty())) {
-                answer.set(i, String.valueOf(charIsRandomWord));
-            }
-
-            if (isCharBelongsWord(charIsEnterWord)) {
-                charNotPlace.add(String.valueOf(charIsEnterWord));
-                if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(hiddenWord), charIsEnterWord))) {
-                    charNotPlace.remove(String.valueOf(charIsEnterWord));
-                }
-            } else {
-                missingLetters.add(enterWord.charAt(i));
-            }
-        }
     }
 
     public boolean isCharIsInItsPlace(char randomWord, char enterWord) {
@@ -137,4 +107,56 @@ public class Game {
     public Set<String> getCharNotPlace() {
         return charNotPlace;
     }
+    public void check(String enterWord) {
+
+        List<Letter> letters = new ArrayList<>();
+        char charIsRandomWord;
+        char charIsEnterWord;
+
+        for (int i = 0; i < hiddenWord.length(); i++) {
+            Letter letter = new Letter();
+            charIsRandomWord = hiddenWord.charAt(i);
+            charIsEnterWord = enterWord.charAt(i);
+
+            if (isCharIsInItsPlace(charIsRandomWord, charIsEnterWord)) {
+                letter.setValue(charIsRandomWord);
+                letter.setStatus(LetterStatus.IN_PLACE);
+
+                if (answer.get(i).isEmpty()) {
+                answer.set(i, String.valueOf(charIsRandomWord));
+                }
+            }
+
+            if (isCharBelongsWord(charIsEnterWord)) {
+                charNotPlace.add(String.valueOf(charIsEnterWord));
+                if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(hiddenWord), charIsEnterWord))) {
+                    charNotPlace.remove(String.valueOf(charIsEnterWord));
+                }
+                letter.setValue(charIsEnterWord);
+                letter.setStatus(LetterStatus.NOT_PLACE);
+            } else {
+                missingLetters.add(enterWord.charAt(i));
+                letter.setValue(charIsEnterWord);
+                letter.setStatus(LetterStatus.MISSING);
+            }
+            letters.add(letter);
+        }
+        System.out.println(letters);
+    }
+
+        public void makeAttempt (String enterWord){
+            addAttempts(enterWord);
+
+            if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
+                setGameStatus(GameStatus.LOSE);
+            }
+
+            if (isMatched(enterWord)) {
+                setGameStatus(GameStatus.WIN);
+            } else {
+                check(enterWord);
+            }
+        }
+
+
 }

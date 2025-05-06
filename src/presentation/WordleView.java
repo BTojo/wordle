@@ -36,8 +36,7 @@ public class WordleView {
                 break;
             }
 
-
-            game.check(enterWord);
+       //     game.check(enterWord);
             System.out.println(outputToConsole.getReturnString(game));
         }
 
