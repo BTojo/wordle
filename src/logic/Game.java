@@ -81,12 +81,12 @@ public class Game {
         return getHiddenWord().equals(enterWord);
     }
 
-    public void check(String randomWord, String enterWord) {
+    public void check(String enterWord) {
         char charIsRandomWord;
         char charIsEnterWord;
 
-        for (int i = 0; i < randomWord.length(); i++) {
-            charIsRandomWord = randomWord.charAt(i);
+        for (int i = 0; i < hiddenWord.length(); i++) {
+            charIsRandomWord = hiddenWord.charAt(i);
             charIsEnterWord = enterWord.charAt(i);
 
             if (isCharIsInItsPlace(charIsRandomWord, charIsEnterWord) && (answer.get(i).isEmpty())) {
@@ -95,7 +95,7 @@ public class Game {
 
             if (isCharBelongsWord(charIsEnterWord)) {
                 charNotPlace.add(String.valueOf(charIsEnterWord));
-                if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(randomWord), charIsEnterWord))) {
+                if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(hiddenWord), charIsEnterWord))) {
                     charNotPlace.remove(String.valueOf(charIsEnterWord));
                 }
             } else {
