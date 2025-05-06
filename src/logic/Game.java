@@ -19,6 +19,9 @@ public class Game {
 
     private Attempt attempt = new Attempt();
 
+    private List <List<Attempt>> attemptsList= new ArrayList<>();
+
+
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
@@ -51,7 +54,6 @@ public class Game {
         usedAttempts.add(enterWord);
         attemptNumber++;
     }
-
 
 
     public GameStatus getGameStatus() {
@@ -107,8 +109,8 @@ public class Game {
     public Set<String> getCharNotPlace() {
         return charNotPlace;
     }
-    public void check(String enterWord) {
 
+    public void check(String enterWord) {
         List<Letter> letters = new ArrayList<>();
         char charIsRandomWord;
         char charIsEnterWord;
@@ -123,11 +125,11 @@ public class Game {
                 letter.setStatus(LetterStatus.IN_PLACE);
 
                 if (answer.get(i).isEmpty()) {
-                answer.set(i, String.valueOf(charIsRandomWord));
+                    answer.set(i, String.valueOf(charIsRandomWord));
                 }
             }
 
-            if (isCharBelongsWord(charIsEnterWord)) {
+           else if (isCharBelongsWord(charIsEnterWord)) {
                 charNotPlace.add(String.valueOf(charIsEnterWord));
                 if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(hiddenWord), charIsEnterWord))) {
                     charNotPlace.remove(String.valueOf(charIsEnterWord));
@@ -144,19 +146,20 @@ public class Game {
         System.out.println(letters);
     }
 
-        public void makeAttempt (String enterWord){
-            addAttempts(enterWord);
+    public void makeAttempt(String enterWord) {
+        addAttempts(enterWord);
+        Attempt attempt = new Attempt();
 
-            if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
-                setGameStatus(GameStatus.LOSE);
-            }
-
-            if (isMatched(enterWord)) {
-                setGameStatus(GameStatus.WIN);
-            } else {
-                check(enterWord);
-            }
+        if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
+            setGameStatus(GameStatus.LOSE);
         }
 
-
+        if (isMatched(enterWord)) {
+            setGameStatus(GameStatus.WIN);
+        } else {
+            check(enterWord);
+      //    attempt.setLetters(letters);
+        }
+   //     System.out.println(attemptsList);
+    }
 }

@@ -30,7 +30,7 @@ public class Letter {
 
     @Override
     public String toString() {
-        return "Letter {value=" + value + ", status=" + status + "}";
+        return "{" + value + " = " + status + "}";
     }
 }
 
