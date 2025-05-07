@@ -1,5 +1,6 @@
 package logic;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -17,9 +18,10 @@ public class Game {
     private int attemptNumber;
     private String hiddenWord;
 
-    private Attempt attempt = new Attempt();
-
-    private List <List<Attempt>> attemptsList= new ArrayList<>();
+//    private Attempt attempt = new Attempt();
+    private Letter letter = new Letter();
+ //   private List<Letter> lettersList = new ArrayList<>();
+    private List<Attempt> attemptsList = new ArrayList<>();
 
 
 
@@ -110,8 +112,9 @@ public class Game {
         return charNotPlace;
     }
 
-    public void check(String enterWord) {
-        List<Letter> letters = new ArrayList<>();
+    public List<Letter> check (String enterWord) {
+        List<Letter> lettersList = new ArrayList<>();
+
         char charIsRandomWord;
         char charIsEnterWord;
 
@@ -141,14 +144,16 @@ public class Game {
                 letter.setValue(charIsEnterWord);
                 letter.setStatus(LetterStatus.MISSING);
             }
-            letters.add(letter);
+           lettersList.add(letter);
         }
-        System.out.println(letters);
+       // attempt.setLetters(lettersList);
+        System.out.println(lettersList);
+        return lettersList;
     }
 
     public void makeAttempt(String enterWord) {
         addAttempts(enterWord);
-        Attempt attempt = new Attempt();
+
 
         if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
             setGameStatus(GameStatus.LOSE);
@@ -157,9 +162,17 @@ public class Game {
         if (isMatched(enterWord)) {
             setGameStatus(GameStatus.WIN);
         } else {
-            check(enterWord);
-      //    attempt.setLetters(letters);
+            List<Letter> result = check(enterWord);
+          //  attempt.setLetters(lettersList);
+            Attempt attempt = new Attempt();
+            attempt.setLetters(result);
+            attemptsList.add(attempt);
+
+            System.out.println("!!!");
+            for (Attempt a : attemptsList) {
+                System.out.println(a);
+            }
+            System.out.println("!!!");
         }
-   //     System.out.println(attemptsList);
     }
 }

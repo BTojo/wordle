@@ -17,6 +17,6 @@ public class Attempt {
     //List<Letter> letters = new ArrayList<>();
     @Override
     public String toString() {
-        return "Attempt {value=" + letters.toString() + "}";
+        return "Attempt {{value=" + letters.toString() + "}}";
     }
 }
