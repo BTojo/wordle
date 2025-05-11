@@ -12,16 +12,16 @@ public class Game {
     private final Set<String>  charNotPlace = new TreeSet<>();
     private final Set<Character> missingLetters = new TreeSet<>();
     private final ArrayList<String> answer = new ArrayList<>();
-    private ArrayList usedAttempts = new ArrayList<>();
+    private final ArrayList<Object> usedAttempts = new ArrayList<>();
 
     private GameStatus gameStatus = GameStatus.PROCESS;
 
     private int attemptNumber;
-    private String hiddenWord;
+    private final String hiddenWord;
 
     List<Letter> lettersList = new ArrayList<>();
-    private Attempt attempt = new Attempt();
-    private List<Attempt> attemptsList = new ArrayList<>();
+    private final Attempt attempt = new Attempt();
+    private final List<Attempt> attemptsList = new ArrayList<>();
 
 
     public Game(String randomWord) {
@@ -54,7 +54,7 @@ public class Game {
                 charNotPlace.add(String.valueOf(charIsEnterWord));
 
                 if (charactersInList(answer, charIsEnterWord) ==
-                        (countingChar(String.valueOf(hiddenWord), charIsEnterWord))) {
+                        (countingChar(hiddenWord, charIsEnterWord))) {
                     charNotPlace.remove(String.valueOf(charIsEnterWord));
                 }
 
@@ -84,10 +84,6 @@ public class Game {
         } else {
             attempt.setLetters(check(enterWord));
             attemptsList.add(attempt);
-
-            System.out.println("!!! -->");
-            System.out.println(attemptsList.toString());
-            System.out.println("<--!!!");
         }
     }
 
