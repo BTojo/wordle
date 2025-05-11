@@ -7,7 +7,7 @@ import java.util.TreeSet;
 
 public class Game {
 
-    static final int NUNBER_OF_ATTEMPTS = 5;
+    static final int NUNBER_OF_ATTEMPTS = 5;        //?
     public static final int NUNBER_OF_LETTERS = 5;
     private final Set<String>  charNotPlace = new TreeSet<>();
     private final Set<Character> missingLetters = new TreeSet<>();
@@ -20,7 +20,6 @@ public class Game {
     private final String hiddenWord;
 
     List<Letter> lettersList = new ArrayList<>();
-    private final Attempt attempt = new Attempt();
     private final List<Attempt> attemptsList = new ArrayList<>();
 
 
@@ -73,6 +72,7 @@ public class Game {
     }
 
     public void makeAttempt(String enterWord) {
+        Attempt attempt = new Attempt();
         addAttempts(enterWord);
 
         if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {

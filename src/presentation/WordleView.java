@@ -9,8 +9,8 @@ public class WordleView {
     private Storage storage = new Storage();
     private OutputToConsole outputToConsole = new OutputToConsole();
     private Game game;
-    private String enterWord;
-    private boolean result;
+//    private String enterWord;
+ //   private boolean result;
 
     public void start() {
         String randomWord = storage.getRandomWord();
@@ -18,6 +18,9 @@ public class WordleView {
 
         outputToConsole.showHello();
         while (game.isInProgress()) {
+            String enterWord;
+            boolean result;
+
             enterWord = outputToConsole.getEnterWord();
             result = game.validateWord(enterWord);
             if (!result) {
@@ -32,9 +35,9 @@ public class WordleView {
 
             game.makeAttempt(enterWord);
 
-            if (game.getGameStatus() != GameStatus.PROCESS) {
-                break;
-            }
+//            if (game.getGameStatus() != GameStatus.PROCESS) {
+//                break;
+//            }
 
             System.out.println(outputToConsole.getReturnString(game));
         }

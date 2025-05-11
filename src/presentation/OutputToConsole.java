@@ -6,29 +6,25 @@ import java.util.Scanner;
 
 public class OutputToConsole {
 
-    private static Scanner console = new Scanner(System.in);
+    private static final Scanner CONSOLE = new Scanner(System.in);
     private static final String HELLO = "The word is hidden...";
     private static final String FALL = "You lose! :( \nThe hidden word was: ";
     private static final String WRONG_WORD = "Invalid characters";
     private static final String IS_NO_WORD = "There is no such word in the dictionary :(";
     private static final String WIN = "YOU WIN!";
     private static final String MESSAGE_ENTER_WORD = "Enter the word: ";
+    private static final String THREE_DOTS = "...";
 
-    private String threeDots = "...";
-    private ArrayList<String> answer = new ArrayList<>();
-
-    public OutputToConsole () {
-        isAnswerInitialized();
-        }
-
-    private void isAnswerInitialized() {
+    private ArrayList isAnswerInitialized() {
+        ArrayList<String> answer =new ArrayList<>();
         for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
-            answer.add(i, threeDots);
+            answer.add(i, THREE_DOTS);
         }
+        return answer;
     }
     public String getEnterWord() {
         showMessageEnterWord();
-        return console.nextLine().trim().toLowerCase();
+        return CONSOLE.nextLine().trim().toLowerCase();
     }
 
     public void showIsNoWord() {
@@ -63,9 +59,13 @@ public class OutputToConsole {
     }
     
     public ArrayList setAnswer (Game game){
+        ArrayList<String> answer = new ArrayList<>();
+        if (answer.isEmpty()) {
+            answer = isAnswerInitialized();
+        }
         for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
             if (game.getAnswer().get(i).isEmpty()) {
-                answer.set(i, threeDots);
+                answer.set(i, THREE_DOTS);
             } else {
                 answer.set(i, game.getAnswer().get(i));
             }
