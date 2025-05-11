@@ -1,6 +1,5 @@
 package logic;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -10,24 +9,92 @@ public class Game {
 
     static final int NUNBER_OF_ATTEMPTS = 5;
     public static final int NUNBER_OF_LETTERS = 5;
-    private Set<String> charNotPlace = new TreeSet<>();
-    private Set<Character> missingLetters = new TreeSet<>();
-    private ArrayList<String> answer = new ArrayList<>();
+    private final Set<String>  charNotPlace = new TreeSet<>();
+    private final Set<Character> missingLetters = new TreeSet<>();
+    private final ArrayList<String> answer = new ArrayList<>();
     private ArrayList usedAttempts = new ArrayList<>();
+
     private GameStatus gameStatus = GameStatus.PROCESS;
+
     private int attemptNumber;
     private String hiddenWord;
 
-//    private Attempt attempt = new Attempt();
     private Letter letter = new Letter();
- //   private List<Letter> lettersList = new ArrayList<>();
+    List<Letter> lettersList = new ArrayList<>();
+    private Attempt attempt = new Attempt();
     private List<Attempt> attemptsList = new ArrayList<>();
+
 
 
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
         isAnswerInitialized();
+    }
+
+    private List<Letter> check (String enterWord) {
+        lettersList.clear();
+
+
+        char charIsRandomWord;
+        char charIsEnterWord;
+
+        for (int i = 0; i < hiddenWord.length(); i++) {
+            Letter letter = new Letter();
+            charIsRandomWord = hiddenWord.charAt(i);
+            charIsEnterWord = enterWord.charAt(i);
+
+            if (isCharIsInItsPlace(charIsRandomWord, charIsEnterWord)) {
+                letter.setValue(charIsRandomWord);
+                letter.setStatus(Letter.LetterStatus.IN_PLACE);
+
+                if (answer.get(i).isEmpty()) {
+                    answer.set(i, String.valueOf(charIsRandomWord));
+                }
+            }
+
+            else if (isCharBelongsWord(charIsEnterWord)) {
+                charNotPlace.add(String.valueOf(charIsEnterWord));
+                if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(hiddenWord), charIsEnterWord))) {
+                    charNotPlace.remove(String.valueOf(charIsEnterWord));
+                }
+                letter.setValue(charIsEnterWord);
+                letter.setStatus(Letter.LetterStatus.NOT_PLACE);
+            } else {
+                missingLetters.add(enterWord.charAt(i));
+                letter.setValue(charIsEnterWord);
+                letter.setStatus(Letter.LetterStatus.MISSING);
+            }
+            lettersList.add(letter);
+        }
+        System.out.println("69 lettersList in game: " + lettersList);
+        return lettersList;
+    }
+
+    public void makeAttempt(String enterWord) {
+        addAttempts(enterWord);
+
+
+        if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
+            setGameStatus(GameStatus.LOSE);
+        }
+
+        if (isMatched(enterWord)) {
+            setGameStatus(GameStatus.WIN);
+        } else {
+            attempt.setLetters(check(enterWord));
+            //     Attempt attempt = new Attempt();
+            attemptsList.add(attempt);
+  //          attempt.setLetters(lettersList);
+
+            System.out.println("!!! -->");
+            System.out.println(attemptsList.toString());
+//            for (Attempt a : attempt) {
+//                System.out.println(a);
+//            }
+
+            System.out.println("<--!!!");
+        }
     }
 
     private void isAnswerInitialized() {
@@ -56,7 +123,6 @@ public class Game {
         usedAttempts.add(enterWord);
         attemptNumber++;
     }
-
 
     public GameStatus getGameStatus() {
         return gameStatus;
@@ -112,67 +178,5 @@ public class Game {
         return charNotPlace;
     }
 
-    public List<Letter> check (String enterWord) {
-        List<Letter> lettersList = new ArrayList<>();
 
-        char charIsRandomWord;
-        char charIsEnterWord;
-
-        for (int i = 0; i < hiddenWord.length(); i++) {
-            Letter letter = new Letter();
-            charIsRandomWord = hiddenWord.charAt(i);
-            charIsEnterWord = enterWord.charAt(i);
-
-            if (isCharIsInItsPlace(charIsRandomWord, charIsEnterWord)) {
-                letter.setValue(charIsRandomWord);
-                letter.setStatus(LetterStatus.IN_PLACE);
-
-                if (answer.get(i).isEmpty()) {
-                    answer.set(i, String.valueOf(charIsRandomWord));
-                }
-            }
-
-           else if (isCharBelongsWord(charIsEnterWord)) {
-                charNotPlace.add(String.valueOf(charIsEnterWord));
-                if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(hiddenWord), charIsEnterWord))) {
-                    charNotPlace.remove(String.valueOf(charIsEnterWord));
-                }
-                letter.setValue(charIsEnterWord);
-                letter.setStatus(LetterStatus.NOT_PLACE);
-            } else {
-                missingLetters.add(enterWord.charAt(i));
-                letter.setValue(charIsEnterWord);
-                letter.setStatus(LetterStatus.MISSING);
-            }
-           lettersList.add(letter);
-        }
-       // attempt.setLetters(lettersList);
-        System.out.println(lettersList);
-        return lettersList;
-    }
-
-    public void makeAttempt(String enterWord) {
-        addAttempts(enterWord);
-
-
-        if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
-            setGameStatus(GameStatus.LOSE);
-        }
-
-        if (isMatched(enterWord)) {
-            setGameStatus(GameStatus.WIN);
-        } else {
-            List<Letter> result = check(enterWord);
-          //  attempt.setLetters(lettersList);
-            Attempt attempt = new Attempt();
-            attempt.setLetters(result);
-            attemptsList.add(attempt);
-
-            System.out.println("!!!");
-            for (Attempt a : attemptsList) {
-                System.out.println(a);
-            }
-            System.out.println("!!!");
-        }
-    }
 }
