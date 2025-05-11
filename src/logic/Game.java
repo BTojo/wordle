@@ -19,16 +19,14 @@ public class Game {
     private int attemptNumber;
     private String hiddenWord;
 
-    private Letter letter = new Letter();
     List<Letter> lettersList = new ArrayList<>();
     private Attempt attempt = new Attempt();
     private List<Attempt> attemptsList = new ArrayList<>();
 
 
-
-
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
+ //       System.out.println("**" + randomWord + "**");
         isAnswerInitialized();
     }
 
@@ -52,14 +50,17 @@ public class Game {
                     answer.set(i, String.valueOf(charIsRandomWord));
                 }
             }
-
-            else if (isCharBelongsWord(charIsEnterWord)) {
+             if (isCharBelongsWord(charIsEnterWord)) {
                 charNotPlace.add(String.valueOf(charIsEnterWord));
-                if (countingСhar(String.valueOf(answer), charIsEnterWord) == (countingСhar(String.valueOf(hiddenWord), charIsEnterWord))) {
+
+                if (charactersInList(answer, charIsEnterWord) ==
+                        (countingChar(String.valueOf(hiddenWord), charIsEnterWord))) {
                     charNotPlace.remove(String.valueOf(charIsEnterWord));
                 }
+
                 letter.setValue(charIsEnterWord);
                 letter.setStatus(Letter.LetterStatus.NOT_PLACE);
+
             } else {
                 missingLetters.add(enterWord.charAt(i));
                 letter.setValue(charIsEnterWord);
@@ -67,13 +68,12 @@ public class Game {
             }
             lettersList.add(letter);
         }
-        System.out.println("69 lettersList in game: " + lettersList);
+        System.out.println("lettersList in game: " + lettersList);
         return lettersList;
     }
 
     public void makeAttempt(String enterWord) {
         addAttempts(enterWord);
-
 
         if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
             setGameStatus(GameStatus.LOSE);
@@ -83,20 +83,23 @@ public class Game {
             setGameStatus(GameStatus.WIN);
         } else {
             attempt.setLetters(check(enterWord));
-            //     Attempt attempt = new Attempt();
             attemptsList.add(attempt);
-  //          attempt.setLetters(lettersList);
 
             System.out.println("!!! -->");
             System.out.println(attemptsList.toString());
-//            for (Attempt a : attempt) {
-//                System.out.println(a);
-//            }
-
             System.out.println("<--!!!");
         }
     }
 
+    private int charactersInList (ArrayList<String> answer, char charIsEnterWord) {
+        int count = 0;
+        for (String c : answer) {
+            if (c.equals(String.valueOf(charIsEnterWord))) {
+                count++;
+            }
+        }
+        return count;
+    }
     private void isAnswerInitialized() {
         for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
             answer.add(i, "");
@@ -152,7 +155,7 @@ public class Game {
         return (getHiddenWord().contains(String.valueOf(ch)));
     }
 
-    public int countingСhar(String str, char ch) {
+    public int countingChar(String str, char ch) {
         int count = 0;
         for (char c : str.toCharArray()) {
             if (c == ch) {
@@ -177,6 +180,4 @@ public class Game {
     public Set<String> getCharNotPlace() {
         return charNotPlace;
     }
-
-
 }
