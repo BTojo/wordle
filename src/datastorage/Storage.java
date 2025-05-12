@@ -12,11 +12,11 @@ public class Storage {
     static Random randomizer = new Random();
     public List<String> words = new ArrayList<>();
 
-    public Storage()  {
+    public Storage() {
         loadWorlds();
     }
 
-    private void loadWorlds()  {
+    private void loadWorlds() {
 
         try (BufferedReader br = new BufferedReader(new FileReader("wordle.txt"))) {
             String line;
@@ -30,11 +30,12 @@ public class Storage {
             System.exit(0);
         }
     }
+
     public String getRandomWord() {
         return words.get(randomizer.nextInt(words.size()));
     }
 
-    public boolean isExists (String str) {
+    public boolean isExists(String str) {
         return words.contains(str);
     }
 }

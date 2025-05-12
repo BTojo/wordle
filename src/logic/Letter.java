@@ -14,7 +14,7 @@ public class Letter {
         this.value = value;
     }
 
-    public LetterStatus getStatus(LetterStatus inPlace) {
+    public LetterStatus getStatus() {
         return status;
     }
 
@@ -22,14 +22,13 @@ public class Letter {
         this.status = status;
     }
 
-
     @Override
     public String toString() {
         return "{" + value + " = " + status + "}";
     }
 
 
-    enum LetterStatus {
+    public enum LetterStatus {
         IN_PLACE,
         NOT_PLACE,
         MISSING

@@ -7,31 +7,30 @@ import java.util.TreeSet;
 
 public class Game {
 
-    static final int NUNBER_OF_ATTEMPTS = 5;        //?
+    static final int NUNBER_OF_ATTEMPTS = 5;
     public static final int NUNBER_OF_LETTERS = 5;
-    private final Set<String>  charNotPlace = new TreeSet<>();
+    private final Set<String> charNotPlace = new TreeSet<>();
     private final Set<Character> missingLetters = new TreeSet<>();
     private final ArrayList<String> answer = new ArrayList<>();
     private final ArrayList<Object> usedAttempts = new ArrayList<>();
-
     private GameStatus gameStatus = GameStatus.PROCESS;
-
-    private int attemptNumber;
     private final String hiddenWord;
-
     List<Letter> lettersList = new ArrayList<>();
     private final List<Attempt> attemptsList = new ArrayList<>();
 
-
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
- //       System.out.println("**" + randomWord + "**");
+        System.out.println("**" + randomWord + "**");
         isAnswerInitialized();
     }
 
-    private List<Letter> check (String enterWord) {
-        lettersList.clear();
+    public List<Letter> getLettersList() {
+        System.out.println(lettersList);
+        return lettersList;
+    }
 
+    private List<Letter> check(String enterWord) {
+        lettersList.clear();
 
         char charIsRandomWord;
         char charIsEnterWord;
@@ -48,17 +47,16 @@ public class Game {
                 if (answer.get(i).isEmpty()) {
                     answer.set(i, String.valueOf(charIsRandomWord));
                 }
-            }
-             if (isCharBelongsWord(charIsEnterWord)) {
+            } else if (isCharBelongsWord(charIsEnterWord)) {
                 charNotPlace.add(String.valueOf(charIsEnterWord));
 
                 if (charactersInList(answer, charIsEnterWord) ==
                         (countingChar(hiddenWord, charIsEnterWord))) {
                     charNotPlace.remove(String.valueOf(charIsEnterWord));
                 }
-
                 letter.setValue(charIsEnterWord);
                 letter.setStatus(Letter.LetterStatus.NOT_PLACE);
+
 
             } else {
                 missingLetters.add(enterWord.charAt(i));
@@ -67,7 +65,6 @@ public class Game {
             }
             lettersList.add(letter);
         }
-        System.out.println("lettersList in game: " + lettersList);
         return lettersList;
     }
 
@@ -75,19 +72,19 @@ public class Game {
         Attempt attempt = new Attempt();
         addAttempts(enterWord);
 
-        if (getNunberOfAttempts() == NUNBER_OF_ATTEMPTS) {
+        if ((attemptsList.size() + 1) == NUNBER_OF_ATTEMPTS) {
             setGameStatus(GameStatus.LOSE);
         }
 
         if (isMatched(enterWord)) {
             setGameStatus(GameStatus.WIN);
-        } else {
-            attempt.setLetters(check(enterWord));
-            attemptsList.add(attempt);
         }
+        attempt.setLetters(check(enterWord));
+        attemptsList.add(attempt);
+
     }
 
-    private int charactersInList (ArrayList<String> answer, char charIsEnterWord) {
+    private int charactersInList(ArrayList<String> answer, char charIsEnterWord) {
         int count = 0;
         for (String c : answer) {
             if (c.equals(String.valueOf(charIsEnterWord))) {
@@ -96,6 +93,7 @@ public class Game {
         }
         return count;
     }
+
     private void isAnswerInitialized() {
         for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
             answer.add(i, "");
@@ -120,7 +118,6 @@ public class Game {
 
     public void addAttempts(String enterWord) {
         usedAttempts.add(enterWord);
-        attemptNumber++;
     }
 
     public GameStatus getGameStatus() {
@@ -159,14 +156,6 @@ public class Game {
             }
         }
         return count;
-    }
-
-    public int getNunberOfAttempts() {
-        return attemptNumber;
-    }
-
-    public ArrayList<String> getAnswer() {
-        return answer;
     }
 
     public Set<Character> getMissingLetters() {
