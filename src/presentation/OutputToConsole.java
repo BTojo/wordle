@@ -81,7 +81,6 @@ public class OutputToConsole {
 //                missingLetters.add(ch);
             }
         }
-        System.out.println("answer " + answer);
 
         return answer;
     }

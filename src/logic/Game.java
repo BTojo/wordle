@@ -20,12 +20,10 @@ public class Game {
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
-        System.out.println("**" + randomWord + "**");
         isAnswerInitialized();
     }
 
     public List<Letter> getLettersList() {
-        System.out.println(lettersList);
         return lettersList;
     }
 
