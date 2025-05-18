@@ -57,8 +57,6 @@ public class OutputToConsole {
         for (int i = 0; i < lastAnswer.size(); i++) {
             newAnswer.set(i, lastAnswer.get(i).replace(" ", THREE_DOTS));
         }
-
         return newAnswer;
     }
 }
-

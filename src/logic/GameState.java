@@ -1,6 +1,6 @@
 package logic;
 
-public enum GameStatus {
+public enum GameState {
         WIN,
         LOSE,
         PROCESS

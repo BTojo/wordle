@@ -7,52 +7,34 @@ public class Game {
 
     static final int NUMBER_OF_ATTEMPTS = 5;
     public static final int NUMBER_OF_LETTERS = 5;
-//    private final Set<String> charNotPlace = new TreeSet<>();
-//    private final Set<Character> missingLetters = new TreeSet<>();
-//    private final List<String> answer = new ArrayList<>();
-//    private final List<Object> usedAttempts = new ArrayList<>();
-   private GameStatus gameStatus = GameStatus.PROCESS;
-   private final String hiddenWord;
-
-    //    List<Letter> lettersList = new ArrayList<>();
-
+    private GameState gameState = GameState.PROCESS;
+    private final String hiddenWord;
     private final List<Attempt> attemptsList = new ArrayList<>();
-
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
-        System.out.println("**" + hiddenWord);
-  //      isAnswerInitialized();
     }
 
     public List<Attempt> getAttemptsList() {
         return attemptsList;
     }
 
-//    public List<Letter> getLettersList() {
-//        return lettersList;
-//    }
-
     public void makeAttempt(String enterWord) {
         Attempt attempt = new Attempt();
-        Letter letter = new Letter();
-        //       addAttempts(enterWord);
 
         if (isMatched(enterWord)) {
-            setGameStatus(GameStatus.WIN);
+            setGameStatus(gameState.WIN);
         }
         attempt.setLetters(check(enterWord));
         attemptsList.add(attempt);
 
-        if ((attemptsList.size() + 1) == NUMBER_OF_ATTEMPTS) {
-            setGameStatus(GameStatus.LOSE);
+        if (attemptsList.size() == NUMBER_OF_ATTEMPTS) {
+            setGameStatus(gameState.LOSE);
         }
-
     }
 
     private List<Letter> check(String enterWord) {
-        List <Letter> letters= new ArrayList<>();
-      //  lettersList.clear();
+        List<Letter> letters = new ArrayList<>();
 
         char charIsRandomWord;
         char charIsEnterWord;
@@ -65,52 +47,24 @@ public class Game {
             if (isCharIsInItsPlace(charIsRandomWord, charIsEnterWord)) {
                 letter.setValue(charIsRandomWord);
                 letter.setStatus(Letter.LetterStatus.IN_PLACE);
-
-
-//                if (answer.get(i).isEmpty()) {
-//                    answer.set(i, String.valueOf(charIsRandomWord));
-//                }
             } else if (isCharBelongsWord(charIsEnterWord)) {
-//                charNotPlace.add(String.valueOf(charIsEnterWord));
 
-//                if (charactersInWord(hiddenWord, charIsEnterWord) ==
-//                        (countingChar(hiddenWord, charIsEnterWord))) {
-//                    charNotPlace.remove(String.valueOf(charIsEnterWord));
-//                }
                 letter.setValue(charIsEnterWord);
                 letter.setStatus(Letter.LetterStatus.NOT_PLACE);
 
 
             } else {
-           //     missingLetters.add(enterWord.charAt(i));
                 letter.setValue(charIsEnterWord);
                 letter.setStatus(Letter.LetterStatus.MISSING);
             }
             letters.add(letter);
         }
-        System.out.println("letters + " + letters);
         return letters;
     }
 
-    private int charactersInWord(String hiddenWord, char charIsEnterWord) {
-        int count = 0;
-        for (char c : hiddenWord.toCharArray()) {
-            if (c == charIsEnterWord) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-
-//    private void isAnswerInitialized() {
-//        for (int i = 0; i < Game.NUMBER_OF_LETTERS; i++) {
-//            answer.add(i, "");
-//        }
-//    }
 
     public boolean isInProgress() {
-        return gameStatus == GameStatus.PROCESS;
+        return gameState == GameState.PROCESS;
     }
 
     public boolean validateWord(String enterWord) {
@@ -125,20 +79,16 @@ public class Game {
         return enterWord.length() == NUMBER_OF_LETTERS;
     }
 
-//    public void addAttempts(String enterWord) {
-//        usedAttempts.add(enterWord);
-//    }
-
-    public GameStatus getGameStatus() {
-        return gameStatus;
+    public GameState getGameStatus() {
+        return gameState;
     }
 
-    public void setGameStatus(GameStatus gameStatus) {
-        this.gameStatus = gameStatus;
+    public void setGameStatus(GameState gameStatus) {
+        this.gameState = gameStatus;
     }
 
     public boolean isWin() {
-        return (getGameStatus() == GameStatus.WIN);
+        return (getGameStatus() == GameState.WIN);
     }
 
     public String getHiddenWord() {
@@ -166,12 +116,4 @@ public class Game {
         }
         return count;
     }
-
-//    public Set<Character> getMissingLetters() {
-//        return missingLetters;
-//    }
-
-//    public Set<String> getCharNotPlace() {
-//        return charNotPlace;
-//    }
 }
