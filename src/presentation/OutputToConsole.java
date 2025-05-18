@@ -16,14 +16,6 @@ public class OutputToConsole {
     private static final String MESSAGE_ENTER_WORD = "Enter the word: ";
     private static final String THREE_DOTS = "...";
 
-    private ArrayList isAnswerInitialized() {
-        ArrayList<String> answer = new ArrayList<>();
-        for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
-            answer.add(i, THREE_DOTS);
-        }
-        return answer;
-    }
-
     public String getEnterWord() {
         showMessageEnterWord();
         return CONSOLE.nextLine().trim().toLowerCase();
@@ -53,35 +45,43 @@ public class OutputToConsole {
         System.out.println(WRONG_WORD);
     }
 
-    public String getReturnString(Game game) {
-        return "Answer:  \"" +
-                setAnswer(game).toString() + "\" There are such letters: \"" +
-                game.getCharNotPlace() + "\" There are no such letters in the word: \"" +
-                game.getMissingLetters() + "\"";
-    }
-
-    public ArrayList setAnswer(Game game) {
-        ArrayList<String> answer = new ArrayList<>();
-        //       Set<String> charNotPlace = new TreeSet<>();
-        //       Set<String> missingLetters = new TreeSet<>();
+//    public String getReturnString(Game game) {
+//        return "Answer:  \"" +
+//                setAnswer(game).toString() + "\" There are such letters: \"" +
+//                game.getCharNotPlace() + "\" There are no such letters in the word: \"" +
+//                game.getMissingLetters() + "\"";
+//    }
 
 
-        if (answer.isEmpty()) {
-            answer = isAnswerInitialized();
+    public String showGameState(ListStorage listStorage) {
+     //   public String getReturnString(Game game) {
+
+            return "Answer:  \"" +
+                    listStorage.getAnswer().toString() + "\" There are such letters: \"" +
+                    listStorage.getCharNotPlace().toString() + "\" There are no such letters in the word: \"" +
+                    listStorage.getMissingLetters().toString() + "\"";
         }
 
-        List<Letter> lettersList = game.getLettersList();
-        for (int i = 0; i < game.getHiddenWord().length(); i++) {
-            String ch = String.valueOf(lettersList.get(i).getValue());
-            if (lettersList.get(i).getStatus() == Letter.LetterStatus.IN_PLACE) {
-                answer.set(i, ch);
-//            } else if ((lettersList.get(i).getStatus() == Letter.LetterStatus.NOT_PLACE)) {
-//                charNotPlace.add(ch);
-//            } else {
-//                missingLetters.add(ch);
-            }
-        }
 
-        return answer;
-    }
-}
+
+//    public ArrayList<String> setAnswer (Game game) {
+//        ArrayList <String> answer = isAnswerInitialized();
+//        return answer;
+//         }
+
+    }  //
+
+//        List<Letter> lettersList = game.getLettersList();
+//        for (int i = 0; i < game.getHiddenWord().length(); i++) {
+//            String ch = String.valueOf(lettersList.get(i).getValue());
+//            if (lettersList.get(i).getStatus() == Letter.LetterStatus.IN_PLACE) {
+//                answer.set(i, ch);
+////            } else if ((lettersList.get(i).getStatus() == Letter.LetterStatus.NOT_PLACE)) {
+////                charNotPlace.add(ch);
+////            } else {
+////                missingLetters.add(ch);
+//            }
+//        }
+//
+//        return answer;
+//    }

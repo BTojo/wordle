@@ -10,6 +10,10 @@ public class Attempt {
         this.letters = letters;
     }
 
+    public List<Letter> getLetters() {
+        return letters;
+    }
+
     @Override
     public String toString() {
         return "Attempt {{value=" + letters.toString() + "}}";

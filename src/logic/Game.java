@@ -2,33 +2,57 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Game {
 
-    static final int NUNBER_OF_ATTEMPTS = 5;
-    public static final int NUNBER_OF_LETTERS = 5;
-    private final Set<String> charNotPlace = new TreeSet<>();
-    private final Set<Character> missingLetters = new TreeSet<>();
-    private final ArrayList<String> answer = new ArrayList<>();
-    private final ArrayList<Object> usedAttempts = new ArrayList<>();
-    private GameStatus gameStatus = GameStatus.PROCESS;
-    private final String hiddenWord;
-    List<Letter> lettersList = new ArrayList<>();
+    static final int NUMBER_OF_ATTEMPTS = 5;
+    public static final int NUMBER_OF_LETTERS = 5;
+//    private final Set<String> charNotPlace = new TreeSet<>();
+//    private final Set<Character> missingLetters = new TreeSet<>();
+//    private final List<String> answer = new ArrayList<>();
+//    private final List<Object> usedAttempts = new ArrayList<>();
+   private GameStatus gameStatus = GameStatus.PROCESS;
+   private final String hiddenWord;
+
+    //    List<Letter> lettersList = new ArrayList<>();
+
     private final List<Attempt> attemptsList = new ArrayList<>();
+
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
-        isAnswerInitialized();
+        System.out.println("**" + hiddenWord);
+  //      isAnswerInitialized();
     }
 
-    public List<Letter> getLettersList() {
-        return lettersList;
+    public List<Attempt> getAttemptsList() {
+        return attemptsList;
     }
 
-    private List<Letter> check(String enterWord) {
-        lettersList.clear();
+//    public List<Letter> getLettersList() {
+//        return lettersList;
+//    }
+
+    public void makeAttempt(String enterWord) {
+        Attempt attempt = new Attempt();
+        Letter letter = new Letter();
+        //       addAttempts(enterWord);
+
+        if (isMatched(enterWord)) {
+            setGameStatus(GameStatus.WIN);
+        }
+        attempt.setLetters(check(enterWord, attempt));
+        attemptsList.add(attempt);
+
+        if ((attemptsList.size() + 1) == NUMBER_OF_ATTEMPTS) {
+            setGameStatus(GameStatus.LOSE);
+        }
+
+    }
+
+    private List<Letter> check(String enterWord, Attempt attempt) {
+        List <Letter> letters= new ArrayList<>();
+      //  lettersList.clear();
 
         char charIsRandomWord;
         char charIsEnterWord;
@@ -42,61 +66,48 @@ public class Game {
                 letter.setValue(charIsRandomWord);
                 letter.setStatus(Letter.LetterStatus.IN_PLACE);
 
-                if (answer.get(i).isEmpty()) {
-                    answer.set(i, String.valueOf(charIsRandomWord));
-                }
-            } else if (isCharBelongsWord(charIsEnterWord)) {
-                charNotPlace.add(String.valueOf(charIsEnterWord));
 
-                if (charactersInList(answer, charIsEnterWord) ==
-                        (countingChar(hiddenWord, charIsEnterWord))) {
-                    charNotPlace.remove(String.valueOf(charIsEnterWord));
-                }
+//                if (answer.get(i).isEmpty()) {
+//                    answer.set(i, String.valueOf(charIsRandomWord));
+//                }
+            } else if (isCharBelongsWord(charIsEnterWord)) {
+//                charNotPlace.add(String.valueOf(charIsEnterWord));
+
+//                if (charactersInWord(hiddenWord, charIsEnterWord) ==
+//                        (countingChar(hiddenWord, charIsEnterWord))) {
+//                    charNotPlace.remove(String.valueOf(charIsEnterWord));
+//                }
                 letter.setValue(charIsEnterWord);
                 letter.setStatus(Letter.LetterStatus.NOT_PLACE);
 
 
             } else {
-                missingLetters.add(enterWord.charAt(i));
+           //     missingLetters.add(enterWord.charAt(i));
                 letter.setValue(charIsEnterWord);
                 letter.setStatus(Letter.LetterStatus.MISSING);
             }
-            lettersList.add(letter);
+            letters.add(letter);
         }
-        return lettersList;
+        System.out.println("letters + " + letters);
+        return letters;
     }
 
-    public void makeAttempt(String enterWord) {
-        Attempt attempt = new Attempt();
-        addAttempts(enterWord);
-
-        if ((attemptsList.size() + 1) == NUNBER_OF_ATTEMPTS) {
-            setGameStatus(GameStatus.LOSE);
-        }
-
-        if (isMatched(enterWord)) {
-            setGameStatus(GameStatus.WIN);
-        }
-        attempt.setLetters(check(enterWord));
-        attemptsList.add(attempt);
-
-    }
-
-    private int charactersInList(ArrayList<String> answer, char charIsEnterWord) {
+    private int charactersInWord(String hiddenWord, char charIsEnterWord) {
         int count = 0;
-        for (String c : answer) {
-            if (c.equals(String.valueOf(charIsEnterWord))) {
+        for (char c : hiddenWord.toCharArray()) {
+            if (c == charIsEnterWord) {
                 count++;
             }
         }
         return count;
     }
 
-    private void isAnswerInitialized() {
-        for (int i = 0; i < Game.NUNBER_OF_LETTERS; i++) {
-            answer.add(i, "");
-        }
-    }
+
+//    private void isAnswerInitialized() {
+//        for (int i = 0; i < Game.NUMBER_OF_LETTERS; i++) {
+//            answer.add(i, "");
+//        }
+//    }
 
     public boolean isInProgress() {
         return gameStatus == GameStatus.PROCESS;
@@ -111,12 +122,12 @@ public class Game {
     }
 
     public boolean isNumberOfCharacters(String enterWord) {
-        return enterWord.length() == NUNBER_OF_LETTERS;
+        return enterWord.length() == NUMBER_OF_LETTERS;
     }
 
-    public void addAttempts(String enterWord) {
-        usedAttempts.add(enterWord);
-    }
+//    public void addAttempts(String enterWord) {
+//        usedAttempts.add(enterWord);
+//    }
 
     public GameStatus getGameStatus() {
         return gameStatus;
@@ -156,11 +167,11 @@ public class Game {
         return count;
     }
 
-    public Set<Character> getMissingLetters() {
-        return missingLetters;
-    }
+//    public Set<Character> getMissingLetters() {
+//        return missingLetters;
+//    }
 
-    public Set<String> getCharNotPlace() {
-        return charNotPlace;
-    }
+//    public Set<String> getCharNotPlace() {
+//        return charNotPlace;
+//    }
 }
