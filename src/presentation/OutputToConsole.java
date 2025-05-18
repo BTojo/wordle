@@ -1,8 +1,5 @@
 package presentation;
 
-import logic.Game;
-import logic.Letter;
-
 import java.util.*;
 
 public class OutputToConsole {
@@ -45,43 +42,23 @@ public class OutputToConsole {
         System.out.println(WRONG_WORD);
     }
 
-//    public String getReturnString(Game game) {
-//        return "Answer:  \"" +
-//                setAnswer(game).toString() + "\" There are such letters: \"" +
-//                game.getCharNotPlace() + "\" There are no such letters in the word: \"" +
-//                game.getMissingLetters() + "\"";
-//    }
-
-
     public String showGameState(ListStorage listStorage) {
-     //   public String getReturnString(Game game) {
 
-            return "Answer:  \"" +
-                    listStorage.getAnswer().toString() + "\" There are such letters: \"" +
-                    listStorage.getCharNotPlace().toString() + "\" There are no such letters in the word: \"" +
-                    listStorage.getMissingLetters().toString() + "\"";
+        return "Answer:  \"" +
+                editAnswer(listStorage).toString() + "\" There are such letters: \"" +
+                listStorage.getCharNotPlace().toString() + "\" There are no such letters in the word: \"" +
+                listStorage.getMissingLetters().toString() + "\"";
+    }
+
+    private List<String> editAnswer(ListStorage listStorage) {
+        List<String> lastAnswer = listStorage.getAnswer();
+        List<String> newAnswer = lastAnswer;
+
+        for (int i = 0; i < lastAnswer.size(); i++) {
+            newAnswer.set(i, lastAnswer.get(i).replace(" ", THREE_DOTS));
         }
 
+        return newAnswer;
+    }
+}
 
-
-//    public ArrayList<String> setAnswer (Game game) {
-//        ArrayList <String> answer = isAnswerInitialized();
-//        return answer;
-//         }
-
-    }  //
-
-//        List<Letter> lettersList = game.getLettersList();
-//        for (int i = 0; i < game.getHiddenWord().length(); i++) {
-//            String ch = String.valueOf(lettersList.get(i).getValue());
-//            if (lettersList.get(i).getStatus() == Letter.LetterStatus.IN_PLACE) {
-//                answer.set(i, ch);
-////            } else if ((lettersList.get(i).getStatus() == Letter.LetterStatus.NOT_PLACE)) {
-////                charNotPlace.add(ch);
-////            } else {
-////                missingLetters.add(ch);
-//            }
-//        }
-//
-//        return answer;
-//    }

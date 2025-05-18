@@ -1,4 +1,5 @@
 package presentation;
+
 import logic.Attempt;
 import logic.Game;
 import logic.Letter;
@@ -10,11 +11,9 @@ import java.util.TreeSet;
 
 public class ListStorage {
 
-    private  List<String> answer = new ArrayList<>();
-    private  Set<String> charNotPlace = new TreeSet<>();
-    private  Set<Character> missingLetters = new TreeSet<>();
-   // private final List<Object> usedAttempts = new ArrayList<>();
-
+    private List<String> answer = new ArrayList<>();
+    private Set<String> charNotPlace = new TreeSet<>();
+    private Set<Character> missingLetters = new TreeSet<>();
 
     public Set<String> getCharNotPlace() {
         return charNotPlace;
@@ -28,13 +27,10 @@ public class ListStorage {
         return answer;
     }
 
-    public void setAnswer(List<String> answer) {
-        this.answer = answer;
-    }
-
     public void addCharNotPlace(String ch) {
         charNotPlace.add(ch);
     }
+
     public void removeCharNotPlace(String ch) {
         charNotPlace.remove(ch);
     }
@@ -50,7 +46,8 @@ public class ListStorage {
         }
         return answer;
     }
-    public void addListStorage (List<Attempt> attemptsList, Game game) {
+
+    public void addListStorage(List<Attempt> attemptsList, Game game) {
         Attempt lastAttempt = attemptsList.get(attemptsList.size() - 1);
         if (answer.isEmpty()) {
             this.answer = isAnswerInitialized();
@@ -63,29 +60,21 @@ public class ListStorage {
 
             if (status == Letter.LetterStatus.IN_PLACE) {
                 answer.set(i, ch);
-
+                continue;
             }
-            if ((status == Letter.LetterStatus.NOT_PLACE)) {
-                System.out.println("Мы в нутри  if ((status == Letter.LetterStatus.NOT_PLACE)) ");
-                System.out.print(game.countingChar(game.getHiddenWord(),ch.charAt(0)));
-                System.out.print( " ! = ");
-                System.out.print(game.countingChar(String.valueOf(getAnswer()),ch.charAt(0)));
-                System.out.println();
 
+            if ((status == Letter.LetterStatus.NOT_PLACE)) {
                 addCharNotPlace(ch);
 
-             if ((game.countingChar(game.getHiddenWord(),ch.charAt(0))) == game.countingChar(String.valueOf(getAnswer()),ch.charAt(0))) {
-                 removeCharNotPlace(ch);
+                if ((game.countingChar(game.getHiddenWord(), ch.charAt(0))) == game.countingChar(String.valueOf(getAnswer()), ch.charAt(0))) {
+                    removeCharNotPlace(ch);
+                }
+                continue;
+            }
 
-
-             }
-
-
-            } else {
+            else {
                 addMissingLetters(ch);
-           //     missingLetters.add(ch.charAt(0));
             }
         }
-
     }
 }

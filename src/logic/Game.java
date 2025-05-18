@@ -41,7 +41,7 @@ public class Game {
         if (isMatched(enterWord)) {
             setGameStatus(GameStatus.WIN);
         }
-        attempt.setLetters(check(enterWord, attempt));
+        attempt.setLetters(check(enterWord));
         attemptsList.add(attempt);
 
         if ((attemptsList.size() + 1) == NUMBER_OF_ATTEMPTS) {
@@ -50,7 +50,7 @@ public class Game {
 
     }
 
-    private List<Letter> check(String enterWord, Attempt attempt) {
+    private List<Letter> check(String enterWord) {
         List <Letter> letters= new ArrayList<>();
       //  lettersList.clear();
 
