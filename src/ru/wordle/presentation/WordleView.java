@@ -64,7 +64,5 @@ public class WordleView {
         } else {
             System.out.println("Game over");
         }
-
-
     }
 }

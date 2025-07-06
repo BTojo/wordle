@@ -79,8 +79,4 @@ public class ListStorage {
         }
         return answer;
     }
-
-//    public void addListStorage(Game game) {
-//
-//    }
 }

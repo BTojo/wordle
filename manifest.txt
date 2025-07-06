@@ -1,1 +1,2 @@
-Main-Class: ru.wordle.Main
+Main-Class: ru.wordle.Main 
+Class-Path: lib/jakarta.annotation-api-2.1.1.jar lib/jakarta.inject-api-2.0.1.jar lib/spring-aop-6.1.3.jar lib/spring-beans-6.1.3.jar lib/spring-context-6.1.3.jar lib/spring-core-6.1.3.jar lib/spring-expression-6.1.3.jar lib/spring-jcl-6.1.3.jar

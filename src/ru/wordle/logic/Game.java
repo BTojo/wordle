@@ -18,7 +18,6 @@ public class Game {
         this.hiddenWord = randomWord;
         System.out.println(hiddenWord);   ///
     }
-  //
 
     public List<Attempt> getAttemptsList() {
         return attemptsList;
