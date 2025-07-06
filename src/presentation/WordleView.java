@@ -32,7 +32,7 @@ public class WordleView {
             }
 
             game.makeAttempt(enterWord);
-            listStorage.addListStorage(game.getAttemptsList(), game);
+            listStorage.addListStorage(game);
             System.out.println(outputToConsole.showGameState(listStorage));
         }
 

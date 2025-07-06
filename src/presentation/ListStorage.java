@@ -47,7 +47,8 @@ public class ListStorage {
         return answer;
     }
 
-    public void addListStorage(List<Attempt> attemptsList, Game game) {
+    public void addListStorage(Game game) {
+        List<Attempt> attemptsList = game.getAttemptsList();
         Attempt lastAttempt = attemptsList.get(attemptsList.size() - 1);
         if (answer.isEmpty()) {
             this.answer = isAnswerInitialized();
