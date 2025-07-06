@@ -7,7 +7,7 @@ public class Game {
 
     static final int NUMBER_OF_ATTEMPTS = 5;
     public static final int NUMBER_OF_LETTERS = 5;
-    private GameState gameState = GameState.PROCESS;
+    private GameStatus gameStatus = GameStatus.PROCESS;
     private final String hiddenWord;
     private final List<Attempt> attemptsList = new ArrayList<>();
 
@@ -24,13 +24,13 @@ public class Game {
         Attempt attempt = new Attempt();
 
         if (isMatched(enterWord)) {
-            setGameStatus(gameState.WIN);
+            setGameStatus(gameStatus.WIN);
         }
         attempt.setLetters(check(enterWord));
         attemptsList.add(attempt);
 
         if (attemptsList.size() == NUMBER_OF_ATTEMPTS) {
-            setGameStatus(gameState.LOSE);
+            setGameStatus(gameStatus.LOSE);
         }
     }
 
@@ -64,7 +64,7 @@ public class Game {
 
 
     public boolean isInProgress() {
-        return gameState == GameState.PROCESS;
+        return gameStatus == GameStatus.PROCESS;
     }
 
     public boolean validateWord(String enterWord) {
@@ -79,16 +79,16 @@ public class Game {
         return enterWord.length() == NUMBER_OF_LETTERS;
     }
 
-    public GameState getGameStatus() {
-        return gameState;
+    public GameStatus getGameStatus() {
+        return gameStatus;
     }
 
-    public void setGameStatus(GameState gameStatus) {
-        this.gameState = gameStatus;
+    public void setGameStatus(GameStatus gameStatus) {
+        this.gameStatus = gameStatus;
     }
 
     public boolean isWin() {
-        return (getGameStatus() == GameState.WIN);
+        return (getGameStatus() == GameStatus.WIN);
     }
 
     public String getHiddenWord() {
