@@ -1,3 +1,4 @@
+@ECHO OFF
 rem jar tf MyJar.jar
 rmdir /s /q out
 pause

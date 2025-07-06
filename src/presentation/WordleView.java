@@ -1,5 +1,6 @@
 package presentation;
 
+import datastorage.StorageException;
 import logic.Game;
 import datastorage.Storage;
 
@@ -10,6 +11,9 @@ public class WordleView {
     private Storage storage = new Storage();
     private OutputToConsole outputToConsole = new OutputToConsole();
     private Game game;
+
+    public WordleView() throws StorageException {
+    }
 
     public void start() {
         String randomWord = storage.getRandomWord();

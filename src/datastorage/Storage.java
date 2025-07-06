@@ -12,11 +12,11 @@ public class Storage {
     static Random randomizer = new Random();
     public List<String> words = new ArrayList<>();
 
-    public Storage() {
+    public Storage() throws StorageException {
         loadWorlds();
     }
 
-    private void loadWorlds() {
+    private void loadWorlds() throws StorageException {
 
         try (BufferedReader br = new BufferedReader(new FileReader("wordle.txt"))) {
             String line;
@@ -24,10 +24,7 @@ public class Storage {
                 words.add(line);
             }
         } catch (IOException e) {
-            System.out.println("Error reading from a file" + e.getMessage());
-            System.out.println("The word library is not loaded. \n" +
-                    " The program is stopped.");
-            System.exit(0);
+            throw new StorageException("Error reading from a file" + e.getMessage() + ". The word library is not loaded. \n \" The program is stopped.\"", e);
         }
     }
 
