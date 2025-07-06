@@ -13,6 +13,7 @@ public class Game {
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
+        System.out.println(hiddenWord);   ///
     }
 
     public List<Attempt> getAttemptsList() {
@@ -47,11 +48,10 @@ public class Game {
             if (isCharIsInItsPlace(charIsRandomWord, charIsEnterWord)) {
                 letter.setValue(charIsRandomWord);
                 letter.setStatus(Letter.LetterStatus.IN_PLACE);
-            } else if (isCharBelongsWord(charIsEnterWord)) {
 
+            } else if (isCharBelongsWord(charIsEnterWord)) {
                 letter.setValue(charIsEnterWord);
                 letter.setStatus(Letter.LetterStatus.NOT_PLACE);
-
 
             } else {
                 letter.setValue(charIsEnterWord);

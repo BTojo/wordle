@@ -60,7 +60,6 @@ public class ListStorage {
 
             if (status == Letter.LetterStatus.IN_PLACE) {
                 answer.set(i, ch);
-                continue;
             }
 
             if ((status == Letter.LetterStatus.NOT_PLACE)) {
@@ -69,7 +68,7 @@ public class ListStorage {
                 if ((game.countingChar(game.getHiddenWord(), ch.charAt(0))) == game.countingChar(String.valueOf(getAnswer()), ch.charAt(0))) {
                     removeCharNotPlace(ch);
                 }
-                continue;
+
             }
 
             else {
