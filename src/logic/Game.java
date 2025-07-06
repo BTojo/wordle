@@ -116,4 +116,11 @@ public class Game {
         }
         return count;
     }
+
+    public boolean isAllLetterPresent (String answer, String ch) {
+        if (countingChar(getHiddenWord(), ch.charAt(0)) == countingChar(answer, ch.charAt(0))) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -12,7 +12,7 @@ public class WordleView {
     public void start() {
         String randomWord = storage.getRandomWord();
         game = new Game(randomWord);
-        ListStorage listStorage = new ListStorage();
+        ListStorage listStorage;
 
         outputToConsole.showHello();
         while (game.isInProgress()) {
@@ -32,7 +32,7 @@ public class WordleView {
             }
 
             game.makeAttempt(enterWord);
-            listStorage.addListStorage(game);
+            listStorage = new ListStorage(game);
             System.out.println(outputToConsole.showGameState(listStorage));
         }
 

@@ -15,6 +15,39 @@ public class ListStorage {
     private Set<String> charNotPlace = new TreeSet<>();
     private Set<Character> missingLetters = new TreeSet<>();
 
+    public ListStorage(Game game) {
+        List<Attempt> attemptsList = game.getAttemptsList();
+
+        if (answer.isEmpty()) {
+            this.answer = isAnswerInitialized();
+        }
+
+
+        Attempt lastAttempt = attemptsList.get(attemptsList.size() - 1);
+
+        for (int i = 0; i < lastAttempt.getLetters().size(); i++) {
+
+            String ch = String.valueOf(lastAttempt.getLetters().get(i).getValue());
+            Letter.LetterStatus status = lastAttempt.getLetters().get(i).getStatus();
+
+            if (status == Letter.LetterStatus.IN_PLACE) {
+                answer.set(i, ch);
+            }
+
+            if ((status == Letter.LetterStatus.NOT_PLACE)) {
+                addCharNotPlace(ch);
+
+                if (game.isAllLetterPresent(String.valueOf(getAnswer()), String.valueOf(ch.charAt(0)))) {
+                    removeCharNotPlace(ch);
+                }
+            }
+
+            else {
+                addMissingLetters(ch);
+            }
+        }
+    }
+
     public Set<String> getCharNotPlace() {
         return charNotPlace;
     }
@@ -47,34 +80,7 @@ public class ListStorage {
         return answer;
     }
 
-    public void addListStorage(Game game) {
-        List<Attempt> attemptsList = game.getAttemptsList();
-        Attempt lastAttempt = attemptsList.get(attemptsList.size() - 1);
-        if (answer.isEmpty()) {
-            this.answer = isAnswerInitialized();
-        }
-
-        for (int i = 0; i < lastAttempt.getLetters().size(); i++) {
-
-            String ch = String.valueOf(lastAttempt.getLetters().get(i).getValue());
-            Letter.LetterStatus status = lastAttempt.getLetters().get(i).getStatus();
-
-            if (status == Letter.LetterStatus.IN_PLACE) {
-                answer.set(i, ch);
-            }
-
-            if ((status == Letter.LetterStatus.NOT_PLACE)) {
-                addCharNotPlace(ch);
-
-                if ((game.countingChar(game.getHiddenWord(), ch.charAt(0))) == game.countingChar(String.valueOf(getAnswer()), ch.charAt(0))) {
-                    removeCharNotPlace(ch);
-                }
-
-            }
-
-            else {
-                addMissingLetters(ch);
-            }
-        }
-    }
+//    public void addListStorage(Game game) {
+//
+//    }
 }
