@@ -6,11 +6,13 @@ import ru.wordle.logic.Game;
 import java.util.Scanner;
 
 public class WordleView {
+    private Game game;
 
     private Storage storage = new Storage();
     private OutputToConsole outputToConsole = new OutputToConsole();
-    private Game game;
-
+    public void setGame(Game game) {
+        this.game = game;
+    }
     public WordleView() throws StorageException {
     }
 

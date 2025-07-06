@@ -2,6 +2,8 @@ package ru.wordle.logic;
 
 import java.util.ArrayList;
 import java.util.List;
+import ru.wordle.datastorage.StorageException;
+import ru.wordle.presentation.Storage;
 
 public class Game {
 
@@ -10,11 +12,13 @@ public class Game {
     private GameStatus gameStatus = GameStatus.PROCESS;
     private final String hiddenWord;
     private final List<Attempt> attemptsList = new ArrayList<>();
+   // private Storage storage;
 
     public Game(String randomWord) {
         this.hiddenWord = randomWord;
         System.out.println(hiddenWord);   ///
     }
+  //
 
     public List<Attempt> getAttemptsList() {
         return attemptsList;
