@@ -13,6 +13,8 @@ public class OutputToConsole {
     private static final String MESSAGE_ENTER_WORD = "Enter the word: ";
     private static final String THREE_DOTS = "...";
 
+    private static final String NEW_GAME = "\nPlay again? \n(Y/N)";
+
     public String getEnterWord() {
         showMessageEnterWord();
         return CONSOLE.nextLine().trim().toLowerCase();
@@ -50,6 +52,10 @@ public class OutputToConsole {
                 listStorage.getMissingLetters().toString() + "\"";
     }
 
+    public void showNewGame () {
+        System.out.print(NEW_GAME);
+    }
+
     private List<String> editAnswer(ListStorage listStorage) {
         List<String> lastAnswer = listStorage.getAnswer();
         List<String> newAnswer = lastAnswer;
@@ -59,4 +65,5 @@ public class OutputToConsole {
         }
         return newAnswer;
     }
+
 }

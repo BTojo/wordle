@@ -3,6 +3,8 @@ package presentation;
 import logic.Game;
 import datastorage.Storage;
 
+import java.util.Scanner;
+
 public class WordleView {
 
     private Storage storage = new Storage();
@@ -41,5 +43,23 @@ public class WordleView {
         } else {
             outputToConsole.showFall(game.getHiddenWord());
         }
+
+        outputToConsole.showNewGame();
+        newGame();
+
+    }
+
+    private void newGame () {
+        Scanner scanner = new Scanner(System.in);
+        String response = scanner.nextLine().trim().toUpperCase();
+
+        if (response.equals("Y")) {
+            System.out.println();
+            start();
+        } else {
+            System.out.println("Game over");
+        }
+
+
     }
 }
