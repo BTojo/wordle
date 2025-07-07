@@ -18,7 +18,7 @@ public class WordleView {
 
     public void start() {
         String randomWord = storage.getRandomWord();
-        game = new Game(randomWord);
+      //  game = new Game(randomWord);
         ListStorage listStorage;
 
         outputToConsole.showHello();
