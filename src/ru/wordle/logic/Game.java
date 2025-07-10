@@ -19,6 +19,10 @@ public class Game {
         System.out.println(hiddenWord);   ///
     }
 
+    public void setGameStatusProcess (){
+        gameStatus = GameStatus.PROCESS;
+    }
+
     public List<Attempt> getAttemptsList() {
         return attemptsList;
     }
@@ -125,5 +129,14 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "gameStatus=" + gameStatus +
+                ", hiddenWord='" + hiddenWord + '\'' +
+                ", attemptsList=" + attemptsList +
+                '}';
     }
 }

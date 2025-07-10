@@ -10,15 +10,17 @@ public class WordleView {
 
     private Storage storage = new Storage();
     private OutputToConsole outputToConsole = new OutputToConsole();
+
     public void setGame(Game game) {
         this.game = game;
     }
+
     public WordleView() throws StorageException {
     }
 
     public void start() {
         String randomWord = storage.getRandomWord();
-      //  game = new Game(randomWord);
+        // game = new Game(randomWord);
         ListStorage listStorage;
 
         outputToConsole.showHello();
@@ -40,7 +42,7 @@ public class WordleView {
 
             game.makeAttempt(enterWord);
             listStorage = new ListStorage(game);
-            System.out.println(outputToConsole.showGameState(listStorage));
+            System.out.println(outputToConsole.showGameState(game));
         }
 
         if (game.isWin()) {
@@ -54,13 +56,16 @@ public class WordleView {
 
     }
 
-    private void newGame () {
+    private void newGame() {
         Scanner scanner = new Scanner(System.in);
         String response = scanner.nextLine().trim().toUpperCase();
 
         if (response.equals("Y")) {
             System.out.println();
+            game = new Game(storage.getRandomWord());
+            outputToConsole.reload();
             start();
+
         } else {
             System.out.println("Game over");
         }

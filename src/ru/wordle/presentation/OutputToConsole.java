@@ -1,5 +1,9 @@
 package ru.wordle.presentation;
 
+import ru.wordle.logic.Attempt;
+import ru.wordle.logic.Game;
+import ru.wordle.logic.Letter;
+
 import java.util.*;
 
 public class OutputToConsole {
@@ -14,6 +18,23 @@ public class OutputToConsole {
     private static final String THREE_DOTS = "...";
 
     private static final String NEW_GAME = "\nPlay again? \n(Y/N)";
+
+    private List<String> allAanswers = new ArrayList<>();
+    private Set<String> allCharNotPlace = new TreeSet<>();
+    private Set<Character> allMissingLetters = new TreeSet<>();
+
+    public List<String> getAllAanswers() {
+        return allAanswers;
+    }
+
+    public Set<String> getAllCharNotPlace() {
+        return allCharNotPlace;
+    }
+
+    public Set<Character> getAllMissingLetters() {
+        return allMissingLetters;
+    }
+
 
     public String getEnterWord() {
         showMessageEnterWord();
@@ -44,26 +65,67 @@ public class OutputToConsole {
         System.out.println(WRONG_WORD);
     }
 
-    public String showGameState(ListStorage listStorage) {
+    public String showGameState(Game game) {
+        if (allAanswers.isEmpty()) {
+            this.allAanswers = isAnswerInitialized();
+        }
+        editAnswer();
+
+        for (int i = game.getAttemptsList().size() - 1; i >= 0; i--) {
+            Attempt attempt = game.getAttemptsList().get(i);
+
+            for (int j = 0; j < attempt.getLetters().size(); j++) {
+                Letter letter = attempt.getLetters().get(j);
+                String ch = String.valueOf(letter.getValue());
+                Letter.LetterStatus letterStatus = letter.getStatus();
+
+                if (letterStatus == Letter.LetterStatus.IN_PLACE) {
+                    allAanswers.set(j, ch);
+                }
+                if (letterStatus == Letter.LetterStatus.NOT_PLACE) {
+                    allCharNotPlace.add(ch);
+                    if (game.isAllLetterPresent(String.valueOf(getAllAanswers()), ch)) {
+                        allCharNotPlace.remove(ch);
+                    }
+                }
+                if (letterStatus == Letter.LetterStatus.MISSING) {
+                    allMissingLetters.add(ch.charAt(0));
+                }
+            }
+        }
 
         return "Answer:  \"" +
-                editAnswer(listStorage).toString() + "\" There are such letters: \"" +
-                listStorage.getCharNotPlace().toString() + "\" There are no such letters in the word: \"" +
-                listStorage.getMissingLetters().toString() + "\"";
+                getAllAanswers().toString() + "\" There are such letters: \"" +
+                getAllCharNotPlace().toString() + "\" There are no such letters in the word: \"" +
+                getAllMissingLetters().toString() + "\"";
     }
 
-    public void showNewGame () {
+    public void showNewGame() {
         System.out.print(NEW_GAME);
     }
 
-    private List<String> editAnswer(ListStorage listStorage) {
-        List<String> lastAnswer = listStorage.getAnswer();
+    private List<String> editAnswer() {
+        List<String> lastAnswer = getAllAanswers();
         List<String> newAnswer = lastAnswer;
 
         for (int i = 0; i < lastAnswer.size(); i++) {
             newAnswer.set(i, lastAnswer.get(i).replace(" ", THREE_DOTS));
         }
         return newAnswer;
+    }
+
+    private ArrayList isAnswerInitialized() {
+        ArrayList<String> answer = new ArrayList<>();
+        for (int i = 0; i < Game.NUMBER_OF_LETTERS; i++) {
+            answer.add(i, " ");
+        }
+        return answer;
+    }
+
+    public void reload() {
+        allAanswers.clear();
+        allCharNotPlace.clear();
+        allMissingLetters.clear();
     }
 
 }
