@@ -9,13 +9,15 @@ public class WordleView {
     private Game game;
 
     private Storage storage = new Storage();
-    private OutputToConsole outputToConsole = new OutputToConsole();
-
+    private OutputToConsole outputToConsole;
+    private final Scanner scanner;
     public void setGame(Game game) {
         this.game = game;
     }
 
-    public WordleView() throws StorageException {
+    public WordleView(Scanner scanner) throws StorageException {
+        this.scanner = scanner;
+        this.outputToConsole = new OutputToConsole(scanner);
     }
 
     public void start() {
@@ -57,7 +59,7 @@ public class WordleView {
     }
 
     private void newGame() {
-        Scanner scanner = new Scanner(System.in);
+      //  Scanner scanner = new Scanner(System.in);
         String response = scanner.nextLine().trim().toUpperCase();
 
         if (response.equals("Y")) {

@@ -8,7 +8,7 @@ import java.util.*;
 
 public class OutputToConsole {
 
-    private static final Scanner CONSOLE = new Scanner(System.in);
+    private final Scanner CONSOLE;
     private static final String HELLO = "The word is hidden...";
     private static final String FALL = "You lose! :( \nThe hidden word was: ";
     private static final String WRONG_WORD = "Invalid characters";
@@ -22,6 +22,10 @@ public class OutputToConsole {
     private List<String> allAanswers = new ArrayList<>();
     private Set<String> allCharNotPlace = new TreeSet<>();
     private Set<Character> allMissingLetters = new TreeSet<>();
+
+    public OutputToConsole(Scanner console) {
+        CONSOLE = console;
+    }
 
     public List<String> getAllAanswers() {
         return allAanswers;
