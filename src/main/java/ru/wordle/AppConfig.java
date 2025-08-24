@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.wordle.datastorage.StorageException;
 import ru.wordle.logic.Game;
+import ru.wordle.logic.GameFactory;
 import ru.wordle.presentation.OutputToConsole;
 import ru.wordle.presentation.Storage;
 import ru.wordle.presentation.WordleView;
@@ -18,31 +19,24 @@ public class AppConfig {
         return new Storage();
     }
 
-
-//    @Bean
-//    public Game game(Storage storage) throws StorageException {
-//        String randomWord = storage.getRandomWord();
-//        return new Game(randomWord);
-//    }
+    @Bean
+    public GameFactory gameFactory(Storage storage) {
+        return new GameFactory(storage);
+    }
 
     @Bean
-    public WordleView wordleView(Storage storage, OutputToConsole outputToConsole, Scanner scanner) throws StorageException {
-
-        String randomWord = storage.getRandomWord();
-        Game game = new Game(randomWord);
-        WordleView wordleView = new WordleView(scanner);
-        wordleView.setGame(game);
-        return wordleView;
+    public WordleView wordleView(Storage storage, OutputToConsole outputToConsole, Scanner scanner, GameFactory gameFactory) throws StorageException {
+        Game game = gameFactory.create();
+        return new WordleView(scanner, outputToConsole, gameFactory, storage, game);
     }
+
     @Bean
     public OutputToConsole outputToConsole(Scanner scanner) {
-        return new OutputToConsole((scanner));
+        return new OutputToConsole(scanner);
     }
 
     @Bean
     public Scanner scanner() {
         return new Scanner(System.in);
     }
-
-
 }

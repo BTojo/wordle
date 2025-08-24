@@ -2,27 +2,33 @@ package ru.wordle.presentation;
 
 import ru.wordle.datastorage.StorageException;
 import ru.wordle.logic.Game;
+import ru.wordle.logic.GameFactory;
 
 import java.util.Scanner;
 
 public class WordleView {
     private Game game;
+    private GameFactory gameFactory;
 
-    private Storage storage = new Storage();
+    private final Storage storage;
     private OutputToConsole outputToConsole;
     private final Scanner scanner;
+
     public void setGame(Game game) {
         this.game = game;
     }
 
-    public WordleView(Scanner scanner) throws StorageException {
+    public WordleView(Scanner scanner, OutputToConsole outputToConsole, GameFactory gameFactory, Storage storage, Game game) throws StorageException {
         this.scanner = scanner;
-        this.outputToConsole = new OutputToConsole(scanner);
+        this.outputToConsole = outputToConsole;
+        this.gameFactory = gameFactory;
+        this.storage = storage;
+        this.game = game;
+
+
     }
 
     public void start() {
-        String randomWord = storage.getRandomWord();
-        // game = new Game(randomWord);
         ListStorage listStorage;
 
         outputToConsole.showHello();
@@ -59,12 +65,11 @@ public class WordleView {
     }
 
     private void newGame() {
-      //  Scanner scanner = new Scanner(System.in);
         String response = scanner.nextLine().trim().toUpperCase();
 
         if (response.equals("Y")) {
             System.out.println();
-            game = new Game(storage.getRandomWord());
+            game = gameFactory.create();
             outputToConsole.reload();
             start();
 

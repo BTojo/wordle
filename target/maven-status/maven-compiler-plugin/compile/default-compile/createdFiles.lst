@@ -1,0 +1,12 @@
+ru\wordle\presentation\ListStorage.class
+ru\wordle\datastorage\StorageException.class
+ru\wordle\logic\Attempt.class
+ru\wordle\logic\Letter.class
+ru\wordle\presentation\Storage.class
+ru\wordle\Main.class
+ru\wordle\logic\GameStatus.class
+ru\wordle\AppConfig.class
+ru\wordle\logic\Game.class
+ru\wordle\presentation\OutputToConsole.class
+ru\wordle\presentation\WordleView.class
+ru\wordle\logic\Letter$LetterStatus.class
