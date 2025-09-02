@@ -18,4 +18,8 @@ public class GameFactory {
         String randomWorld = storage.getRandomWord();
         return new Game(randomWorld);
     }
+
+    public Storage getStorage() {
+        return storage;
+    }
 }
