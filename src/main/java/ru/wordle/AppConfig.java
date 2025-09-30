@@ -6,7 +6,7 @@ import ru.wordle.datastorage.StorageException;
 import ru.wordle.logic.Game;
 import ru.wordle.logic.GameFactory;
 import ru.wordle.presentation.OutputToConsole;
-import ru.wordle.presentation.Storage;
+import ru.wordle.datastorage.Storage;
 import ru.wordle.presentation.WordleView;
 
 import java.util.Scanner;

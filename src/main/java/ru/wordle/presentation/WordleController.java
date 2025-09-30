@@ -23,7 +23,7 @@ public class WordleController {
     public ModelAndView home(HttpSession session) {
         Game game = (Game) session.getAttribute("game");
         if (game == null) {
-            game = gameFactory.create(); // Убрали try-catch
+            game = gameFactory.create();
             session.setAttribute("game", game);
             System.out.println("New game created: " + game.hashCode());
         }
@@ -44,9 +44,9 @@ public class WordleController {
             } else {
                 mav.addObject("status", "Invalid word!");
             }
-            if (game.getGameStatus() == GameStatus.WIN) { // Изменено с Game.GameStatus.WIN
+            if (game.getGameStatus() == GameStatus.WIN) {
                 mav.addObject("status", "You win!");
-            } else if (game.getGameStatus() == GameStatus.LOSE) { // Изменено с Game.GameStatus.LOSE
+            } else if (game.getGameStatus() == GameStatus.LOSE) {
                 mav.addObject("status", "You lose! Word was " + game.getHiddenWord());
             }
         } else {

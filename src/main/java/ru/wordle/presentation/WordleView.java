@@ -3,6 +3,7 @@ package ru.wordle.presentation;
 import ru.wordle.datastorage.StorageException;
 import ru.wordle.logic.Game;
 import ru.wordle.logic.GameFactory;
+import ru.wordle.datastorage.Storage;
 
 import java.util.Scanner;
 
