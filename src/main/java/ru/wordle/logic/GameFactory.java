@@ -2,7 +2,7 @@ package ru.wordle.logic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.wordle.presentation.Storage;
+import ru.wordle.datastorage.Storage;
 
 @Component
 public class GameFactory {
@@ -17,9 +17,5 @@ public class GameFactory {
     public Game create() {
         String randomWorld = storage.getRandomWord();
         return new Game(randomWorld);
-    }
-
-    public Storage getStorage() {
-        return storage;
     }
 }
