@@ -2,7 +2,7 @@
 :: ===============================================
 :: Настройка кодировки для русского языка
 :: ===============================================
-chcp 1251 > nul
+chcp 65001 > nul
 setlocal enabledelayedexpansion
 
 title Сборка и развертывание Wordle приложения
@@ -66,7 +66,7 @@ if defined CATALINA_HOME (
     
     set "TOMCAT_FOUND=0"
     for /d %%D in (
-        "D:\TomCat\apache-tomcat-10.1.42"
+        "D:\TomCat\apache-tomcat-9.0.94"
         "C:\Program Files\Apache Tomcat*"
         "C:\Program Files\Tomcat*"
         "C:\Tomcat*"
@@ -110,8 +110,16 @@ if "%TOMCAT_HOME%"=="" (
 echo.
 echo ✓ Используется Tomcat: %TOMCAT_HOME%
 
+:: ОПРЕДЕЛЕНИЕ ПОРТА TOMCAT
+echo Определение порта Tomcat...
+for /f "tokens=3 delims== " %%i in ('findstr "port=" "%TOMCAT_HOME%\conf\server.xml" ^| findstr "Connector" ^| findstr "HTTP"') do (
+    set "HTTP_PORT=%%i"
+    set "HTTP_PORT=!HTTP_PORT:"=!"
+)
+echo ✓ HTTP порт: %HTTP_PORT%
+
 :: Определяем имя WAR файла из pom.xml
-set "WAR_NAME=wordle_02-1.0-SNAPSHOT.war"
+set "WAR_NAME=wordle_02.war"
 echo ✓ WAR файл: %WAR_NAME%
 
 echo.
@@ -121,7 +129,9 @@ echo ===============================================
 echo Проект:    %PROJECT_DIR%
 echo Tomcat:    %TOMCAT_HOME%
 echo Maven:     %MAVEN_CMD%
+echo HTTP порт: %HTTP_PORT%
 echo WAR файл:  %WAR_NAME%
+echo URL:       http://localhost:%HTTP_PORT%/wordle_02/
 echo ===============================================
 echo.
 
@@ -169,12 +179,17 @@ echo ✓ WAR файл успешно скопирован: %TOMCAT_HOME%\webapps
 echo [5/5] Запуск Tomcat сервера...
 call :start_tomcat
 
+:: 6. Открытие браузера
+echo [6/6] Открытие приложения в браузере...
+timeout /t 10 /nobreak > nul
+call :open_browser
+
 echo.
 echo ===============================================
 echo    РАЗВЕРТЫВАНИЕ УСПЕШНО ЗАВЕРШЕНО!
 echo ===============================================
 echo Приложение: %WAR_NAME%
-echo URL: http://localhost:8080/wordle_02-1.0-SNAPSHOT
+echo URL: http://localhost:%HTTP_PORT%/wordle_02/
 echo Tomcat: %TOMCAT_HOME%
 echo Время: %date% %time%
 echo ===============================================
@@ -201,11 +216,16 @@ goto :eof
 echo Запуск Tomcat сервера...
 if exist "%TOMCAT_HOME%\bin\startup.bat" (
     start "Tomcat Server" "%TOMCAT_HOME%\bin\startup.bat"
-    timeout /t 8 /nobreak > nul
+    timeout /t 10 /nobreak > nul
     echo ✓ Tomcat успешно запущен
 ) else (
     echo ОШИБКА: Файл startup.bat не найден
 )
+goto :eof
+
+:open_browser
+echo Открытие http://localhost:%HTTP_PORT%/wordle_02/
+start "" "http://localhost:%HTTP_PORT%/wordle_02/"
 goto :eof
 
 :clean_old_deployment

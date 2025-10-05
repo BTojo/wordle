@@ -1,20 +1,23 @@
 package ru.wordle.config;
 
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-    @Override
-    protected Class<?>[] getRootConfigClasses() {
-        return null;
-    }
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
 
-    @Override
-    protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { WebConfig.class };
-    }
+public class WebAppInitializer implements WebApplicationInitializer {
 
     @Override
-    protected String[] getServletMappings() {
-        return new String[] { "/" };
+    public void onStartup(ServletContext servletContext) {
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(WebConfig.class);
+
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(context);
+
+        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
+        dispatcher.setLoadOnStartup(1);
+        dispatcher.addMapping("/");
     }
 }
