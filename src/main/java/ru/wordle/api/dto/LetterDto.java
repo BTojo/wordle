@@ -1,4 +1,4 @@
-package ru.wordle.web.dto;
+package ru.wordle.api.dto;
 
 public class LetterDto {
     private char letter;

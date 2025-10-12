@@ -1,4 +1,4 @@
-package ru.wordle.config;
+package ru.wordle.infrastructure.configuration;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;

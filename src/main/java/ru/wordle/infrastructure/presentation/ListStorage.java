@@ -1,8 +1,8 @@
-package ru.wordle.presentation;
+package ru.wordle.infrastructure.presentation;
 
-import ru.wordle.logic.Attempt;
-import ru.wordle.logic.Game;
-import ru.wordle.logic.Letter;
+import ru.wordle.domain.model.Attempt;
+import ru.wordle.domain.model.Game;
+import ru.wordle.domain.model.Letter;
 
 import java.util.ArrayList;
 import java.util.List;

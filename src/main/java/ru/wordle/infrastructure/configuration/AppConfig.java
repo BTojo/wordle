@@ -1,13 +1,13 @@
-package ru.wordle;
+package ru.wordle.infrastructure.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.wordle.datastorage.StorageException;
-import ru.wordle.logic.Game;
-import ru.wordle.logic.GameFactory;
-import ru.wordle.presentation.OutputToConsole;
-import ru.wordle.datastorage.Storage;
-import ru.wordle.presentation.WordleView;
+import ru.wordle.infrastructure.datastorage.StorageException;
+import ru.wordle.domain.model.Game;
+import ru.wordle.domain.model.GameFactory;
+import ru.wordle.infrastructure.presentation.OutputToConsole;
+import ru.wordle.infrastructure.datastorage.Storage;
+import ru.wordle.infrastructure.presentation.WordleView;
 
 import java.util.Scanner;
 

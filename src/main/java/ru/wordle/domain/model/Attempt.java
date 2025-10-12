@@ -1,4 +1,4 @@
-package ru.wordle.logic;
+package ru.wordle.domain.model;
 
 import java.util.List;
 

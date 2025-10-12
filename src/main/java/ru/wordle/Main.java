@@ -1,8 +1,9 @@
 package ru.wordle;
 
-import ru.wordle.datastorage.StorageException;
-import ru.wordle.presentation.WordleView;
+import ru.wordle.infrastructure.datastorage.StorageException;
+import ru.wordle.infrastructure.presentation.WordleView;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.wordle.infrastructure.configuration.AppConfig;
 
 public class Main {
 

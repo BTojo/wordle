@@ -1,9 +1,9 @@
-package ru.wordle.presentation;
+package ru.wordle.infrastructure.presentation;
 
-import ru.wordle.datastorage.StorageException;
-import ru.wordle.logic.Game;
-import ru.wordle.logic.GameFactory;
-import ru.wordle.datastorage.Storage;
+import ru.wordle.infrastructure.datastorage.StorageException;
+import ru.wordle.domain.model.Game;
+import ru.wordle.domain.model.GameFactory;
+import ru.wordle.infrastructure.datastorage.Storage;
 
 import java.util.Scanner;
 

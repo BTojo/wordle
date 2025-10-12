@@ -1,4 +1,4 @@
-package ru.wordle.datastorage;
+package ru.wordle.infrastructure.datastorage;
 
 public class StorageException extends Exception {
 

@@ -1,12 +1,12 @@
-package ru.wordle.web.controller;
+package ru.wordle.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.wordle.service.GameService;
-import ru.wordle.web.dto.GuessRequest;
-import ru.wordle.web.dto.GameDto;
-import ru.wordle.datastorage.StorageException;
+import ru.wordle.domain.service.GameService;
+import ru.wordle.api.dto.GuessRequest;
+import ru.wordle.api.dto.GameDto;
+import ru.wordle.infrastructure.datastorage.StorageException;
 
 @RestController
 @RequestMapping("/api/games")

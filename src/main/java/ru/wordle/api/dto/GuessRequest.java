@@ -1,4 +1,4 @@
-package ru.wordle.web.dto;
+package ru.wordle.api.dto;
 
 import lombok.Data;
 

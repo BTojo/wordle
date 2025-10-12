@@ -1,14 +1,12 @@
-package ru.wordle.service;
+package ru.wordle.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.wordle.datastorage.Storage;
-import ru.wordle.datastorage.StorageException;
-import ru.wordle.logic.Game;
-import ru.wordle.logic.Attempt;
-import ru.wordle.logic.Letter;
-import ru.wordle.web.dto.GameDto;
-import ru.wordle.web.dto.LetterDto;
+import ru.wordle.infrastructure.datastorage.Storage;
+import ru.wordle.infrastructure.datastorage.StorageException;
+import ru.wordle.domain.model.Game;
+import ru.wordle.api.dto.GameDto;
+import ru.wordle.api.dto.LetterDto;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package ru.wordle.logic;
+package ru.wordle.domain.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.wordle.datastorage.Storage;
+import ru.wordle.infrastructure.datastorage.Storage;
 
 @Component
 public class GameFactory {
