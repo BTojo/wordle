@@ -8,6 +8,8 @@ import ru.wordle.api.dto.GuessRequest;
 import ru.wordle.api.dto.GameDto;
 import ru.wordle.infrastructure.datastorage.StorageException;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/games")
 @RequiredArgsConstructor
@@ -26,7 +28,7 @@ public class GameController {
     }
 
     @PostMapping("/guess")
-    public ResponseEntity<GameDto> guess(@RequestBody GuessRequest req) {
+    public ResponseEntity<GameDto> guess(@Valid @RequestBody GuessRequest req) {
         GameDto dto = gameService.guess(req.getGuess());
         return ResponseEntity.ok(dto);
     }

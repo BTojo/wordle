@@ -2,6 +2,8 @@ package ru.wordle.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.wordle.api.error.BadRequestException;
+import ru.wordle.api.error.UnprocessableEntityException;
 import ru.wordle.infrastructure.datastorage.Storage;
 import ru.wordle.infrastructure.datastorage.StorageException;
 import ru.wordle.domain.model.Game;
@@ -25,9 +27,19 @@ public class GameService {
 
     public GameDto guess(String guess) {
         if (currentGame == null) {
-            throw new IllegalStateException("The game hasn't started yet");
+            throw new BadRequestException("game not started");
         }
-        currentGame.makeAttempt(guess);
+
+        String normalized = guess.trim();
+
+        if (!currentGame.validateWord(normalized)) {
+            throw new BadRequestException("invalid word format");
+        }
+
+        if (!storage.isExists(normalized.toLowerCase())) {
+            throw new UnprocessableEntityException("word not found in dictionary");
+        }
+        currentGame.makeAttempt(normalized.toLowerCase());
         return toDto(currentGame);
     }
 
@@ -51,7 +63,6 @@ public class GameService {
 
         return new GameDto(
                 game.getGameStatus().name(),
-                attempts
-        );
+                attempts);
     }
 }
