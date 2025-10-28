@@ -4,49 +4,60 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.wordle.api.error.BadRequestException;
 import ru.wordle.api.error.UnprocessableEntityException;
+import ru.wordle.api.session.GameSession;
 import ru.wordle.infrastructure.datastorage.Storage;
 import ru.wordle.infrastructure.datastorage.StorageException;
 import ru.wordle.domain.model.Game;
 
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
 public class GameService {
 
     private final Storage storage;
-    private Game currentGame;
+    private final GameSession gameSession;
 
-    public Game startNewGame() throws StorageException {
+    public Game startNewGame() {
         String word = storage.getRandomWord();
-        currentGame = new Game(word);
-        return currentGame;
+        Game game = new Game(word);
+        gameSession.set(game);
+        return game;
     }
 
     public Game guess(String guess) {
-        if (currentGame == null) {
+        Game game = gameSession.get();
+        if (game == null) {
             throw new BadRequestException("game not started");
         }
 
         String normalized = guess.trim();
 
-        if (!currentGame.validateWord(normalized)) {
+        if (!game.validateWord(normalized)) {
             throw new BadRequestException("invalid word format");
         }
+
+        String lower = normalized.toLowerCase(Locale.ROOT);
 
         if (!storage.isExists(normalized.toLowerCase())) {
             throw new UnprocessableEntityException("word not found in dictionary");
         }
-        currentGame.makeAttempt(normalized.toLowerCase());
-        return currentGame;
+
+        synchronized (game) {
+            game.makeAttempt(lower);
+        }
+
+        return game;
     }
 
     public Game getStatus() {
-        if (currentGame == null) {
+        Game game = gameSession.get();
+        if (game == null) {
             throw new IllegalStateException("The game hasn't started yet");
         }
-        return currentGame;
+        return game;
     }
 }
 
