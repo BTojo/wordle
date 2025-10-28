@@ -1,14 +1,16 @@
 package ru.wordle.api.dto;
 
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
+import lombok.*;
+import ru.wordle.domain.model.GameStatus;
+
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class GameDto {
-    private String status;
+    private GameStatus status;
     private List<List<LetterDto>> attempts;
 }

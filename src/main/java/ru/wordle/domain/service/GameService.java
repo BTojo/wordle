@@ -4,13 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.wordle.api.error.BadRequestException;
 import ru.wordle.api.error.UnprocessableEntityException;
+import ru.wordle.api.error.UserNotStartedGameException;
 import ru.wordle.api.session.GameSession;
 import ru.wordle.infrastructure.datastorage.Storage;
-import ru.wordle.infrastructure.datastorage.StorageException;
 import ru.wordle.domain.model.Game;
-
-
-import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -30,7 +27,7 @@ public class GameService {
     public Game guess(String guess) {
         Game game = gameSession.get();
         if (game == null) {
-            throw new BadRequestException("game not started");
+            throw new UserNotStartedGameException();
         }
 
         String normalized = guess.trim();
@@ -41,7 +38,7 @@ public class GameService {
 
         String lower = normalized.toLowerCase(Locale.ROOT);
 
-        if (!storage.isExists(normalized.toLowerCase())) {
+        if (!storage.isExists(lower)) {
             throw new UnprocessableEntityException("word not found in dictionary");
         }
 
@@ -52,10 +49,10 @@ public class GameService {
         return game;
     }
 
-    public Game getStatus() {
+    public Game getGame() {
         Game game = gameSession.get();
         if (game == null) {
-            throw new IllegalStateException("The game hasn't started yet");
+            throw new UserNotStartedGameException();
         }
         return game;
     }

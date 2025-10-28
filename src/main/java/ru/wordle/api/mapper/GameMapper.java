@@ -16,6 +16,6 @@ public class GameMapper {
                         .toList())
                 .toList();
 
-        return new GameDto(game.getGameStatus().name(), attempts);
+        return new GameDto(game.getGameStatus(), attempts);
     }
 }
