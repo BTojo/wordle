@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import ru.wordle.api.dto.ErrorDto;
+import ru.wordle.domain.exception.GameAlreadyFinishedException;
 import ru.wordle.domain.exception.InvalidWordException;
 import ru.wordle.domain.exception.UserNotStartedGameException;
 import ru.wordle.domain.exception.WordNotInDictionaryException;
@@ -38,6 +39,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorDto handleWordNotInDictionaryException(WordNotInDictionaryException ex) {
         return new ErrorDto("not_in_dictionary", ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(GameAlreadyFinishedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDto handleGameAlreadyFinished(GameAlreadyFinishedException ex) {
+        return new ErrorDto("game_already_finished", ex.getMessage(), null);
     }
 
     @ExceptionHandler(StorageException.class)
