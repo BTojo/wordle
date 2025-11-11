@@ -1,4 +1,4 @@
-package ru.wordle.api.error;
+package ru.wordle.domain.exception;
 
 public class UserNotStartedGameException extends RuntimeException {
     public UserNotStartedGameException() {

@@ -2,10 +2,11 @@ package ru.wordle.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.wordle.api.error.BadRequestException;
-import ru.wordle.api.error.UnprocessableEntityException;
-import ru.wordle.api.error.UserNotStartedGameException;
+import ru.wordle.domain.exception.InvalidWordException;
+import ru.wordle.domain.exception.UserNotStartedGameException;
+import ru.wordle.domain.exception.WordNotInDictionaryException;
 import ru.wordle.api.session.GameSession;
+import ru.wordle.domain.model.GameStatus;
 import ru.wordle.infrastructure.datastorage.Storage;
 import ru.wordle.domain.model.Game;
 import java.util.Locale;
@@ -25,21 +26,29 @@ public class GameService {
     }
 
     public Game guess(String guess) {
+        if (guess == null || guess.trim().isEmpty()) {
+            throw new InvalidWordException("guess cannot be null or empty");
+        }
+
         Game game = gameSession.get();
         if (game == null) {
             throw new UserNotStartedGameException();
         }
 
+        if (game.getGameStatus() == GameStatus.WIN || game.getGameStatus() == GameStatus.LOSE) {
+            throw new IllegalStateException("Game is finished.");
+        }
+
         String normalized = guess.trim();
 
         if (!game.validateWord(normalized)) {
-            throw new BadRequestException("invalid word format");
+            throw new InvalidWordException("invalid word format");
         }
 
         String lower = normalized.toLowerCase(Locale.ROOT);
 
         if (!storage.isExists(lower)) {
-            throw new UnprocessableEntityException("word not found in dictionary");
+            throw new WordNotInDictionaryException(lower);
         }
 
         synchronized (game) {
