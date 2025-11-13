@@ -21,6 +21,7 @@
     </properties>
 
     <dependencies>
+        <!-- Существующие зависимости (остаются как есть) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -30,7 +31,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <version>2.9.10</version>  <!-- ПОНИЗИТЬ с 2.12.7 до 2.9.10 -->
         </dependency>
 
         <dependency>
@@ -46,10 +47,77 @@
             <version>${javax.servlet.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- ❌ ЗАМЕНИТЬ jakarta.validation на javax.validation -->
+        <!-- УДАЛИТЬ ЭТУ СТРОКУ:
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
             <version>2.0.2</version>
+        </dependency>
+        -->
+
+        <!-- ✅ НОВОЕ: javax.validation для Spring 4.3 -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.1.0.Final</version>
+        </dependency>
+
+        <!-- ✅ НОВОЕ: Jackson core (требуется для databind) -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.9.10</version>
+        </dependency>
+
+        <!-- ✅ НОВОЕ: Spring ORM (интеграция с JPA/Hibernate) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- ✅ НОВОЕ: Spring Transaction (для @Transactional) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- ✅ НОВОЕ: Spring JDBC (для JdbcTemplate) -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- ✅ НОВОЕ: PostgreSQL JDBC Driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.1</version>
+        </dependency>
+
+        <!-- ✅ НОВОЕ: JPA API (javax.persistence) -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.2.Final</version>
+        </dependency>
+
+        <!-- ✅ НОВОЕ: Hibernate Core (ORM для PostgreSQL) -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>4.3.11.Final</version>
+        </dependency>
+
+        <!-- ✅ НОВОЕ: Hibernate Validator (для @Valid в DTO) -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.4.3.Final</version>
         </dependency>
     </dependencies>
 
