@@ -14,14 +14,13 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.3.30.RELEASE</spring.version>  <!-- ИЗМЕНИТЕ НА 4.3.30 -->
-        <jackson.version>2.12.7</jackson.version>        <!-- Понизить Jackson для Spring 4 -->
+        <spring.version>4.3.30.RELEASE</spring.version>
+        <jackson.version>2.12.7</jackson.version>
         <lombok.version>1.18.34</lombok.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
     </properties>
 
     <dependencies>
-        <!-- Существующие зависимости (остаются как есть) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -31,7 +30,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.10</version>  <!-- ПОНИЗИТЬ с 2.12.7 до 2.9.10 -->
+            <version>2.9.10</version>
         </dependency>
 
         <dependency>
@@ -48,79 +47,77 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- ❌ ЗАМЕНИТЬ jakarta.validation на javax.validation -->
-        <!-- УДАЛИТЬ ЭТУ СТРОКУ:
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-        -->
-
-        <!-- ✅ НОВОЕ: javax.validation для Spring 4.3 -->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>1.1.0.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.4.3.Final</version>
+        </dependency>
 
-        <!-- ✅ НОВОЕ: Jackson core (требуется для databind) -->
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>2.9.10</version>
         </dependency>
 
-        <!-- ✅ НОВОЕ: Spring ORM (интеграция с JPA/Hibernate) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
-        <!-- ✅ НОВОЕ: Spring Transaction (для @Transactional) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
-        <!-- ✅ НОВОЕ: Spring JDBC (для JdbcTemplate) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
-        <!-- ✅ НОВОЕ: PostgreSQL JDBC Driver -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.1</version>
         </dependency>
 
-        <!-- ✅ НОВОЕ: JPA API (javax.persistence) -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>1.0.2.Final</version>
         </dependency>
 
-        <!-- ✅ НОВОЕ: Hibernate Core (ORM для PostgreSQL) -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>4.3.11.Final</version>
         </dependency>
 
-        <!-- ✅ НОВОЕ: Hibernate Validator (для @Valid в DTO) -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.6.8.Final</version>
+        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>5.4.3.Final</version>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.3.11.Final</version>
         </dependency>
-    </dependencies>
 
+    </dependencies>
     <build>
         <finalName>wordle_02</finalName>
         <plugins>

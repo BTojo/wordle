@@ -3,16 +3,24 @@ package ru.wordle.api.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+//import javax.validation.constraints.NotBlank;
+//import javax.validation.constraints.Pattern;
+//import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 public class GuessRequestDto {
-    @NotBlank(message = "guess must not be blank")
-    @Size(min = 5, max = 5, message = "guess must be 5 letters")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "guess must contain only letters")
+//    @NotBlank(message = "guess must not be blank")
+//    @Size(min = 5, max = 5, message = "guess must be 5 letters")
+//    @Pattern(regexp = "^[A-Za-z]+$", message = "guess must contain only letters")
 
     private String guess;
+
+    public String getGuess() {
+        return guess;
+    }
+
+    public void setGuess(String guess) {
+        this.guess = guess;
+    }
 }
