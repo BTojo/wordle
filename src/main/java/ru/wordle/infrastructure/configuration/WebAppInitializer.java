@@ -12,23 +12,19 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) {
-        // 1) Root context: здесь регистрируем bootstrap-компоненты и основной DataSource
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(
-                BootstrapDatabaseConfig.class,   // DataSource -> postgres (для CREATE DATABASE)
+                BootstrapDatabaseConfig.class,
+                DatabaseConfig.class,
+                JpaConfig.class,
                 ru.wordle.infrastructure.initializer.BootstrapDatabaseInitializer.class,
-                DatabaseConfig.class             // основной DataSource -> wordle и JdbcTemplate
+                WebConfig.class
         );
-        servletContext.addListener(new ContextLoaderListener(rootContext)); // поднимет root раньше MVC
 
-        // 2) Web (child) context: только веб-слой (контроллеры, MVC)
-        AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
-        webContext.setParent(rootContext);
-        webContext.register(WebConfig.class);
+        servletContext.addListener(new ContextLoaderListener(rootContext));
 
-        // 3) DispatcherServlet
         ServletRegistration.Dynamic dispatcher =
-                servletContext.addServlet("dispatcher", new DispatcherServlet(webContext));
+                servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
     }

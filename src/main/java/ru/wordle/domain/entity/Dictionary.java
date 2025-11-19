@@ -1,7 +1,7 @@
 package ru.wordle.domain.entity;
 
 import javax.persistence.*;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "dictionary", uniqueConstraints = {
@@ -16,7 +16,7 @@ public class Dictionary {
     private String word;
 
     @Column(name = "created_at", nullable = false)
-    private OffsetDateTime createdAt = OffsetDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Dictionary() {
     }
@@ -37,11 +37,11 @@ public class Dictionary {
         this.word = word;
     }
 
-    public OffsetDateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(OffsetDateTime createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }
