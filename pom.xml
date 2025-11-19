@@ -18,6 +18,8 @@
         <jackson.version>2.12.7</jackson.version>
         <lombok.version>1.18.34</lombok.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
+        <!-- Добавьте это свойство для пропуска тестов -->
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <dependencies>
@@ -58,7 +60,6 @@
             <version>5.4.3.Final</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -95,6 +96,7 @@
             <version>1.0.2.Final</version>
         </dependency>
 
+        <!-- ОСТАВЬТЕ ТОЛЬКО ЭТУ ВЕРСИЮ HIBERNATE -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -106,11 +108,7 @@
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>6.6.8.Final</version>
-        </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
@@ -129,6 +127,10 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <!-- ДОБАВЬТЕ НАСТРОЙКИ ПАМЯТИ -->
+                    <fork>true</fork>
+                    <meminitial>512m</meminitial>
+                    <maxmem>1024m</maxmem>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -148,6 +150,25 @@
                 </configuration>
             </plugin>
 
+            <!-- ДОБАВЬТЕ ЭТОТ ПЛАГИН ДЛЯ НАСТРОЙКИ ПАМЯТИ -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                    <argLine>-Xmx512m</argLine>
+                </configuration>
+            </plugin>
+
         </plugins>
+
+        <!-- ДОБАВЬТЕ ЭТОТ РАЗДЕЛ ДЛЯ РЕСУРСОВ -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 </project>

@@ -15,7 +15,6 @@ public class GuessRequestDto {
 //    @Pattern(regexp = "^[A-Za-z]+$", message = "guess must contain only letters")
 
     private String guess;
-
     public String getGuess() {
         return guess;
     }

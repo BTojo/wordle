@@ -23,9 +23,9 @@ public class DictionaryLoader {
     @PostConstruct
     public void load() {
         try {
-            ClassPathResource res = new ClassPathResource("dictionary.txt");
+            ClassPathResource res = new ClassPathResource("wordle.txt");
             if (!res.exists()) {
-                System.out.println("[DICT] dictionary.txt not found in classpath, skip");
+                System.out.println("[DICT] wordle.txt not found in classpath, skip");
                 return;
             }
             int added = 0, skipped = 0;
