@@ -1,74 +1,68 @@
 package ru.wordle.infrastructure.initializer;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import ru.wordle.domain.entity.Dictionary;
-import ru.wordle.domain.entity.DictionaryRepository;
+import ru.wordle.infrastructure.entity.DictionaryEntity;
+import ru.wordle.infrastructure.repository.DictionaryRepository;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class DictionaryLoader {
 
     private final DictionaryRepository repo;
-    private final TransactionTemplate transactionTemplate;
 
-    public DictionaryLoader(DictionaryRepository repo, TransactionTemplate transactionTemplate) {
-        this.repo = repo;
-        this.transactionTemplate = transactionTemplate;
-    }
-
-    @PostConstruct
+    @EventListener(ContextRefreshedEvent.class)
+    @Transactional
     public void load() {
-        System.out.println("[DICT] Starting dictionary load...");
+        log.info("[DICT] Starting dictionary load...");
+
+        if (repo.count() > 0) {
+            log.info("[DICT] Dictionary already loaded (count > 0). Skip.");
+            return;
+        }
 
         try {
-            ClassPathResource res = new ClassPathResource("wordle.txt");
+            ClassPathResource res = new ClassPathResource("wordle.txt"); // Или dictionary.txt
+
             if (!res.exists()) {
-                System.out.println("[DICT] wordle.txt not found in classpath, skip");
+                log.error("[DICT] File not found!");
                 return;
             }
 
-            int added = 0, skipped = 0;
+            int added = 0;
             try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(res.getInputStream(), StandardCharsets.UTF_8))) {
+
                 String line;
                 while ((line = br.readLine()) != null) {
                     String w = line.trim().toLowerCase();
-                    if (!StringUtils.hasText(w)) continue;
-                    if (w.length() > 64) continue;
 
-                    try {
-                        Boolean exists = transactionTemplate.execute(status ->
-                                repo.existsByWord(w)
-                        );
-
-                        if (Boolean.TRUE.equals(exists)) {
-                            skipped++;
-                            continue;
-                        }
-
-                        transactionTemplate.execute(status -> {
-                            repo.save(new Dictionary(w));
-                            return null;
-                        });
-
-                        added++;
-                    } catch (Exception e) {
-                        System.out.println("[DICT] Error saving word '" + w + "': " + e.getClass().getSimpleName());
-                        skipped++;
+                    if (!StringUtils.hasText(w) || w.length() > 5 || repo.existsByWord(w)) {
+                        continue;
                     }
+
+                    repo.save(new DictionaryEntity(w));
+                    added++;
                 }
             }
-            System.out.println("[DICT] Final result: added=" + added + ", skipped=" + skipped);
-        } catch (Exception e) {
-            System.out.println("[DICT] FATAL ERROR: " + e.getMessage());
-            e.printStackTrace();
+            log.info("[DICT] Final result: added={}", added);
+
+        } catch (IOException e) {
+            log.error("[DICT] FATAL ERROR: ", e);
         }
     }
+
 }
+

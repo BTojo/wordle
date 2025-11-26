@@ -1,56 +1,67 @@
 package ru.wordle.infrastructure.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.support.TransactionTemplate; // Не забудь импорт!
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
+@Import(PropertiesConfig.class)
 public class JpaConfig {
+
+    @Value("${jpa.packages-to-scan}")
+    private String packagesToScan;
+
+    @Value("${hibernate.dialect}")
+    private String dialect;
+
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hbm2ddlAuto;
+
+    @Value("${hibernate.show_sql}")
+    private String showSql;
+
+    @Value("${hibernate.format_sql}")
+    private String formatSql;
+
+    @Value("${hibernate.jdbc.lob.non_contextual_creation}")
+    private String nonContextualCreation;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        System.out.println("[JPA] Initializing EntityManagerFactory...");
-
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan("ru.wordle.domain.entity");
-        System.out.println("[JPA] Scanning package: ru.wordle.domain.entity");
+        em.setPackagesToScan(packagesToScan);
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(true);
-        vendorAdapter.setShowSql(true);
-        vendorAdapter.setDatabasePlatform("org.hibernate.dialect.PostgreSQLDialect");
         em.setJpaVendorAdapter(vendorAdapter);
 
-        Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        jpaProperties.put("hibernate.show_sql", "true");
-        jpaProperties.put("hibernate.format_sql", "true");
-        jpaProperties.put("hibernate.hbm2ddl.auto", "create");
-        jpaProperties.put("hibernate.connection.charSet", "UTF-8");
+        Properties props = new Properties();
+        props.put("hibernate.dialect", dialect);
+        props.put("hibernate.hbm2ddl.auto", hbm2ddlAuto);
+        props.put("hibernate.show_sql", showSql);
+        props.put("hibernate.format_sql", formatSql);
+        props.put("hibernate.jdbc.lob.non_contextual_creation", nonContextualCreation);
 
-        em.setJpaProperties(jpaProperties);
-
+        em.setJpaProperties(props);
         return em;
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory);
+        transactionManager.setEntityManagerFactory(emf);
         return transactionManager;
-    }
-
-    @Bean
-    public TransactionTemplate transactionTemplate(PlatformTransactionManager transactionManager) {
-        return new TransactionTemplate(transactionManager);
     }
 }

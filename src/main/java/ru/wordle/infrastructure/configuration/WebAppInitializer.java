@@ -12,19 +12,22 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletContext) {
+
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(
-                BootstrapDatabaseConfig.class,
+                PropertiesConfig.class,
                 DatabaseConfig.class,
-                JpaConfig.class,
-                ru.wordle.infrastructure.initializer.BootstrapDatabaseInitializer.class,
-                WebConfig.class
+                JpaConfig.class
         );
-
         servletContext.addListener(new ContextLoaderListener(rootContext));
 
+
+        AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
+        webContext.setParent(rootContext); // Web видит Root бины
+        webContext.register(WebConfig.class);
+
         ServletRegistration.Dynamic dispatcher =
-                servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
+                servletContext.addServlet("dispatcher", new DispatcherServlet(webContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
     }

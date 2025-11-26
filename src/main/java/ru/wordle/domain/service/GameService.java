@@ -1,17 +1,15 @@
 package ru.wordle.domain.service;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.wordle.application.service.ApplicationGameService;
 import ru.wordle.domain.model.Game;
 
 @Service
+@RequiredArgsConstructor
 public class GameService {
     private final ApplicationGameService applicationGameService;
-
-    public GameService(ApplicationGameService applicationGameService) {
-        this.applicationGameService = applicationGameService;
-    }
 
     public Game startNewGame() {
         return applicationGameService.startNewGame();
