@@ -17,13 +17,14 @@ public class WebAppInitializer implements WebApplicationInitializer {
         rootContext.register(
                 PropertiesConfig.class,
                 DatabaseConfig.class,
-                JpaConfig.class
+                JpaConfig.class,
+                LiquibaseConfig.class
         );
         servletContext.addListener(new ContextLoaderListener(rootContext));
 
 
         AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
-        webContext.setParent(rootContext); // Web видит Root бины
+        webContext.setParent(rootContext);
         webContext.register(WebConfig.class);
 
         ServletRegistration.Dynamic dispatcher =
