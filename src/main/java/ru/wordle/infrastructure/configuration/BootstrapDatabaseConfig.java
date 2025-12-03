@@ -7,8 +7,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
-@Configuration
-public class BootstrapDatabaseConfig {
+@Configurationpublic
+class BootstrapDatabaseConfig {
 
     @Bean(name = "bootstrapDataSource")
     public DataSource bootstrapDataSource() {
