@@ -6,18 +6,17 @@
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
 
     <changeSet id="2" author="Ivan">
-
         <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM dictionary</sqlCheck>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM words</sqlCheck>
         </preConditions>
 
-        <loadData tableName="dictionary"
-                  file="dictionary.csv"
+        <loadData tableName="words"
+                  file="words.csv"
                   relativeToChangelogFile="true"
                   encoding="UTF-8"
                   separator=","
                   quotchar='"'>
-            <column name="word" header="word"/>
+            <column name="word" header="words"/>
         </loadData>
     </changeSet>
 </databaseChangeLog>

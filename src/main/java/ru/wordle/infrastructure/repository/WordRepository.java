@@ -2,13 +2,13 @@ package ru.wordle.infrastructure.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.wordle.infrastructure.entity.DictionaryEntity;
+import ru.wordle.infrastructure.entity.WordEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class DictionaryRepository {
+public class WordRepository {
 
     @PersistenceContext
     private EntityManager em;
@@ -23,7 +23,7 @@ public class DictionaryRepository {
     }
 
     @Transactional
-    public void save(DictionaryEntity d) {
+    public void save(WordEntity d) {
         em.persist(d);
     }
 

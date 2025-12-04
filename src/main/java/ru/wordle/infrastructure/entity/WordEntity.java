@@ -8,17 +8,18 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "dictionary", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_dictionary_word", columnNames = "word")
+@Table(name = "words", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_word_text", columnNames = "word")
 })
 @Getter
 @Setter
 @NoArgsConstructor
-public class DictionaryEntity {
+public class WordEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "word_id")
+    private Long wordId;
 
     @Column(nullable = false, length = 5)
     private String word;
@@ -26,7 +27,7 @@ public class DictionaryEntity {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public DictionaryEntity(String word) {
+    public WordEntity(String word) {
         this.word = word;
     }
 }

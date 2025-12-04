@@ -6,9 +6,9 @@
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
 
     <!-- Подключаем файл с первой миграцией -->
-    <include file="001-create-dictionary-table.xml" relativeToChangelogFile="true"/>
+    <include file="001-create-words-table.xml" relativeToChangelogFile="true"/>
 
     <!-- Подключаем файл со второй миграцией -->
-    <include file="002-load-dictionary-data.xml" relativeToChangelogFile="true"/>
+    <include file="002-load-words-data.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

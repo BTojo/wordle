@@ -13,8 +13,10 @@ public class LiquibaseConfig {
     public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDataSource(dataSource);
-        // Указываем путь к главному файлу миграций
+
         liquibase.setChangeLog("classpath:db/changelog/db.changelog-master.xml");
+        liquibase.setDefaultSchema("wordle");
+
         return liquibase;
     }
 }
