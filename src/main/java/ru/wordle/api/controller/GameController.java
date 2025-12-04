@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.wordle.api.dto.GameDto;
 import ru.wordle.api.mapper.GameMapper;
-import ru.wordle.application.service.ApplicationGameService;
+import ru.wordle.domain.service.ApplicationGameService;
 import ru.wordle.api.dto.GuessRequestDto;
 
 import javax.validation.Valid;

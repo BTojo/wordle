@@ -3,7 +3,6 @@ package ru.wordle.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.wordle.application.service.ApplicationGameService;
 import ru.wordle.domain.model.Game;
 
 @Service

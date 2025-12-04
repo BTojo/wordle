@@ -1,4 +1,4 @@
-package ru.wordle.application.service;
+package ru.wordle.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
