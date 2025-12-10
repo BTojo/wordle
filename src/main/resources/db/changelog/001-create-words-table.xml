@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -12,12 +13,14 @@
         </preConditions>
 
         <createTable tableName="words">
-            <column name="word_id" type="BIGSERIAL">
+            <column name="word_id" type="UUID" defaultValueComputed="gen_random_uuid()">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
             <column name="word" type="VARCHAR(5)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="uk_word_text"/>
             </column>
+
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="NOW()">
                 <constraints nullable="false"/>
             </column>

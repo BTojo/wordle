@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "words", uniqueConstraints = {
@@ -17,9 +18,8 @@ import java.time.LocalDateTime;
 public class WordEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "word_id")
-    private Long wordId;
+    @Column(name = "word_id", nullable = false)
+    private UUID wordId;
 
     @Column(nullable = false, length = 5)
     private String word;
@@ -29,5 +29,12 @@ public class WordEntity {
 
     public WordEntity(String word) {
         this.word = word;
+    }
+
+    @PrePersist
+    public void generateId() {
+        if (wordId == null) {
+            wordId = UUID.randomUUID();
+        }
     }
 }
