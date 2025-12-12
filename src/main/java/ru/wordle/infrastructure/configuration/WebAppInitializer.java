@@ -13,6 +13,8 @@ public class WebAppInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) {
 
+        servletContext.setInitParameter("spring.profiles.active", "jpa");   //он!
+
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(
                 PropertiesConfig.class,
