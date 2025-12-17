@@ -13,7 +13,6 @@ public class LiquibaseConfig {
     @Value("${liqui.enabled:true}")
     private boolean liquibaseEnabled;
 
-    // Читаем имя схемы из application.properties
     @Value("${liqui.default-schema:wordle}")
     private String defaultSchema;
 
@@ -23,8 +22,6 @@ public class LiquibaseConfig {
         liquibase.setDataSource(dataSource);
 
         liquibase.setChangeLog("classpath:db/changelog/db.changelog-master.xml");
-
-        liquibase.setDefaultSchema(defaultSchema);
 
         liquibase.setShouldRun(liquibaseEnabled);
 

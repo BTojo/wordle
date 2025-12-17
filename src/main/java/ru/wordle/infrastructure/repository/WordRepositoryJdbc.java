@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.wordle.infrastructure.repository.WordRepository; // ИСПРАВЛЕННЫЙ ИМПОРТ
-
+import ru.wordle.infrastructure.repository.WordRepository;
 import javax.annotation.PostConstruct;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,29 +21,36 @@ public class WordRepositoryJdbc implements WordRepository {
 
     @PostConstruct
     public void init() {
-        log.error("==========================================");
-        log.error(">>> JDBC REPOSITORY CREATED! (Native SQL) <<<");
-        log.error("==========================================");
+        log.info(">>> JDBC REPOSITORY CREATED! <<<");
     }
 
     @Override
     public boolean isExists(String word) {
-        log.info("Checking word existence via JDBC: {}", word);
         String sql = "SELECT COUNT(*) FROM words WHERE word = :word";
-
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("word", word);
-
+        MapSqlParameterSource params = new MapSqlParameterSource().addValue("word", word);
         Integer count = jdbcTemplate.queryForObject(sql, params, Integer.class);
-
         return count != null && count > 0;
     }
 
     @Override
     public String getRandomWord() {
-        log.info("Getting random word via JDBC");
-        String sql = "SELECT word FROM words ORDER BY RANDOM() LIMIT 1";
+        log.info("Getting random word via JDBC (Optimized)");
 
-        return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource(), String.class);
+        String countSql = "SELECT COUNT(*) FROM words";
+        Integer count = jdbcTemplate.queryForObject(countSql, new MapSqlParameterSource(), Integer.class);
+
+        if (count == null || count == 0) {
+            throw new IllegalStateException("Database is empty!");
+        }
+
+        int offset = ThreadLocalRandom.current().nextInt(count);
+
+        String fetchSql = "SELECT word FROM words LIMIT 1 OFFSET :offset";
+
+        return jdbcTemplate.queryForObject(
+                fetchSql,
+                new MapSqlParameterSource("offset", offset),
+                String.class
+        );
     }
 }
