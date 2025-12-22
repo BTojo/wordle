@@ -1,6 +1,7 @@
 package ru.wordle.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -14,9 +15,9 @@ import java.util.concurrent.ThreadLocalRandom;
 @Repository
 @RequiredArgsConstructor
 @Profile("jdbc")
+@Slf4j
 public class WordRepositoryJdbc implements WordRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(WordRepositoryJdbc.class);
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @PostConstruct

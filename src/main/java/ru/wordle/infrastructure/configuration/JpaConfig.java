@@ -5,19 +5,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate; // Не забудь импорт!
-
+import org.springframework.context.annotation.Profile;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
+@Profile("jpa")
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "ru.wordle.infrastructure.repository.dao")
 @Import(PropertiesConfig.class)
 public class JpaConfig {
 
@@ -62,8 +65,7 @@ public class JpaConfig {
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(emf);
-        return transactionManager;
+        return new JpaTransactionManager(emf);
     }
+
 }

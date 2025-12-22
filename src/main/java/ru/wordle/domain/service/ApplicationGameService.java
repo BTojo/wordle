@@ -7,8 +7,7 @@ import ru.wordle.domain.exception.InvalidWordException;
 import ru.wordle.domain.exception.UserNotStartedGameException;
 import ru.wordle.domain.exception.WordNotInDictionaryException;
 import ru.wordle.domain.model.Game;
-import ru.wordle.domain.service.DomainGameService;
-import ru.wordle.infrastructure.datastorage.Storage;
+import ru.wordle.infrastructure.repository.WordRepository;
 
 import java.util.Locale;
 
@@ -17,11 +16,12 @@ import java.util.Locale;
 public class ApplicationGameService {
 
     private final DomainGameService domainService;
-    private final Storage storage;
+    private final WordRepository wordRepository;
     private final GameSession gameSession;
 
     public Game startNewGame() {
-        String secretWord = storage.getRandomWord();
+        String secretWord = wordRepository.getRandomWord();
+
         Game game = domainService.createGame(secretWord);
         gameSession.set(game);
         return game;
@@ -43,8 +43,7 @@ public class ApplicationGameService {
 
         String lower = normalized.toLowerCase(Locale.ROOT);
 
-
-        if (!storage.isExists(lower)) {
+        if (!wordRepository.isExists(lower)) {
             throw new WordNotInDictionaryException(lower);
         }
 

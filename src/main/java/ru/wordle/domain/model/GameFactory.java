@@ -1,21 +1,20 @@
 package ru.wordle.domain.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.wordle.infrastructure.datastorage.Storage;
+import ru.wordle.infrastructure.repository.WordRepository; // Импортируй свой интерфейс
 
 @Component
 public class GameFactory {
 
-    private final Storage storage;
+    private final WordRepository wordRepository;
 
-    @Autowired
-    public  GameFactory (Storage storage) {
-        this.storage = storage;
+
+    public GameFactory(WordRepository wordRepository) {
+        this.wordRepository = wordRepository;
     }
 
     public Game create() {
-        String randomWorld = storage.getRandomWord();
-        return new Game(randomWorld);
+        String randomWord = wordRepository.getRandomWord();
+        return new Game(randomWord);
     }
 }

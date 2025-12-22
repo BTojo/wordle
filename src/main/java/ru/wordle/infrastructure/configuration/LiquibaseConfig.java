@@ -10,20 +10,16 @@ import javax.sql.DataSource;
 @Configuration
 public class LiquibaseConfig {
 
-    @Value("${liqui.enabled:true}")
-    private boolean liquibaseEnabled;
-
-    @Value("${liqui.default-schema:wordle}")
-    private String defaultSchema;
+    @Value("${spring.liquibase.change-log:classpath:db/changelog/db.changelog-master.xml}")
+    private String changeLogPath;
 
     @Bean
     public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
+
+        liquibase.setChangeLog(changeLogPath);
         liquibase.setDataSource(dataSource);
 
-        liquibase.setChangeLog("classpath:db/changelog/db.changelog-master.xml");
-
-        liquibase.setShouldRun(liquibaseEnabled);
 
         return liquibase;
     }
