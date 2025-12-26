@@ -15,7 +15,6 @@ import ru.wordle.domain.exception.GameAlreadyFinishedException;
 import ru.wordle.domain.exception.InvalidWordException;
 import ru.wordle.domain.exception.UserNotStartedGameException;
 import ru.wordle.domain.exception.WordNotInDictionaryException;
-import ru.wordle.infrastructure.datastorage.StorageException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -47,11 +46,6 @@ public class GlobalExceptionHandler {
         return new ErrorDto("game_already_finished", ex.getMessage(), null);
     }
 
-    @ExceptionHandler(StorageException.class)
-    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-    public ErrorDto handleStorageException(StorageException ex) {
-        return new ErrorDto("storage_unavailable", ex.getMessage(), null);
-    }
 
     @ExceptionHandler(UserNotStartedGameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)

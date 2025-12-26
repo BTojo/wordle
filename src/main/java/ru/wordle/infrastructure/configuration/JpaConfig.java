@@ -21,7 +21,7 @@ import java.util.Properties;
 @Profile("jpa")
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ru.wordle.infrastructure.repository.dao")
-@Import(PropertiesConfig.class)
+
 public class JpaConfig {
 
     @Value("${jpa.packages-to-scan}")

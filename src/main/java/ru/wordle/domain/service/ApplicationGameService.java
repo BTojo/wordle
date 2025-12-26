@@ -7,9 +7,11 @@ import ru.wordle.domain.exception.InvalidWordException;
 import ru.wordle.domain.exception.UserNotStartedGameException;
 import ru.wordle.domain.exception.WordNotInDictionaryException;
 import ru.wordle.domain.model.Game;
+import ru.wordle.infrastructure.repository.GameRepository; // <--- ИМПОРТ
 import ru.wordle.infrastructure.repository.WordRepository;
 
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,12 +19,19 @@ public class ApplicationGameService {
 
     private final DomainGameService domainService;
     private final WordRepository wordRepository;
+    private final GameRepository gameRepository;
     private final GameSession gameSession;
 
     public Game startNewGame() {
         String secretWord = wordRepository.getRandomWord();
 
         Game game = domainService.createGame(secretWord);
+
+        String gameId = UUID.randomUUID().toString();
+        game.setGameId(gameId);
+
+        gameRepository.save(game);
+
         gameSession.set(game);
         return game;
     }
@@ -48,6 +57,8 @@ public class ApplicationGameService {
         }
 
         Game updatedGame = domainService.makeAttempt(game, guess);
+
+        gameRepository.save(updatedGame);
 
         gameSession.set(updatedGame);
 
