@@ -7,15 +7,17 @@ import ru.wordle.api.dto.GameDto;
 import ru.wordle.api.mapper.GameMapper;
 import ru.wordle.domain.service.ApplicationGameService;
 import ru.wordle.api.dto.GuessRequestDto;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/games")
 @RequiredArgsConstructor
 public class GameController {
+    private static final Logger log = LoggerFactory.getLogger(GameController.class);
 
-    private final ApplicationGameService applicationService;  // Только application service
+    private final ApplicationGameService applicationService;
     private final GameMapper gameMapper;
 
     @PostMapping
