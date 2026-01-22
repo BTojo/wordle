@@ -2,7 +2,6 @@ package ru.wordle.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.wordle.api.session.GameSession;
 import ru.wordle.domain.exception.InvalidWordException;
 import ru.wordle.domain.exception.UserNotStartedGameException;
 import ru.wordle.domain.exception.WordNotInDictionaryException;
@@ -11,36 +10,28 @@ import ru.wordle.infrastructure.repository.GameRepository;
 import ru.wordle.infrastructure.repository.WordRepository;
 
 import java.util.Locale;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ApplicationGameService {
 
-    private final DomainGameService domainService;
     private final WordRepository wordRepository;
     private final GameRepository gameRepository;
-    private final GameSession gameSession;
 
     public Game startNewGame() {
         String secretWord = wordRepository.getRandomWord();
+        Game game = new Game(secretWord);
 
-        Game game = domainService.createGame(secretWord);
-
-        String gameId = UUID.randomUUID().toString();
-        game.setGameId(gameId);
-
-        gameRepository.save(game);
-
-        gameSession.set(game);
-        return game;
+        return gameRepository.save(game);
     }
 
-    public Game guess(String guess) {
-        Game game = gameSession.get();
-        if (game == null) {
-            throw new UserNotStartedGameException();
+    public Game guess(String gameId, String guess) {
+        if (gameId == null || gameId.trim().isEmpty()) {
+            throw new UserNotStartedGameException("Game ID cannot be null or empty");
         }
+
+        Game game = gameRepository.findById(gameId.trim())
+                .orElseThrow(() -> new UserNotStartedGameException("Game not found: " + gameId));
 
         if (guess == null) {
             throw new InvalidWordException("guess must not be null");
@@ -55,24 +46,20 @@ public class ApplicationGameService {
         }
 
         String lower = normalized.toLowerCase(Locale.ROOT);
-
         if (!wordRepository.isExists(lower)) {
             throw new WordNotInDictionaryException(lower);
         }
 
-        Game updatedGame = domainService.makeAttempt(game, lower);
-
-        gameRepository.save(updatedGame);
-        gameSession.set(updatedGame);
-
-        return updatedGame;
+        game.makeAttempt(lower);
+        return gameRepository.save(game);
     }
 
-    public Game getCurrentGame() {
-        Game game = gameSession.get();
-        if (game == null) {
-            throw new UserNotStartedGameException();
+    public Game getCurrentGame(String gameId) {
+        if (gameId == null || gameId.trim().isEmpty()) {
+            throw new UserNotStartedGameException("Game ID cannot be null or empty");
         }
-        return game;
+
+        return gameRepository.findById(gameId.trim())
+                .orElseThrow(() -> new UserNotStartedGameException("Game not found: " + gameId));
     }
 }

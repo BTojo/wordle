@@ -9,17 +9,13 @@ import ru.wordle.domain.model.Game;
 @Component
 @SessionScope
 public class GameSession {
-    private Game game;
+    private String gameId;
 
-    public Game get() {
-        return game;
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
 
-    public void set(Game game) {
-        this.game = game;
-    }
-
-    public void clear() {
-        this.game = null;
+    public String getGameId() {
+        return gameId;
     }
 }

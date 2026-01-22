@@ -1,7 +1,7 @@
 package ru.wordle.domain.exception;
 
 public class UserNotStartedGameException extends RuntimeException {
-    public UserNotStartedGameException() {
+    public UserNotStartedGameException(String s) {
         super("game not started");
     }
 }

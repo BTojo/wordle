@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.wordle.domain.model.Game;
 import ru.wordle.infrastructure.entity.GameEntity;
+import ru.wordle.infrastructure.mapper.GameMapper;
 import ru.wordle.infrastructure.repository.dao.GameDao;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -19,25 +21,53 @@ import java.util.UUID;
 public class GameRepositoryJpa implements GameRepository {
 
     private final GameDao gameDao;
+    private final GameMapper gameMapper;
 
     @Override
     @Transactional
-    public void save(Game game) {
-        GameEntity entity = new GameEntity();
+    public Game save(Game game) {
+        GameEntity entity = gameMapper.toEntity(game);
 
+        if (entity.getId() == null) {
+            entity.setId(UUID.randomUUID());
+            entity.setCreatedAt(OffsetDateTime.now());
+            game.setGameId(entity.getId().toString());
+        }
 
-        entity.setId(UUID.fromString(game.getGameId()));
+        GameEntity savedEntity = gameDao.save(entity);
+        log.info("Game {} saved with status {}", savedEntity.getId(), savedEntity.getStatus());
 
-        entity.setSecretWord(game.getSecretWord());
-        entity.setStatus(game.getStatus().name());
+        return gameMapper.toDomain(savedEntity);
+    }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Game> findById(String gameId) {
+        if (gameId == null || gameId.isEmpty()) {
+            return Optional.empty();
+        }
 
-        entity.setCreatedAt(
-                game.getCreatedAt() != null ? game.getCreatedAt() : LocalDateTime.now()
-        );
+        try {
+            UUID uuid = UUID.fromString(gameId);
+            return gameDao.findById(uuid)
+                    .map(gameMapper::toDomain);
+        } catch (IllegalArgumentException e) {
+            log.warn("Invalid game ID format: {}", gameId);
+            return Optional.empty();
+        }
+    }
 
-        gameDao.save(entity);
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsById(String gameId) {
+        if (gameId == null || gameId.isEmpty()) {
+            return false;
+        }
 
-        log.info("Game {} saved with status {}", entity.getId(), entity.getStatus());
+        try {
+            return gameDao.existsById(UUID.fromString(gameId));
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
