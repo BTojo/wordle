@@ -7,6 +7,9 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.wordle.domain.model.LetterStatus;
+
+
 @Data
 
 public class Game {
@@ -26,7 +29,7 @@ public class Game {
         this.gameStatus = GameStatus.PROCESS;
     }
 
-    public void makeAttempt(String enterWord) {
+    public Attempt makeAttempt(String enterWord) {
         Attempt attempt = new Attempt();
 
         if (isMatched(enterWord)) {
@@ -39,7 +42,10 @@ public class Game {
         if (attemptsList.size() == NUMBER_OF_ATTEMPTS && gameStatus != GameStatus.WIN) {
             setGameStatus(GameStatus.LOSE);
         }
+
+        return attempt;
     }
+
 
     private List<Letter> check(String enterWord) {
         List<Letter> letters = new ArrayList<>();
@@ -50,13 +56,13 @@ public class Game {
 
             if (isCharIsInItsPlace(charIsSecretWord, charIsEnterWord)) {
                 letter.setValue(charIsSecretWord);
-                letter.setStatus(Letter.LetterStatus.IN_PLACE);
+                letter.setStatus(LetterStatus.IN_PLACE);
             } else if (isCharBelongsWord(charIsEnterWord)) {
                 letter.setValue(charIsEnterWord);
-                letter.setStatus(Letter.LetterStatus.NOT_PLACE);
+                letter.setStatus(LetterStatus.NOT_PLACE);
             } else {
                 letter.setValue(charIsEnterWord);
-                letter.setStatus(Letter.LetterStatus.MISSING);
+                letter.setStatus(LetterStatus.MISSING);
             }
             letters.add(letter);
         }

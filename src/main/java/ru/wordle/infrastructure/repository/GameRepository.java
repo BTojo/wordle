@@ -6,11 +6,8 @@ import ru.wordle.domain.model.Game;
 import java.util.Optional;
 
 public interface GameRepository {
-    Game save(Game game);  // ← Возвращает сохраненную игру!
+    Game save(Game game);
 
-    Optional<Game> findById(String gameId);  // ← Game, не Object!
+    Optional<Game> findById(String gameId);
 
-
-    @Transactional(readOnly = true)
-    boolean existsById(String gameId);
 }

@@ -27,11 +27,5 @@ public class Letter {
         return "{" + value + " = " + status + "}";
     }
 
-
-    public enum LetterStatus {
-        IN_PLACE,
-        NOT_PLACE,
-        MISSING
-    }
 }
 

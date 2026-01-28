@@ -12,4 +12,9 @@
 
     <include file="002-load-words-data.xml" relativeToChangelogFile="true"/>
 
+    <include file="004-create-attempts-table.xml" relativeToChangelogFile="true"/>
+
+    <include file="005-create-letters-table.xml" relativeToChangelogFile="true"/>
+
+
 </databaseChangeLog>

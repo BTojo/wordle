@@ -57,17 +57,4 @@ public class GameRepositoryJpa implements GameRepository {
         }
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public boolean existsById(String gameId) {
-        if (gameId == null || gameId.isEmpty()) {
-            return false;
-        }
-
-        try {
-            return gameDao.existsById(UUID.fromString(gameId));
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-    }
 }
