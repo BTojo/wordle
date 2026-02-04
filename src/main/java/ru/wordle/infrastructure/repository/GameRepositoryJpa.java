@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.wordle.domain.model.Game;
+import ru.wordle.domain.repository.GameRepository;
 import ru.wordle.infrastructure.entity.GameEntity;
 import ru.wordle.infrastructure.mapper.GameMapper;
 import ru.wordle.infrastructure.repository.dao.GameDao;

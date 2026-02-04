@@ -1,21 +1,16 @@
 package ru.wordle.domain.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class Attempt {
 
+    private String id;
+    private String gameId;
+    private int attemptNumber;
     private List<Letter> letters;
-
-    public void setLetters(List<Letter> letters) {
-        this.letters = letters;
-    }
-
-    public List<Letter> getLetters() {
-        return letters;
-    }
-
-    @Override
-    public String toString() {
-        return "Attempt {{value=" + letters.toString() + "}}";
-    }
 }

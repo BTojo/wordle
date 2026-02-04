@@ -5,7 +5,6 @@ public class Letter {
     private Character value;
     private LetterStatus status;
 
-
     public Character getValue() {
         return value;
     }

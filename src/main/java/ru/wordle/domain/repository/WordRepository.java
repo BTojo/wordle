@@ -1,4 +1,4 @@
-package ru.wordle.infrastructure.repository;
+package ru.wordle.domain.repository;
 
 public interface WordRepository {
     String getRandomWord();

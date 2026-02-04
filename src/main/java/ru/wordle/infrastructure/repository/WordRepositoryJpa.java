@@ -2,14 +2,12 @@ package ru.wordle.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.wordle.infrastructure.repository.WordRepository;
+import ru.wordle.domain.repository.WordRepository;
 import ru.wordle.infrastructure.repository.dao.WordDao;
 import ru.wordle.infrastructure.entity.WordEntity;
 import javax.annotation.PostConstruct;

@@ -1,8 +1,6 @@
-package ru.wordle.infrastructure.repository;
+package ru.wordle.domain.repository;
 
-import org.springframework.transaction.annotation.Transactional;
 import ru.wordle.domain.model.Game;
-
 import java.util.Optional;
 
 public interface GameRepository {

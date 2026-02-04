@@ -1,14 +1,9 @@
 package ru.wordle.domain.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import ru.wordle.domain.model.LetterStatus;
-
 
 @Data
 
@@ -45,7 +40,6 @@ public class Game {
 
         return attempt;
     }
-
 
     private List<Letter> check(String enterWord) {
         List<Letter> letters = new ArrayList<>();

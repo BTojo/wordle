@@ -1,7 +1,7 @@
 package ru.wordle.domain.model;
 
 import org.springframework.stereotype.Component;
-import ru.wordle.infrastructure.repository.WordRepository; // Импортируй свой интерфейс
+import ru.wordle.domain.repository.WordRepository; // Импортируй свой интерфейс
 
 @Component
 public class GameFactory {

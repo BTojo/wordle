@@ -1,33 +1,43 @@
 package ru.wordle.infrastructure.repository;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import ru.wordle.domain.model.Attempt;
+import ru.wordle.domain.model.Letter;
+import ru.wordle.domain.repository.AttemptRepository;
 import ru.wordle.infrastructure.entity.AttemptEntity;
+import ru.wordle.infrastructure.entity.LetterEntity;
+import ru.wordle.infrastructure.mapper.LetterMapper;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
+@Repository
+@RequiredArgsConstructor
 public class AttemptRepositoryJpa implements AttemptRepository {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final AttemptJpaRepository attemptJpaRepository;
 
     @Override
-    @Transactional
-    public AttemptEntity save(AttemptEntity attempt) {
-        entityManager.persist(attempt);
-        return attempt;
-    }
+    public void save(Attempt attempt) {
 
-    @Override
-    @Transactional
-    public List<AttemptEntity> findByGameId(UUID gameId) {
-        return entityManager.createQuery(
-                        "select a from AttemptEntity a where a.game.id = :gameId",
-                        AttemptEntity.class
-                )
-                .setParameter("gameId", gameId)
-                .getResultList();
+        AttemptEntity attemptEntity = new AttemptEntity();
+        attemptEntity.setGameId(UUID.fromString(attempt.getGameId()));
+        attemptEntity.setAttemptNumber(attempt.getAttemptNumber());
+
+        attemptJpaRepository.saveAndFlush(attemptEntity);
+
+        attempt.setId(attemptEntity.getId().toString());
+
+        var letterEntities = new ArrayList<LetterEntity>();
+
+        for (Letter letter : attempt.getLetters()) {
+            letterEntities.add(
+                    LetterMapper.toEntity(letter, attemptEntity.getId())
+            );
+        }
+
+        attemptEntity.setLetters(letterEntities);
+        attemptJpaRepository.save(attemptEntity);
     }
 }
