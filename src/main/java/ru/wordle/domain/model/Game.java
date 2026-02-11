@@ -27,6 +27,12 @@ public class Game {
     public Attempt makeAttempt(String enterWord) {
         Attempt attempt = new Attempt();
 
+        attempt.setGameId(this.gameId);
+        attempt.setAttemptNumber(attemptsList.size() + 1);
+        attempt.setLetters(check(enterWord));
+
+        attemptsList.add(attempt);
+
         if (isMatched(enterWord)) {
             setGameStatus(GameStatus.WIN);
         }

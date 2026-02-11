@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Persistable;
+import org.hibernate.Hibernate;
 
 
 
@@ -18,10 +19,7 @@ import java.util.UUID;
 @Setter
 public class AttemptEntity implements Persistable<UUID> {
 
-    private List<LetterEntity> letters;
-
     @Id
-    @GeneratedValue
     @Column(name = "id", columnDefinition = "UUID")
     private UUID id;
 
@@ -45,6 +43,10 @@ public class AttemptEntity implements Persistable<UUID> {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    private List<LetterEntity> letters;
+
+    @Transient
+    private boolean isNew = true;
 
     @Override
     public UUID getId() {
@@ -53,6 +55,17 @@ public class AttemptEntity implements Persistable<UUID> {
 
     @Override
     public boolean isNew() {
-        return id == null;
+        return isNew;
     }
+
+    @PostLoad
+    @PostPersist
+    private void markNotNew() {
+        this.isNew = false;
+    }
+
+    public boolean isLettersInitialized() {
+        return Hibernate.isInitialized(letters);
+    }
+
 }

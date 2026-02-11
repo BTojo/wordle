@@ -13,6 +13,12 @@ public class LiquibaseConfig {
     @Value("${spring.liquibase.change-log:classpath:db/changelog/db.changelog-master.xml}")
     private String changeLogPath;
 
+    @Value("${spring.liquibase.default-schema:wordle}")
+    private String defaultSchema;
+
+    @Value("${spring.liquibase.liquibase-schema:wordle}")
+    private String liquibaseSchema;
+
     @Bean
     public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
@@ -20,6 +26,14 @@ public class LiquibaseConfig {
         liquibase.setChangeLog(changeLogPath);
         liquibase.setDataSource(dataSource);
 
+        // ВАЖНО: Установите схему
+        liquibase.setDefaultSchema(defaultSchema);
+        liquibase.setLiquibaseSchema(liquibaseSchema);
+
+        // Дополнительные настройки
+        liquibase.setShouldRun(true);
+        liquibase.setDropFirst(false);
+        liquibase.setTestRollbackOnUpdate(false);
 
         return liquibase;
     }

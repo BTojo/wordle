@@ -17,7 +17,6 @@ public class LetterEntity implements Persistable<UUID> {
     private AttemptEntity attempt;
 
     @Id
-    @GeneratedValue
     @Column(name = "id", columnDefinition = "UUID")
     private UUID id;
 

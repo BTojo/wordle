@@ -1,10 +1,12 @@
 package ru.wordle.infrastructure.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.wordle.domain.model.Letter;
 import ru.wordle.infrastructure.entity.LetterEntity;
 
 import java.util.UUID;
 
+@Component
 public final class LetterMapper {
 
     private LetterMapper() {

@@ -7,8 +7,8 @@ import ru.wordle.domain.model.GameStatus;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
-
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 import java.util.List;
@@ -56,5 +56,9 @@ public class GameEntity implements Persistable<UUID> {
     @PostLoad
     void markNotNew() {
         this.isNew = false;
+    }
+
+    public boolean isAttemptsInitialized() {
+        return Hibernate.isInitialized(attemptEntities);
     }
 }
