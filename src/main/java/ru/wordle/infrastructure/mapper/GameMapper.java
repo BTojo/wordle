@@ -1,8 +1,11 @@
 package ru.wordle.infrastructure.mapper;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.wordle.domain.model.Game;
 import ru.wordle.domain.model.GameStatus;
 import ru.wordle.infrastructure.entity.GameEntity;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +17,11 @@ import ru.wordle.domain.model.Letter;
 import ru.wordle.infrastructure.entity.LetterEntity;
 import ru.wordle.domain.model.Letter;
 
+@Component
+@RequiredArgsConstructor
+public class GameMapper {
 
-public final class GameMapper {
+    private final AttemptMapper attemptMapper;
 
     public Game toDomain(GameEntity entity) {
         if (entity == null) {
@@ -27,12 +33,17 @@ public final class GameMapper {
         game.setGameStatus(entity.getStatus());
         game.setCreatedAt(entity.getCreatedAt());
 
-
         if (entity.isAttemptsInitialized()) {
-            entity.getAttemptEntities().forEach(a -> game.getAttemptsList().add(toDomain(a)));
+            entity.getAttemptEntities()
+                    .forEach(attemptEntity ->
+                            game.getAttemptsList()
+                                    .add(attemptMapper.toDomain(attemptEntity))
+                    );
         }
+
         return game;
     }
+
 
     public GameEntity toEntity(Game domain) {
         if (domain == null) {

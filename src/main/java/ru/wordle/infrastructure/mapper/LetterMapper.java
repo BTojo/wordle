@@ -12,11 +12,18 @@ public final class LetterMapper {
     private LetterMapper() {
     }
 
-    public static LetterEntity toEntity(Letter letter, UUID attemptId) {
+    public LetterEntity toEntity(Letter letter, UUID attemptId) {
         LetterEntity entity = new LetterEntity();
         entity.setAttemptId(attemptId);
         entity.setLetter(String.valueOf(letter.getValue()));
         entity.setStatus(letter.getStatus());
         return entity;
+    }
+
+    public Letter toDomain(LetterEntity entity) {
+        Letter letter = new Letter();
+        letter.setValue(entity.getLetter().charAt(0));
+        letter.setStatus(entity.getStatus());
+        return letter;
     }
 }
