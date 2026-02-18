@@ -9,7 +9,7 @@ import ru.wordle.infrastructure.entity.AttemptEntity;
 @RequiredArgsConstructor
 public class AttemptMapper {
 
-    private final LetterMapper letterMapper;
+    private final LetterEntityMapper letterMapper;
 
     public Attempt toDomain(AttemptEntity entity) {
         Attempt attempt = new Attempt();

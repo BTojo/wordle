@@ -4,6 +4,7 @@ public class Letter {
 
     private Character value;
     private LetterStatus status;
+    private Integer position;  // Добавлено поле для позиции
 
     public Character getValue() {
         return value;
@@ -21,10 +22,16 @@ public class Letter {
         this.status = status;
     }
 
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
     @Override
     public String toString() {
         return "{" + value + " = " + status + "}";
     }
-
 }
-

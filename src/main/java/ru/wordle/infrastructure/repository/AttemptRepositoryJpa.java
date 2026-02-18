@@ -8,8 +8,8 @@ import ru.wordle.domain.model.Letter;
 import ru.wordle.domain.repository.AttemptRepository;
 import ru.wordle.infrastructure.entity.AttemptEntity;
 import ru.wordle.infrastructure.entity.LetterEntity;
+import ru.wordle.infrastructure.mapper.LetterEntityMapper;
 import ru.wordle.infrastructure.repository.dao.AttemptJpaRepository;
-import ru.wordle.infrastructure.mapper.LetterMapper;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -19,7 +19,7 @@ import java.util.UUID;
 public class AttemptRepositoryJpa implements AttemptRepository {
 
     private final AttemptJpaRepository attemptJpaRepository;
-    private final LetterMapper letterMapper;
+    private final LetterEntityMapper letterMapper;
 
     @Override
     @Transactional
@@ -32,9 +32,7 @@ public class AttemptRepositoryJpa implements AttemptRepository {
 
         var letterEntities = new ArrayList<LetterEntity>();
         for (Letter letter : attempt.getLetters()) {
-            letterEntities.add(
-                    letterMapper.toEntity(letter, attemptEntity.getId())
-            );
+            letterEntities.add(letterMapper.toEntity(letter, attemptEntity.getId()));
         }
         attemptEntity.setLetters(letterEntities);
 

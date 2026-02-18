@@ -14,8 +14,6 @@ import java.util.UUID;
 @Setter
 public class LetterEntity implements Persistable<UUID> {
 
-    private AttemptEntity attempt;
-
     @Id
     @Column(name = "id", columnDefinition = "UUID")
     private UUID id;
@@ -27,6 +25,9 @@ public class LetterEntity implements Persistable<UUID> {
     @Column(name = "status", nullable = false, length = 20)
     private LetterStatus status;
 
+    @Column(name = "position", nullable = false)
+    private Integer position;
+
     @Column(name = "attempt_id", nullable = false)
     private UUID attemptId;
 
@@ -34,20 +35,13 @@ public class LetterEntity implements Persistable<UUID> {
     @JoinColumn(
             name = "attempt_id",
             referencedColumnName = "id",
-            nullable = false,
             insertable = false,
             updatable = false
     )
-
-    @Override
-    public UUID getId() {
-        return id;
-    }
+    private AttemptEntity attempt;
 
     @Override
     public boolean isNew() {
         return id == null;
     }
-
-
 }

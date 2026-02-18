@@ -3,19 +3,9 @@ package ru.wordle.infrastructure.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.wordle.domain.model.Game;
-import ru.wordle.domain.model.GameStatus;
 import ru.wordle.infrastructure.entity.GameEntity;
-
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.UUID;
-
-import org.hibernate.Hibernate;
-import ru.wordle.infrastructure.entity.AttemptEntity;
-import ru.wordle.domain.model.Attempt;
-import ru.wordle.domain.model.Letter;
-import ru.wordle.infrastructure.entity.LetterEntity;
-import ru.wordle.domain.model.Letter;
 
 @Component
 @RequiredArgsConstructor
@@ -44,7 +34,6 @@ public class GameMapper {
         return game;
     }
 
-
     public GameEntity toEntity(Game domain) {
         if (domain == null) {
             return null;
@@ -63,29 +52,4 @@ public class GameMapper {
 
         return entity;
     }
-
-    private Attempt toDomain(AttemptEntity entity) {
-        Attempt attempt = new Attempt();
-
-        attempt.setId(entity.getId().toString());
-        attempt.setGameId(entity.getGameId().toString());
-        attempt.setAttemptNumber(entity.getAttemptNumber());
-
-        if (entity.isLettersInitialized()) {
-            List<Letter> letters = entity.getLetters().stream()
-                    .map(this::toDomain)
-                    .toList();
-            attempt.setLetters(letters);
-        }
-
-        return attempt;
-    }
-
-    private Letter toDomain(LetterEntity entity) {
-        Letter letter = new Letter();
-        letter.setValue(entity.getLetter().charAt(0));
-        letter.setStatus(entity.getStatus());
-        return letter;
-    }
-
 }
