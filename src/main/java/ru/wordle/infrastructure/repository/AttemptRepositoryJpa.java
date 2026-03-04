@@ -11,7 +11,7 @@ import ru.wordle.infrastructure.entity.LetterEntity;
 import ru.wordle.infrastructure.mapper.LetterEntityMapper;
 import ru.wordle.infrastructure.repository.dao.AttemptJpaRepository;
 
-import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 @Repository
@@ -26,15 +26,24 @@ public class AttemptRepositoryJpa implements AttemptRepository {
     public void save(Attempt attempt) {
 
         AttemptEntity attemptEntity = new AttemptEntity();
-        attemptEntity.setId(UUID.randomUUID());
+
+        if (Objects.isNull(attempt.getId())) {
+            attemptEntity.setId(UUID.randomUUID());
+            attemptEntity.setNew(true);
+            attempt.setId(attemptEntity.getId().toString());
+        } else {
+            attemptEntity.setId(UUID.fromString(attempt.getId()));
+        }
+
         attemptEntity.setGameId(UUID.fromString(attempt.getGameId()));
         attemptEntity.setAttemptNumber(attempt.getAttemptNumber());
 
-        var letterEntities = new ArrayList<LetterEntity>();
         for (Letter letter : attempt.getLetters()) {
-            letterEntities.add(letterMapper.toEntity(letter, attemptEntity.getId()));
+
+            LetterEntity letterEntity = letterMapper.toEntity(letter);
+
+            attemptEntity.addLetter(letterEntity);
         }
-        attemptEntity.setLetters(letterEntities);
 
         attemptJpaRepository.save(attemptEntity);
 

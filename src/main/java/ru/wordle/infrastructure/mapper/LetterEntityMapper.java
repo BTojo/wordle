@@ -2,7 +2,6 @@ package ru.wordle.infrastructure.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.wordle.domain.model.Letter;
-import ru.wordle.domain.model.LetterStatus;
 import ru.wordle.infrastructure.entity.LetterEntity;
 
 import java.util.UUID;
@@ -23,14 +22,13 @@ public class LetterEntityMapper {
         return letter;
     }
 
-    public LetterEntity toEntity(Letter letter, UUID attemptId) {
+    public LetterEntity toEntity(Letter letter) {
         if (letter == null) {
             return null;
         }
 
         LetterEntity entity = new LetterEntity();
         entity.setId(UUID.randomUUID());
-        entity.setAttemptId(attemptId);
         entity.setLetter(String.valueOf(letter.getValue()));
         entity.setPosition(letter.getPosition());
         entity.setStatus(letter.getStatus());

@@ -2,14 +2,12 @@ package ru.wordle.infrastructure.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.domain.Persistable;
 import org.hibernate.Hibernate;
-
-
+import org.springframework.data.domain.Persistable;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,10 +41,15 @@ public class AttemptEntity implements Persistable<UUID> {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<LetterEntity> letters;
+    private List<LetterEntity> letters = new ArrayList<>();
 
     @Transient
-    private boolean isNew = true;
+    private boolean isNew;
+
+    public void addLetter(LetterEntity letter) {
+        letters.add(letter);
+        letter.setAttempt(this);
+    }
 
     @Override
     public UUID getId() {
@@ -58,14 +61,7 @@ public class AttemptEntity implements Persistable<UUID> {
         return isNew;
     }
 
-    @PostLoad
-    @PostPersist
-    private void markNotNew() {
-        this.isNew = false;
-    }
-
     public boolean isLettersInitialized() {
-        return Hibernate.isInitialized(letters);
+        return Hibernate.isInitialized(letters) && !CollectionUtils.isEmpty(letters);
     }
-
 }

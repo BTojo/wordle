@@ -28,17 +28,14 @@ public class LetterEntity implements Persistable<UUID> {
     @Column(name = "position", nullable = false)
     private Integer position;
 
-    @Column(name = "attempt_id", nullable = false)
-    private UUID attemptId;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "attempt_id",
-            referencedColumnName = "id",
-            insertable = false,
-            updatable = false
-    )
+    @JoinColumn(name = "attempt_id", nullable = false)
     private AttemptEntity attempt;
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
 
     @Override
     public boolean isNew() {

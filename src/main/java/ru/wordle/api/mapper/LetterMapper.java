@@ -30,7 +30,7 @@ public class LetterMapper {
 
         LetterEntity entity = new LetterEntity();
         entity.setId(UUID.randomUUID());           // ID сущности
-        entity.setAttemptId(attempt.getId());       // ID попытки (внешний ключ)
+        //  entity.setAttemptId(attempt.getId());       // ID попытки (внешний ключ)
         entity.setLetter(String.valueOf(letter.getValue())); // буква
         entity.setPosition(letter.getPosition());   // ИСПРАВЛЕНО: позиция буквы
         entity.setStatus(letter.getStatus());       // статус

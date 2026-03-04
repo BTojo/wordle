@@ -3,13 +3,13 @@ package ru.wordle.infrastructure.entity;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.util.CollectionUtils;
 import ru.wordle.domain.model.GameStatus;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
-import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class GameEntity implements Persistable<UUID> {
     private UUID id;
 
     @Transient
-    private boolean isNew = true;
+    private boolean isNew;
 
     @Column(name = "secret_word", nullable = false, length = 5)
     private String secretWord;
@@ -38,27 +38,11 @@ public class GameEntity implements Persistable<UUID> {
 
     @OneToMany(
             mappedBy = "game",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            fetch = FetchType.LAZY
     )
     private List<AttemptEntity> attemptEntities;
 
-    @Override
-    public UUID getId() {
-        return id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return isNew;
-    }
-
-    @PostLoad
-    void markNotNew() {
-        this.isNew = false;
-    }
-
     public boolean isAttemptsInitialized() {
-        return Hibernate.isInitialized(attemptEntities);
+        return Hibernate.isInitialized(attemptEntities) && !CollectionUtils.isEmpty(attemptEntities);
     }
 }

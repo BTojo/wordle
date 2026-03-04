@@ -26,12 +26,6 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint
-                baseTableName="attempts"
-                baseColumnNames="game_id"
-                referencedTableName="games"
-                referencedColumnNames="id"
-                constraintName="fk_attempts_game"/>
     </changeSet>
 
 </databaseChangeLog>

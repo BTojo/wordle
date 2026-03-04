@@ -6,6 +6,7 @@ import ru.wordle.infrastructure.entity.WordEntity;
 
 import java.util.UUID;
 
+@Repository
 public interface WordDao extends JpaRepository<WordEntity, UUID> {
 
     long countByWord(String word);

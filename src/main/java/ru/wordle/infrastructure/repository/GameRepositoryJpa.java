@@ -7,13 +7,19 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.wordle.domain.model.Game;
 import ru.wordle.domain.repository.GameRepository;
+import ru.wordle.infrastructure.entity.AttemptEntity;
 import ru.wordle.infrastructure.entity.GameEntity;
 import ru.wordle.infrastructure.mapper.GameMapper;
+import ru.wordle.infrastructure.repository.dao.AttemptJpaRepository;
 import ru.wordle.infrastructure.repository.dao.GameDao;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 @Profile("jpa")
@@ -22,6 +28,7 @@ import java.util.UUID;
 public class GameRepositoryJpa implements GameRepository {
 
     private final GameDao gameDao;
+    private final AttemptJpaRepository attemptJpaRepository;
     private final GameMapper gameMapper;
 
     @Override
@@ -31,6 +38,7 @@ public class GameRepositoryJpa implements GameRepository {
 
         if (entity.getId() == null) {
             entity.setId(UUID.randomUUID());
+            entity.setNew(true);
             entity.setCreatedAt(OffsetDateTime.now());
             game.setGameId(entity.getId().toString());
         }
@@ -50,8 +58,20 @@ public class GameRepositoryJpa implements GameRepository {
 
         try {
             UUID uuid = UUID.fromString(gameId);
-            return gameDao.findById(uuid)
-                    .map(gameMapper::toDomain);
+            GameEntity entity = gameDao.findById(uuid).orElse(null);
+            if (Objects.isNull(entity)) {
+                return Optional.empty();
+            }
+            if (entity.isAttemptsInitialized()) {
+                Set<UUID> attemptIds = new HashSet<>();
+                for (AttemptEntity attemptEntity : entity.getAttemptEntities()) {
+                    attemptIds.add(attemptEntity.getId());
+                }
+
+                attemptJpaRepository.findByIdWithLetters(attemptIds);
+            }
+
+            return Optional.ofNullable(gameMapper.toDomain(entity));
         } catch (IllegalArgumentException e) {
             log.warn("Invalid game ID format: {}", gameId);
             return Optional.empty();

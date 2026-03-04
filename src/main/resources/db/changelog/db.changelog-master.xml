@@ -5,18 +5,13 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
 
-<include file="001-create-words-table.xml" relativeToChangelogFile="true"/>
-
+    <include file="001-create-words-table.xml" relativeToChangelogFile="true"/>
     <include file="003-create-games-table.xml" relativeToChangelogFile="true"/>
-
     <include file="002-load-words-data.xml" relativeToChangelogFile="true"/>
-
     <include file="004-create-attempts-table.xml" relativeToChangelogFile="true"/>
-
     <include file="005-create-letters-table.xml" relativeToChangelogFile="true"/>
-
     <include file="006-add-fk-attempts-game.xml" relativeToChangelogFile="true"/>
-
     <include file="007-add-fk-letters-attempts.xml" relativeToChangelogFile="true"/>
+    <include file="008-add-fk-letters-attempts.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

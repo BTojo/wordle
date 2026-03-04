@@ -1,5 +1,6 @@
 package ru.wordle.infrastructure.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,53 +20,27 @@ import java.util.Properties;
 
 @Configuration
 @Profile("jpa")
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "ru.wordle.infrastructure.repository.dao")
-
+@EnableJpaRepositories("ru.wordle")
 public class JpaConfig {
 
-    @Value("${jpa.packages-to-scan}")
-    private String packagesToScan;
-
-    @Value("${hibernate.dialect}")
-    private String dialect;
-
-    @Value("${hibernate.hbm2ddl.auto}")
-    private String hbm2ddlAuto;
-
-    @Value("${hibernate.show_sql}")
-    private String showSql;
-
-    @Value("${hibernate.format_sql}")
-    private String formatSql;
-
-    @Value("${hibernate.jdbc.lob.non_contextual_creation}")
-    private String nonContextualCreation;
-
     @Bean
-    @DependsOn("liquibase")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
-        em.setPackagesToScan(packagesToScan);
-
+        em.setPackagesToScan("ru.wordle");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setShowSql(true);
         em.setJpaVendorAdapter(vendorAdapter);
-
-        Properties props = new Properties();
-        props.put("hibernate.dialect", dialect);
-        props.put("hibernate.hbm2ddl.auto", hbm2ddlAuto);
-        props.put("hibernate.show_sql", showSql);
-        props.put("hibernate.format_sql", formatSql);
-        props.put("hibernate.jdbc.lob.non_contextual_creation", nonContextualCreation);
-
-        em.setJpaProperties(props);
         return em;
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
+    public PlatformTransactionManager transactionManager(DataSource dataSource, EntityManagerFactory emf) {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setDataSource(dataSource);
+        transactionManager.setEntityManagerFactory(emf);
+        return transactionManager;
     }
+
 
 }

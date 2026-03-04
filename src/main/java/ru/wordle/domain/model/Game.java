@@ -30,6 +30,11 @@ public class Game {
     }
 
     public Attempt makeAttempt(String enterWord) {
+
+        if (!isInProgress()) {
+            throw new IllegalStateException("Game already finished");
+        }
+
         Attempt attempt = new Attempt();
 
         attempt.setGameId(this.gameId);
@@ -42,9 +47,6 @@ public class Game {
             setGameStatus(GameStatus.WIN);
         }
 
-        attempt.setLetters(check(enterWord));
-        attemptsList.add(attempt);
-
         if (attemptsList.size() == NUMBER_OF_ATTEMPTS && gameStatus != GameStatus.WIN) {
             setGameStatus(GameStatus.LOSE);
         }
@@ -56,6 +58,7 @@ public class Game {
         List<Letter> letters = new ArrayList<>();
         for (int i = 0; i < secretWord.length(); i++) {
             Letter letter = new Letter();
+            letter.setPosition(i);
             char charIsSecretWord = secretWord.charAt(i);
             char charIsEnterWord = enterWord.charAt(i);
 

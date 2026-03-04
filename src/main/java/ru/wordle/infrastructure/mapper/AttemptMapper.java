@@ -15,7 +15,7 @@ public class AttemptMapper {
         Attempt attempt = new Attempt();
 
         attempt.setId(entity.getId().toString());
-        attempt.setGameId(entity.getGameId().toString());
+        attempt.setGameId(entity.getGame().getId().toString());
         attempt.setAttemptNumber(entity.getAttemptNumber());
 
         if (entity.isLettersInitialized()) {
