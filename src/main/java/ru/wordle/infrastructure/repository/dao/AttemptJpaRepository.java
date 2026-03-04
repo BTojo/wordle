@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.wordle.infrastructure.entity.AttemptEntity;
 import org.springframework.data.repository.query.Param;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +15,6 @@ public interface AttemptJpaRepository
         extends JpaRepository<AttemptEntity, UUID> {
 
     @EntityGraph(attributePaths = "letters")
-    @Query("select a from AttemptEntity a where a.id in :ids")
+    @Query("from AttemptEntity where id in :ids")
     List<AttemptEntity> findByIdWithLetters(@Param("ids") Collection<UUID> ids);
 }

@@ -29,7 +29,6 @@ public class ApplicationGameService {
     }
 
     public Game guess(String gameId, String guess) {
-
         if (gameId == null || gameId.trim().isEmpty()) {
             throw new UserNotStartedGameException("Game ID cannot be null or empty");
         }
@@ -42,28 +41,26 @@ public class ApplicationGameService {
         }
 
         String normalized = guess.trim();
-
         if (normalized.length() != 5) {
             throw new InvalidWordException("guess must be 5 letters");
         }
-
         if (!normalized.matches("^[A-Za-z]+$")) {
             throw new InvalidWordException("guess must contain only letters");
         }
 
         String lower = normalized.toLowerCase(Locale.ROOT);
-
         if (!wordRepository.isExists(lower)) {
             throw new WordNotInDictionaryException(lower);
         }
 
-        game.makeAttempt(lower);
+        Attempt attempt = game.makeAttempt(lower);
 
-        return gameRepository.save(game);
+        attemptRepository.save(attempt);
+
+        return game;
     }
 
     public Game getCurrentGame(String gameId) {
-
         if (gameId == null || gameId.trim().isEmpty()) {
             throw new UserNotStartedGameException("Game ID cannot be null or empty");
         }
