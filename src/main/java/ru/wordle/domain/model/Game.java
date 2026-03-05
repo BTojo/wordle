@@ -31,10 +31,6 @@ public class Game {
 
     public Attempt makeAttempt(String enterWord) {
 
-        if (!isInProgress()) {
-            throw new IllegalStateException("Game already finished");
-        }
-
         Attempt attempt = new Attempt();
 
         attempt.setGameId(this.gameId);

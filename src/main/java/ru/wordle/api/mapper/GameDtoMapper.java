@@ -21,12 +21,14 @@ public class GameDtoMapper {
         dto.setStatus(game.getGameStatus());
         dto.setCreatedAt(game.getCreatedAt());
 
-//        dto.setAttempts(
-//                game.getAttemptsList()
-//                        .stream()
-//                        .map(attemptDtoMapper::toDto)
-//                        .toList()
-//        );
+        if (game.getAttemptsList() != null && !game.getAttemptsList().isEmpty()) {
+            dto.setAttempts(
+                    game.getAttemptsList()
+                            .stream()
+                            .map(attemptDtoMapper::toDto)
+                            .toList()
+            );
+        }
 
         return dto;
     }

@@ -1,6 +1,7 @@
 package ru.wordle.infrastructure.mapper;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.mapping.Collection;
 import org.springframework.stereotype.Component;
 import ru.wordle.domain.model.Attempt;
 import ru.wordle.infrastructure.entity.AttemptEntity;
@@ -12,8 +13,11 @@ public class AttemptMapper {
     private final LetterEntityMapper letterMapper;
 
     public Attempt toDomain(AttemptEntity entity) {
-        Attempt attempt = new Attempt();
+        if (entity == null) {
+            return null;
+        }
 
+        Attempt attempt = new Attempt();
         attempt.setId(entity.getId().toString());
         attempt.setGameId(entity.getGame().getId().toString());
         attempt.setAttemptNumber(entity.getAttemptNumber());
@@ -25,7 +29,6 @@ public class AttemptMapper {
                     )
             );
         }
-
         return attempt;
     }
 }

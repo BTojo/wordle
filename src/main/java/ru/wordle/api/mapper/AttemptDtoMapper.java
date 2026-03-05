@@ -18,12 +18,15 @@ public class AttemptDtoMapper {
 
         AttemptDto dto = new AttemptDto();
         dto.setAttemptNumber(attempt.getAttemptNumber());
-        dto.setLetters(
-                attempt.getLetters()
-                        .stream()
-                        .map(letterMapper::toDto)
-                        .toList()
-        );
+
+        if (attempt.getLetters() != null && !attempt.getLetters().isEmpty()) {
+            dto.setLetters(
+                    attempt.getLetters()
+                            .stream()
+                            .map(letterMapper::toDto)
+                            .toList()
+            );
+        }
 
         return dto;
     }
