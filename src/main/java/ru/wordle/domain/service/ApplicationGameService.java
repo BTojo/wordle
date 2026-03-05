@@ -56,6 +56,7 @@ public class ApplicationGameService {
         Attempt attempt = game.makeAttempt(lower);
 
         attemptRepository.save(attempt);
+        gameRepository.save(game);
 
         return game;
     }

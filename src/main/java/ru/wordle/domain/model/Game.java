@@ -3,6 +3,8 @@ package ru.wordle.domain.model;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import ru.wordle.domain.exception.GameAlreadyFinishedException;
+import ru.wordle.domain.exception.NoAttemptsLeftException;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -30,8 +32,16 @@ public class Game {
     }
 
     public Attempt makeAttempt(String enterWord) {
+        if (!isInProgress()) {
+            throw new GameAlreadyFinishedException("Game finished");
+        }
+
+        if (attemptsList.size() >= NUMBER_OF_ATTEMPTS) {
+            throw new NoAttemptsLeftException("No attempts left");
+        }
 
         Attempt attempt = new Attempt();
+
 
         attempt.setGameId(this.gameId);
         attempt.setAttemptNumber(attemptsList.size() + 1);
@@ -41,9 +51,7 @@ public class Game {
 
         if (isMatched(enterWord)) {
             setGameStatus(GameStatus.WIN);
-        }
-
-        if (attemptsList.size() == NUMBER_OF_ATTEMPTS && gameStatus != GameStatus.WIN) {
+        } else if (attemptsList.size() == NUMBER_OF_ATTEMPTS) {
             setGameStatus(GameStatus.LOSE);
         }
 
