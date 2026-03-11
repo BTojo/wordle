@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
 
-    <changeSet id="008-add-position-column-to-letters" author="vkosovanov">
+    <changeSet id="8" author="vkosovanov">
         <preConditions onFail="MARK_RAN">
             <not>
                 <columnExists tableName="letters" columnName="position"/>
