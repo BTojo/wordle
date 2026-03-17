@@ -18,19 +18,19 @@ import java.util.UUID;
 public class AttemptEntity implements Persistable<UUID> {
 
     @Id
-    @Column(name = "id", columnDefinition = "UUID")
+    @Column(name = "attempt_id", columnDefinition = "UUID")
     private UUID id;
 
-    @Column(name = "attempt_number", nullable = false)
+    @Column(name = "attempt_number")
     private int attemptNumber;
 
-    @Column(name = "game_id", nullable = false)
+    @Column(name = "game_id")
     private UUID gameId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "game_id",
-            referencedColumnName = "id",
+            referencedColumnName = "game_id",
             insertable = false,
             updatable = false
     )
@@ -62,6 +62,7 @@ public class AttemptEntity implements Persistable<UUID> {
     }
 
     public boolean isLettersInitialized() {
-        return Hibernate.isInitialized(letters) && !CollectionUtils.isEmpty(letters);
+        return Hibernate.isInitialized(letters)
+                && !CollectionUtils.isEmpty(letters);
     }
 }

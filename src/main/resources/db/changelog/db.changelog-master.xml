@@ -14,5 +14,7 @@
     <include file="007-add-fk-letters-attempts.xml" relativeToChangelogFile="true"/>
     <include file="008-add-fk-letters-attempts.xml" relativeToChangelogFile="true"/>
     <include file="009-create-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="010-rename-id-columns.xml" relativeToChangelogFile="true"/>
+    <include file="011-change-created-at-timestamptz.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

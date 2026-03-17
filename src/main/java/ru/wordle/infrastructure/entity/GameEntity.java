@@ -20,20 +20,20 @@ import java.util.List;
 public class GameEntity implements Persistable<UUID> {
 
     @Id
-    @Column(name = "id", columnDefinition = "UUID")
+    @Column(name = "game_id", columnDefinition = "UUID")
     private UUID id;
 
     @Transient
     private boolean isNew;
 
-    @Column(name = "secret_word", nullable = false, length = 5)
+    @Column(name = "secret_word", length = 5)
     private String secretWord;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 20)
+    @Column(name = "status", length = 20)
     private GameStatus status;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
     @OneToMany(
@@ -42,7 +42,18 @@ public class GameEntity implements Persistable<UUID> {
     )
     private List<AttemptEntity> attemptEntities;
 
+    @Override
+    public UUID getId() {
+        return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return isNew;
+    }
+
     public boolean isAttemptsInitialized() {
-        return Hibernate.isInitialized(attemptEntities) && !CollectionUtils.isEmpty(attemptEntities);
+        return Hibernate.isInitialized(attemptEntities)
+                && !CollectionUtils.isEmpty(attemptEntities);
     }
 }

@@ -7,6 +7,7 @@ import ru.wordle.domain.repository.UserRepository;
 import ru.wordle.infrastructure.entity.UserEntity;
 import ru.wordle.infrastructure.repository.dao.UserJpaRepository;
 
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Repository
@@ -22,7 +23,9 @@ public class UserRepositoryJpa implements UserRepository {
         entity.setId(user.getId());
         entity.setLogin(user.getLogin());
         entity.setPassword(user.getPassword());
-        entity.setCreatedAt(user.getCreatedAt());
+        entity.setCreatedAt(user.getCreatedAt() != null
+                ? user.getCreatedAt().atOffset(ZoneOffset.UTC)
+                : null);
 
         userJpaRepository.save(entity);
     }
@@ -35,7 +38,9 @@ public class UserRepositoryJpa implements UserRepository {
                     user.setId(entity.getId());
                     user.setLogin(entity.getLogin());
                     user.setPassword(entity.getPassword());
-                    user.setCreatedAt(entity.getCreatedAt());
+                    user.setCreatedAt(entity.getCreatedAt() != null
+                            ? entity.getCreatedAt().toLocalDateTime()
+                            : null);
                     return user;
                 });
     }

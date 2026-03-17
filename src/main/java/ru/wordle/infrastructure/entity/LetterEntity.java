@@ -15,21 +15,21 @@ import java.util.UUID;
 public class LetterEntity implements Persistable<UUID> {
 
     @Id
-    @Column(name = "id", columnDefinition = "UUID")
+    @Column(name = "letter_id", columnDefinition = "UUID")
     private UUID id;
 
-    @Column(name = "letter", nullable = false, length = 1)
+    @Column(name = "letter", length = 1)
     private String letter;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 20)
+    @Column(name = "status", length = 20)
     private LetterStatus status;
 
-    @Column(name = "position", nullable = false)
+    @Column(name = "position")
     private Integer position;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "attempt_id", nullable = false)
+    @JoinColumn(name = "attempt_id")
     private AttemptEntity attempt;
 
     @Override

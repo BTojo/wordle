@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -14,14 +14,13 @@ import java.util.UUID;
 public class UserEntity {
 
     @Id
+    @Column(name = "user_id")
     private UUID id;
 
-    @Column(nullable = false, unique = true)
     private String login;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "created_at")
+    private OffsetDateTime createdAt;
 }
