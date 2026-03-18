@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.wordle.domain.model.User;
 import ru.wordle.domain.repository.UserRepository;
-import ru.wordle.infrastructure.entity.UserEntity;
+import ru.wordle.infrastructure.converter.UserConverter;
 import ru.wordle.infrastructure.repository.dao.UserJpaRepository;
 
-import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Repository
@@ -15,33 +14,21 @@ import java.util.Optional;
 public class UserRepositoryJpa implements UserRepository {
 
     private final UserJpaRepository userJpaRepository;
+    private final UserConverter userConverter;
 
     @Override
     public void save(User user) {
-        UserEntity entity = new UserEntity();
-
-        entity.setId(user.getId());
-        entity.setLogin(user.getLogin());
-        entity.setPassword(user.getPassword());
-        entity.setCreatedAt(user.getCreatedAt() != null
-                ? user.getCreatedAt().atOffset(ZoneOffset.UTC)
-                : null);
-
-        userJpaRepository.save(entity);
+        userJpaRepository.save(userConverter.toEntity(user));
     }
 
     @Override
     public Optional<User> findByLogin(String login) {
         return userJpaRepository.findByLogin(login)
-                .map(entity -> {
-                    User user = new User();
-                    user.setId(entity.getId());
-                    user.setLogin(entity.getLogin());
-                    user.setPassword(entity.getPassword());
-                    user.setCreatedAt(entity.getCreatedAt() != null
-                            ? entity.getCreatedAt().toLocalDateTime()
-                            : null);
-                    return user;
-                });
+                .map(userConverter::toModel);
+    }
+
+    @Override
+    public boolean existsByLogin(String login) {
+        return userJpaRepository.existsByLogin(login);
     }
 }

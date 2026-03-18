@@ -2,16 +2,17 @@ package ru.wordle.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.wordle.domain.exception.InvalidWordException;
+import org.springframework.util.ObjectUtils;
+import ru.wordle.domain.exception.AttemptValidateException;
+import ru.wordle.domain.exception.MakeAttemptException;
 import ru.wordle.domain.exception.UserNotStartedGameException;
-import ru.wordle.domain.exception.WordNotInDictionaryException;
-import ru.wordle.domain.model.Attempt;
 import ru.wordle.domain.model.Game;
+import ru.wordle.domain.model.MakeAttemptResult;
 import ru.wordle.domain.repository.AttemptRepository;
 import ru.wordle.domain.repository.GameRepository;
 import ru.wordle.domain.repository.WordRepository;
-
-import java.util.Locale;
+import ru.wordle.domain.validator.AttemptValidateError;
+import ru.wordle.domain.validator.AttemptValidator;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +21,12 @@ public class ApplicationGameService {
     private final WordRepository wordRepository;
     private final GameRepository gameRepository;
     private final AttemptRepository attemptRepository;
+    private final AttemptValidator attemptValidator;
 
-    public Game startNewGame() {
+    public Game startNewGame(String ownerId) {
         String secretWord = wordRepository.getRandomWord();
         Game game = new Game(secretWord);
-
+        game.setOwnerId(ownerId);
         return gameRepository.save(game);
     }
 
@@ -36,26 +38,17 @@ public class ApplicationGameService {
         Game game = gameRepository.findById(gameId.trim())
                 .orElseThrow(() -> new UserNotStartedGameException("Game not found: " + gameId));
 
-        if (guess == null) {
-            throw new InvalidWordException("guess must not be null");
+        AttemptValidateError validateError = attemptValidator.validate(guess);
+        if (!ObjectUtils.isEmpty(validateError)) {
+            throw new AttemptValidateException(validateError);
         }
 
-        String normalized = guess.trim();
-        if (normalized.length() != 5) {
-            throw new InvalidWordException("guess must be 5 letters");
-        }
-        if (!normalized.matches("^[A-Za-z]+$")) {
-            throw new InvalidWordException("guess must contain only letters");
+        MakeAttemptResult result = game.makeAttempt(guess.trim().toLowerCase());
+        if (result.isHasError()) {
+            throw new MakeAttemptException(result.getError());
         }
 
-        String lower = normalized.toLowerCase(Locale.ROOT);
-        if (!wordRepository.isExists(lower)) {
-            throw new WordNotInDictionaryException(lower);
-        }
-
-        Attempt attempt = game.makeAttempt(lower);
-
-        attemptRepository.save(attempt);
+        attemptRepository.save(result.getAttempt());
         gameRepository.save(game);
 
         return game;

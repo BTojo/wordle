@@ -18,13 +18,13 @@ import java.util.UUID;
 public class WordEntity {
 
     @Id
-    @Column(name = "word_id", nullable = false)
+    @Column(name = "word_id")
     private UUID wordId;
 
-    @Column(nullable = false, length = 5)
+    @Column(length = 5)
     private String word;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public WordEntity(String word) {

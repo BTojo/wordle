@@ -3,8 +3,6 @@ package ru.wordle.domain.model;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import ru.wordle.domain.exception.GameAlreadyFinishedException;
-import ru.wordle.domain.exception.NoAttemptsLeftException;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -13,13 +11,13 @@ import java.util.List;
 @Data
 @Getter
 @Setter
-
 public class Game {
 
     static final int NUMBER_OF_ATTEMPTS = 5;
     public static final int NUMBER_OF_LETTERS = 5;
 
     private String gameId;
+    private String ownerId;
     private OffsetDateTime createdAt;
     private GameStatus gameStatus = GameStatus.PROCESS;
     private final String secretWord;
@@ -31,18 +29,16 @@ public class Game {
         this.gameStatus = GameStatus.PROCESS;
     }
 
-    public Attempt makeAttempt(String enterWord) {
+    public MakeAttemptResult makeAttempt(String enterWord) {
         if (!isInProgress()) {
-            throw new GameAlreadyFinishedException("Game finished");
+            return MakeAttemptResult.failure(MakeAttemptError.GAME_FINISHED);
         }
 
         if (attemptsList.size() >= NUMBER_OF_ATTEMPTS) {
-            throw new NoAttemptsLeftException("No attempts left");
+            return MakeAttemptResult.failure(MakeAttemptError.NO_ATTEMPTS_LEFT);
         }
 
         Attempt attempt = new Attempt();
-
-
         attempt.setGameId(this.gameId);
         attempt.setAttemptNumber(attemptsList.size() + 1);
         attempt.setLetters(check(enterWord));
@@ -55,7 +51,7 @@ public class Game {
             setGameStatus(GameStatus.LOSE);
         }
 
-        return attempt;
+        return MakeAttemptResult.success(attempt);
     }
 
     private List<Letter> check(String enterWord) {

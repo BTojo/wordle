@@ -13,11 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import ru.wordle.api.dto.ErrorDto;
-import ru.wordle.domain.exception.GameAlreadyFinishedException;
-import ru.wordle.domain.exception.InvalidWordException;
-import ru.wordle.domain.exception.NoAttemptsLeftException;
-import ru.wordle.domain.exception.UserNotStartedGameException;
-import ru.wordle.domain.exception.WordNotInDictionaryException;
+import ru.wordle.domain.exception.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -41,25 +37,18 @@ public class GlobalExceptionHandler {
         return new ErrorDto("validation_failed", null, fields);
     }
 
-    @ExceptionHandler(InvalidWordException.class)
+    @ExceptionHandler(AttemptValidateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDto handleInvalidWordException(InvalidWordException ex) {
+    public ErrorDto handleAttemptValidate(AttemptValidateException ex) {
         log.error(ex.getMessage(), ex);
-        return new ErrorDto("invalid_word", ex.getMessage(), null);
+        return new ErrorDto("invalid_attempt", ex.getError().name(), null);
     }
 
-    @ExceptionHandler(WordNotInDictionaryException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ErrorDto handleWordNotInDictionaryException(WordNotInDictionaryException ex) {
-        log.error(ex.getMessage(), ex);
-        return new ErrorDto("not_in_dictionary", ex.getMessage(), null);
-    }
-
-    @ExceptionHandler(GameAlreadyFinishedException.class)
+    @ExceptionHandler(MakeAttemptException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDto handleGameAlreadyFinished(GameAlreadyFinishedException ex) {
+    public ErrorDto handleMakeAttempt(MakeAttemptException ex) {
         log.error(ex.getMessage(), ex);
-        return new ErrorDto("game_already_finished", ex.getMessage(), null);
+        return new ErrorDto("attempt_failed", ex.getError().name(), null);
     }
 
     @ExceptionHandler(UserNotStartedGameException.class)
@@ -69,17 +58,24 @@ public class GlobalExceptionHandler {
         return new ErrorDto("game_not_started", ex.getMessage(), null);
     }
 
-    @ExceptionHandler(NoAttemptsLeftException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDto handleNoAttemptsLeft(NoAttemptsLeftException ex) {
-        log.error(ex.getMessage(), ex);
-        return new ErrorDto("no_attempts_left", ex.getMessage(), null);
-    }
-
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorDto handleOther(Exception ex) {
         log.error(ex.getMessage(), ex);
         return new ErrorDto("internal_error", "unexpected error", null);
+    }
+
+    @ExceptionHandler(LoginAlreadyTakenException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorDto handleLoginAlreadyTaken(LoginAlreadyTakenException ex) {
+        log.error(ex.getMessage(), ex);
+        return new ErrorDto("login_already_taken", ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorDto handleInvalidCredentials(InvalidCredentialsException ex) {
+        log.error(ex.getMessage(), ex);
+        return new ErrorDto("invalid_credentials", ex.getMessage(), null);
     }
 }

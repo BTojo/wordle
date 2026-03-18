@@ -13,5 +13,6 @@ public class User {
     private UUID id;
     private String login;
     private String password;
+    private UserStatus status;
     private LocalDateTime createdAt;
 }

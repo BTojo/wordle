@@ -9,4 +9,6 @@ public interface UserRepository {
     void save(User user);
 
     Optional<User> findByLogin(String login);
+
+    boolean existsByLogin(String login);
 }
