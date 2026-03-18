@@ -20,6 +20,7 @@ public class GameMapper {
 
         Game game = new Game(entity.getSecretWord());
         game.setGameId(entity.getId().toString());
+        game.setOwnerId(entity.getOwnerId());
         game.setGameStatus(entity.getStatus());
         game.setCreatedAt(entity.getCreatedAt());
 
@@ -46,9 +47,11 @@ public class GameMapper {
         }
 
         entity.setSecretWord(domain.getSecretWord());
+        entity.setOwnerId(domain.getOwnerId());
         entity.setStatus(domain.getGameStatus());
-        entity.setCreatedAt(domain.getCreatedAt() != null ?
-                domain.getCreatedAt() : OffsetDateTime.now());
+        entity.setCreatedAt(domain.getCreatedAt() != null
+                ? domain.getCreatedAt()
+                : OffsetDateTime.now());
 
         return entity;
     }

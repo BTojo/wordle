@@ -10,7 +10,6 @@ import java.util.UUID;
 
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Persistable;
-import javax.persistence.Transient;
 import java.util.List;
 
 @Entity
@@ -28,6 +27,9 @@ public class GameEntity implements Persistable<UUID> {
 
     @Column(name = "secret_word", length = 5)
     private String secretWord;
+
+    @Column(name = "owner_id")
+    private String ownerId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 20)
