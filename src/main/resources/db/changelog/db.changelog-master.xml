@@ -6,8 +6,8 @@
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
 
     <include file="001-create-words-table.xml" relativeToChangelogFile="true"/>
-    <include file="003-create-games-table.xml" relativeToChangelogFile="true"/>
     <include file="002-load-words-data.xml" relativeToChangelogFile="true"/>
+    <include file="003-create-games-table.xml" relativeToChangelogFile="true"/>
     <include file="004-create-attempts-table.xml" relativeToChangelogFile="true"/>
     <include file="005-create-letters-table.xml" relativeToChangelogFile="true"/>
     <include file="006-add-fk-attempts-game.xml" relativeToChangelogFile="true"/>
@@ -17,5 +17,6 @@
     <include file="010-update-users-columns.xml" relativeToChangelogFile="true"/>
     <include file="011-change-created-at-timestamptz.xml" relativeToChangelogFile="true"/>
     <include file="012-add-owner-id-and-fix-words-timestamptz.xml" relativeToChangelogFile="true"/>
+    <include file="013-users-drop-unique-login-add-status.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
