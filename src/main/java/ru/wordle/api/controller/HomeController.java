@@ -20,6 +20,8 @@ public class HomeController {
                         <li><strong>POST</strong> /api/games - Start new game</li>
                         <li><strong>GET</strong> /api/games - Get current game state</li>
                         <li><strong>POST</strong> /api/games/guess - Submit guess: {"guess": "APPLE"}</li>
+                        <li><strong>POST</strong> /api/users/registration - Submit guess: {"login": "test", "password": "password"}</li>
+                        <li><strong>POST</strong> api/users/login - Submit guess: {"login": "test", "password": "password"}</li>
                     </ul>
                     <p>Example: POST http://localhost:8082/wordle_02/api/games/guess</p>
                 </body>

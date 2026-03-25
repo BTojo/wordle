@@ -18,5 +18,6 @@
     <include file="011-change-created-at-timestamptz.xml" relativeToChangelogFile="true"/>
     <include file="012-add-owner-id-and-fix-words-timestamptz.xml" relativeToChangelogFile="true"/>
     <include file="013-users-drop-unique-login-add-status.xml" relativeToChangelogFile="true"/>
+    <include file="014-fix-letters-column-type.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
