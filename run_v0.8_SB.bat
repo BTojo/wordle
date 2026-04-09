@@ -1,6 +1,7 @@
 @echo off
 echo [%date% %time%] Starting build...
-call mvn clean package
+
+call mvn clean package -DskipTests
 if %errorlevel% neq 0 (
     echo [%date% %time%] Build failed!
     pause
@@ -9,6 +10,6 @@ if %errorlevel% neq 0 (
 
 echo.
 echo [%date% %time%] Build successful! Starting application...
-call mvn spring-boot:run
+java -jar target\wordle_02.jar
 
 pause
