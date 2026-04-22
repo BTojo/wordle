@@ -17,7 +17,6 @@ public class AttemptDtoMapper {
         }
 
         AttemptDto dto = new AttemptDto();
-        dto.setAttemptNumber(attempt.getAttemptNumber());
 
         if (attempt.getLetters() != null && !attempt.getLetters().isEmpty()) {
             dto.setLetters(

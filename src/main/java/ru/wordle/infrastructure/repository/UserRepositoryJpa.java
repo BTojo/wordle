@@ -7,7 +7,7 @@ import ru.wordle.domain.repository.UserRepository;
 import ru.wordle.infrastructure.converter.UserConverter;
 import ru.wordle.infrastructure.repository.dao.UserJpaRepository;
 
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,6 +25,11 @@ public class UserRepositoryJpa implements UserRepository {
     public Optional<User> findByLogin(String login) {
         return userJpaRepository.findByLogin(login)
                 .map(userConverter::toModel);
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return userJpaRepository.findById(id).map(userConverter::toModel);
     }
 
     @Override

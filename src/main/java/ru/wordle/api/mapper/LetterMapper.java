@@ -15,12 +15,10 @@ public class LetterMapper {
         if (letter == null) {
             return null;
         }
-
-        LetterDto dto = new LetterDto();
-        dto.setLetter(letter.getValue());
-        dto.setColor(letter.getStatus().name());
-
-        return dto;
+        return new LetterDto(
+                String.valueOf(letter.getValue()),
+                letter.getStatus().name()
+        );
     }
 
     public LetterEntity toEntity(Letter letter, AttemptEntity attempt) {
@@ -29,11 +27,11 @@ public class LetterMapper {
         }
 
         LetterEntity entity = new LetterEntity();
-        entity.setId(UUID.randomUUID());           // ID сущности
-        //  entity.setAttemptId(attempt.getId());       // ID попытки (внешний ключ)
-        entity.setLetter(String.valueOf(letter.getValue())); // буква
-        entity.setPosition(letter.getPosition());   // ИСПРАВЛЕНО: позиция буквы
-        entity.setStatus(letter.getStatus());       // статус
+        entity.setId(UUID.randomUUID());
+        entity.setLetter(String.valueOf(letter.getValue()));
+        entity.setPosition(letter.getPosition());
+        entity.setStatus(letter.getStatus());
+        entity.setAttempt(attempt);
 
         return entity;
     }

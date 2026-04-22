@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/game")
+@RequestMapping("/api/game")
 @RequiredArgsConstructor
 public class GameController {
 
@@ -32,11 +32,9 @@ public class GameController {
         String ownerId = userSession.isAuthenticated()
                 ? userSession.getUserId().toString()
                 : null;
-
         Game game = applicationService.startNewGame(ownerId);
         gameSession.setGameId(game.getGameId());
         log.info("New game started, gameId={}, ownerId={}", game.getGameId(), ownerId);
-
         return gameDtoMapper.toDto(game);
     }
 
@@ -50,7 +48,7 @@ public class GameController {
     @PostMapping("/current/attempt")
     public GameDto attempt(@Valid @RequestBody GuessRequestDto request) {
         String gameId = gameSession.getGameId();
-        var game = applicationService.guess(gameId, request.getGuess());
+        var game = applicationService.guess(gameId, request.getWord()); // было getGuess()
         return gameDtoMapper.toDto(game);
     }
 }

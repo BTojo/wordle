@@ -19,14 +19,14 @@ public class Game {
     private String gameId;
     private String ownerId;
     private OffsetDateTime createdAt;
-    private GameStatus gameStatus = GameStatus.PROCESS;
+    private GameStatus gameStatus = GameStatus.IDLE;
     private final String secretWord;
     private final List<Attempt> attemptsList = new ArrayList<>();
 
     public Game(String secretWord) {
         this.secretWord = secretWord;
         this.createdAt = OffsetDateTime.now();
-        this.gameStatus = GameStatus.PROCESS;
+        this.gameStatus = GameStatus.IDLE;
     }
 
     public MakeAttemptResult makeAttempt(String enterWord) {
@@ -46,9 +46,9 @@ public class Game {
         attemptsList.add(attempt);
 
         if (isMatched(enterWord)) {
-            setGameStatus(GameStatus.WIN);
+            setGameStatus(GameStatus.GAME_WIN);
         } else if (attemptsList.size() == NUMBER_OF_ATTEMPTS) {
-            setGameStatus(GameStatus.LOSE);
+            setGameStatus(GameStatus.GAME_LOSING);
         }
 
         return MakeAttemptResult.success(attempt);
@@ -64,13 +64,13 @@ public class Game {
 
             if (isCharIsInItsPlace(charIsSecretWord, charIsEnterWord)) {
                 letter.setValue(charIsSecretWord);
-                letter.setStatus(LetterStatus.IN_PLACE);
+                letter.setStatus(LetterStatus.RIGHT_POSITION);
             } else if (isCharBelongsWord(charIsEnterWord)) {
                 letter.setValue(charIsEnterWord);
-                letter.setStatus(LetterStatus.NOT_PLACE);
+                letter.setStatus(LetterStatus.WRONG_POSITION);
             } else {
                 letter.setValue(charIsEnterWord);
-                letter.setStatus(LetterStatus.MISSING);
+                letter.setStatus(LetterStatus.NOT_PRESENT);
             }
             letters.add(letter);
         }
@@ -78,11 +78,11 @@ public class Game {
     }
 
     public boolean isInProgress() {
-        return gameStatus == GameStatus.PROCESS;
+        return gameStatus == GameStatus.IDLE;
     }
 
     public boolean isWin() {
-        return gameStatus == GameStatus.WIN;
+        return gameStatus == GameStatus.GAME_WIN;
     }
 
     public boolean isMatched(String enterWord) {

@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.wordle.api.dto.LoginRequestDto;
-import ru.wordle.api.dto.LoginResponseDto;
 import ru.wordle.api.session.UserSession;
 import ru.wordle.domain.model.User;
 import ru.wordle.domain.service.UserService;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -25,30 +24,27 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponseDto login(@Valid @RequestBody LoginRequestDto request) {
+    public void login(@Valid @RequestBody LoginRequestDto request) {
         log.info("Login attempt for login={}", request.getLogin());
         User user = userService.login(request.getLogin(), request.getPassword());
         userSession.setUserId(user.getId());
-        log.info("User logged in successfully, userId={}", user.getId());
-        return new LoginResponseDto(user.getId(), user.getLogin());
+        log.info("User logged in, userId={}", user.getId());
     }
 
-
     @PostMapping("/logout")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void logout() {
-        if (userSession.isAuthenticated()) {
-            log.info("User logged out, userId={}", userSession.getUserId());
-        }
+        log.info("User logged out, userId={}", userSession.getUserId());
         userSession.setUserId(null);
     }
 
     @GetMapping("/me")
-    public Map<String, Object> me() {
+    public Map<String, String> me() {
         if (!userSession.isAuthenticated()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not authenticated");
         }
-        log.info("Getting current user, userId={}", userSession.getUserId());
-        return Map.of("userId", userSession.getUserId());
+        User user = userService.findById(userSession.getUserId());
+        log.info("GET /me, userId={}", userSession.getUserId());
+        return Map.of("username", user.getLogin());
     }
 }

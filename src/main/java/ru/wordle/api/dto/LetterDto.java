@@ -1,29 +1,13 @@
 package ru.wordle.api.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LetterDto {
-    private char letter;
-    private String color;
-
-    public LetterDto() {}
-
-    public LetterDto(char letter, String color) {
-        this.letter = letter;
-        this.color = color;
-    }
-
-    public char getLetter() {
-        return letter;
-    }
-
-    public void setLetter(char letter) {
-        this.letter = letter;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
+    private String letter;
+    private String letterStatus;
 }

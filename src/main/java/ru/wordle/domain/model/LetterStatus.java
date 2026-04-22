@@ -1,7 +1,7 @@
 package ru.wordle.domain.model;
 
 public enum LetterStatus {
-    IN_PLACE,
-    NOT_PLACE,
-    MISSING
+    RIGHT_POSITION,
+    WRONG_POSITION,
+    NOT_PRESENT
 }

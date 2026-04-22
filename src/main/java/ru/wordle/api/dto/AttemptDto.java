@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class AttemptDto {
-    private int attemptNumber;
+    //private int attemptNumber;
     private List<LetterDto> letters;
 }

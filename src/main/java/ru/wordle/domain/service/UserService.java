@@ -51,6 +51,11 @@ public class UserService {
         return user;
     }
 
+    public User findById(UUID id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new InvalidCredentialsException());
+    }
+
     private String hashSha256(String raw) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

@@ -3,7 +3,7 @@ package ru.wordle.api.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.wordle.api.dto.GameDto;
-import ru.wordle.domain.model.Game;
+import ru.wordle.domain.model.*;
 
 @Component
 @RequiredArgsConstructor
@@ -18,8 +18,13 @@ public class GameDtoMapper {
 
         GameDto dto = new GameDto();
         dto.setGameId(game.getGameId());
-        dto.setStatus(game.getGameStatus());
-        dto.setCreatedAt(game.getCreatedAt());
+        dto.setGameStatus(game.getGameStatus());
+        dto.setCreateDateTime(game.getCreatedAt());
+
+        if (game.getGameStatus() == GameStatus.GAME_WIN
+                || game.getGameStatus() == GameStatus.GAME_LOSING) {
+            dto.setTargetWord(game.getSecretWord());
+        }
 
         if (game.getAttemptsList() != null && !game.getAttemptsList().isEmpty()) {
             dto.setAttempts(
