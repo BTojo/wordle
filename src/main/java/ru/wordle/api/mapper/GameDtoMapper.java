@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import ru.wordle.api.dto.GameDto;
 import ru.wordle.domain.model.*;
 
+import java.util.*;
+
 @Component
 @RequiredArgsConstructor
 public class GameDtoMapper {
@@ -33,6 +35,8 @@ public class GameDtoMapper {
                             .map(attemptDtoMapper::toDto)
                             .toList()
             );
+        } else {
+            dto.setAttempts(Collections.emptyList());
         }
 
         return dto;

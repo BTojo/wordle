@@ -15,12 +15,15 @@ import java.time.LocalDateTime;
 import java.util.HexFormat;
 import java.util.UUID;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     public User register(String login, String rawPassword) {
         if (userRepository.existsByLogin(login)) {
             throw new LoginAlreadyTakenException(login);

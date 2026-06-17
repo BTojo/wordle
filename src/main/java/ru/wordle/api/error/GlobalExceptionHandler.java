@@ -13,6 +13,8 @@ import ru.wordle.domain.exception.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -64,6 +66,12 @@ public class GlobalExceptionHandler {
         return List.of(new ErrorDto("Invalid login or password"));
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public List<ErrorDto> handleDataIntegrity(DataIntegrityViolationException ex) {
+        log.error("Data integrity violation: {}", ex.getMessage());
+        return List.of(new ErrorDto("Login already taken"));
+    }
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public List<ErrorDto> handleOther(Exception ex) {

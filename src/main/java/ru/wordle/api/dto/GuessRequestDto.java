@@ -11,12 +11,4 @@ public class GuessRequestDto {
     @Size(min = 5, max = 5, message = "word must be exactly 5 letters")
     private String word;
 
-    private String guess;
-    public String getGuess() {
-        return guess;
-    }
-
-    public void setGuess(String guess) {
-        this.guess = guess;
-    }
 }

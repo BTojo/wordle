@@ -3,6 +3,7 @@ package ru.wordle.api.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.wordle.api.dto.GameDto;
 import ru.wordle.api.dto.GuessRequestDto;
@@ -16,7 +17,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/api/game")
 @RequiredArgsConstructor
 public class GameController {
 
@@ -37,17 +38,20 @@ public class GameController {
         return gameDtoMapper.toDto(game);
     }
 
-    @GetMapping
+    @GetMapping("/current")
     public GameDto getGame() {
         String gameId = gameSession.getGameId();
+        if (!StringUtils.hasText(gameId)) {
+            return startNewGame();
+        }
         var game = applicationService.getCurrentGame(gameId);
         return gameDtoMapper.toDto(game);
     }
 
-    @PostMapping("/guess")
+    @PostMapping("/current/attempt")
     public GameDto attempt(@Valid @RequestBody GuessRequestDto request) {
         String gameId = gameSession.getGameId();
-        var game = applicationService.guess(gameId, request.getGuess());
+        var game = applicationService.guess(gameId, request.getWord());
         return gameDtoMapper.toDto(game);
     }
 }
