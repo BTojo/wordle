@@ -14,6 +14,8 @@ import ru.wordle.domain.repository.WordRepository;
 import ru.wordle.domain.validator.AttemptValidateError;
 import ru.wordle.domain.validator.AttemptValidator;
 
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 public class ApplicationGameService {
@@ -43,7 +45,7 @@ public class ApplicationGameService {
             throw new AttemptValidateException(validateError);
         }
 
-        MakeAttemptResult result = game.makeAttempt(guess.trim().toLowerCase());
+        MakeAttemptResult result = game.makeAttempt(guess.trim().toLowerCase(new Locale("ru")));
         if (result.isHasError()) {
             throw new MakeAttemptException(result.getError());
         }

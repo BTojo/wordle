@@ -21,11 +21,11 @@ public class AttemptValidator {
         if (normalized.length() != 5) {
             return AttemptValidateError.INVALID_LENGTH;
         }
-        if (!normalized.matches("^[A-Za-z]+$")) {
+        if (!normalized.matches("^[А-Яа-яЁё]+$")) {
             return AttemptValidateError.INVALID_ALPHABET;
         }
 
-        String lower = normalized.toLowerCase(Locale.ROOT);
+        String lower = normalized.toLowerCase(new Locale("ru"));
         if (!wordRepository.isExists(lower)) {
             return AttemptValidateError.WORD_NOT_EXISTS;
         }

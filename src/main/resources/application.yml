@@ -25,8 +25,8 @@ spring:
   profiles:
     active: jpa
 
-    jackson:
-      default-property-inclusion: non_null
+  jackson:
+    default-property-inclusion: non_null
 
 server:
   port: 8082
