@@ -22,7 +22,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
-@Profile("jpa")
+//@Profile("jpa")
 @RequiredArgsConstructor
 @Slf4j
 public class GameRepositoryJpa implements GameRepository {

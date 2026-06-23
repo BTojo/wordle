@@ -23,7 +23,7 @@ spring:
     liquibase-schema: wordle
 
   profiles:
-    active: jpa
+    active: wordcards
 
   jackson:
     default-property-inclusion: non_null
