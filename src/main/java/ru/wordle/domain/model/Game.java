@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 public class Game {
 
-    static final int NUMBER_OF_ATTEMPTS = 5;
+    static final int NUMBER_OF_ATTEMPTS = 6;
     public static final int NUMBER_OF_LETTERS = 5;
 
     private String gameId;

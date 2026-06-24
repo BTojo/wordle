@@ -9,8 +9,7 @@ import ru.wordle.domain.repository.WordRepository;
 import ru.wordle.infrastructure.wordcards.WordcardsRequest;
 import ru.wordle.infrastructure.wordcards.WordcardsResponse;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Repository
@@ -32,15 +31,17 @@ public class WordRepositoryWordcards implements WordRepository {
                 API_URL, request, WordcardsResponse.class
         );
 
-        List<String> words = response.getBody() != null ? response.getBody().getWords() : null;
+        List<WordcardsResponse.WordItem> words = response.getBody() != null
+                ? response.getBody().getPayload()
+                : null;
 
         if (words == null || words.isEmpty()) {
             throw new RuntimeException("No words returned from wordcards.ru");
         }
 
-        String word = words.get(random.nextInt(words.size()));
+        String word = words.get(random.nextInt(words.size())).getWordText();
         log.info("Got random word from wordcards.ru: {}", word);
-        return word.toLowerCase(new java.util.Locale("ru"));
+        return word.toLowerCase(new Locale("ru"));
     }
 
     @Override
@@ -54,7 +55,10 @@ public class WordRepositoryWordcards implements WordRepository {
                 API_URL, request, WordcardsResponse.class
         );
 
-        List<String> words = response.getBody() != null ? response.getBody().getWords() : null;
+        List<WordcardsResponse.WordItem> words = response.getBody() != null
+                ? response.getBody().getPayload()
+                : null;
+
         boolean exists = words != null && !words.isEmpty();
         log.info("Word '{}' exists: {}", word, exists);
         return exists;
