@@ -20,5 +20,6 @@
     <include file="013-users-drop-unique-login-add-status.xml" relativeToChangelogFile="true"/>
     <include file="014-fix-letters-column-type.xml" relativeToChangelogFile="true"/>
     <include file="015-change-words-to-russian.xml" relativeToChangelogFile="true"/>
+    <include file="016-add-unique-active-user-index.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

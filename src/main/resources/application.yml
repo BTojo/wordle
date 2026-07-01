@@ -28,6 +28,22 @@ spring:
   jackson:
     default-property-inclusion: non_null
 
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: ${FEIGN_CONNECT_TIMEOUT:90000}
+            readTimeout: ${FEIGN_READ_TIMEOUT:90000}
+            loggerLevel: ${FEIGN_LOGGER_LEVEL:none}
+
+feign:
+  client:
+    config:
+      wordcards:
+        url: ${WORDCARDS_HOST:https://wordcards.ru}
+        api-base-url: ${WORDCARDS_API_BASE_URL:/api}
+
 server:
   port: 8082
   servlet:
