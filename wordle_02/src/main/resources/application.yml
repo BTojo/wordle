@@ -1,0 +1,60 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/wordle?currentSchema=wordle}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:123}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        default_schema: wordle
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
+    default-schema: wordle
+    liquibase-schema: wordle
+
+  profiles:
+    active: word-service
+
+  jackson:
+    default-property-inclusion: non_null
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: ${FEIGN_CONNECT_TIMEOUT:90000}
+            readTimeout: ${FEIGN_READ_TIMEOUT:90000}
+            loggerLevel: ${FEIGN_LOGGER_LEVEL:none}
+
+feign:
+  client:
+    config:
+      wordcards:
+        url: ${WORDCARDS_HOST:https://wordcards.ru}
+        api-base-url: ${WORDCARDS_API_BASE_URL:/api}
+      word-service:
+        url: ${WORD_SERVICE_URL:http://localhost:8083}
+
+server:
+  port: 8082
+  servlet:
+    context-path: /wordle_02
+
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG
+    liquibase: DEBUG
+  file:
+    name: wordle-app.log
