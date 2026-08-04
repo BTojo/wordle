@@ -1,0 +1,9 @@
+server:
+  port: 8083
+
+feign:
+  client:
+    config:
+      wordcards:
+        url: ${WORDCARDS_HOST:https://wordcards.ru}
+        api-base-url: ${WORDCARDS_API_BASE_URL:/api}
