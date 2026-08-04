@@ -2,6 +2,7 @@ package ru.wordle.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import ru.wordle.domain.exception.AttemptValidateException;
 import ru.wordle.domain.exception.MakeAttemptException;
@@ -14,7 +15,8 @@ import ru.wordle.domain.repository.WordRepository;
 import ru.wordle.domain.validator.AttemptValidateError;
 import ru.wordle.domain.validator.AttemptValidator;
 
-import java.util.*;
+import java.util.Locale;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +29,24 @@ public class ApplicationGameService {
 
     public Game startNewGame(String ownerId) {
         String secretWord = wordRepository.getRandomWord();
+
         Game game = new Game(secretWord);
         game.setOwnerId(ownerId);
+
         return gameRepository.save(game);
+    }
+
+    @Transactional
+    public void assignOwnerIfGameExists(String gameId, UUID ownerId) {
+        if (gameId == null || gameId.trim().isEmpty() || ownerId == null) {
+            return;
+        }
+
+        gameRepository.findById(gameId.trim())
+                .ifPresent(game -> {
+                    game.setOwnerId(ownerId.toString());
+                    gameRepository.save(game);
+                });
     }
 
     public Game guess(String gameId, String guess) {
@@ -38,14 +55,19 @@ public class ApplicationGameService {
         }
 
         Game game = gameRepository.findById(gameId.trim())
-                .orElseThrow(() -> new UserNotStartedGameException("Game not found: " + gameId));
+                .orElseThrow(() -> new UserNotStartedGameException(
+                        "Game not found: " + gameId
+                ));
 
         AttemptValidateError validateError = attemptValidator.validate(guess);
         if (!ObjectUtils.isEmpty(validateError)) {
             throw new AttemptValidateException(validateError);
         }
 
-        MakeAttemptResult result = game.makeAttempt(guess.trim().toLowerCase(new Locale("ru")));
+        MakeAttemptResult result = game.makeAttempt(
+                guess.trim().toLowerCase(new Locale("ru"))
+        );
+
         if (result.isHasError()) {
             throw new MakeAttemptException(result.getError());
         }
@@ -62,6 +84,8 @@ public class ApplicationGameService {
         }
 
         return gameRepository.findById(gameId.trim())
-                .orElseThrow(() -> new UserNotStartedGameException("Game not found: " + gameId));
+                .orElseThrow(() -> new UserNotStartedGameException(
+                        "Game not found: " + gameId
+                ));
     }
 }
