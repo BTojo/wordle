@@ -1,0 +1,21 @@
+package ru.wordle.infrastructure.wordcards;
+
+import lombok.Getter;
+import lombok.Setter;
+import java.util.List;
+
+@Getter
+@Setter
+public class WordcardsResponseDto {
+
+    private List<WordItem> payload;
+    private String message;
+
+    @Getter
+    @Setter
+    public static class WordItem {
+        private String wordText;
+        private String translation;
+        private String rejectReason;
+    }
+}

@@ -45,6 +45,7 @@ feign:
         api-base-url: ${WORDCARDS_API_BASE_URL:/api}
       word-service:
         url: ${WORD_SERVICE_URL:http://localhost:8083}
+        path: ${WORD_SERVICE_PATH:/api/words}
 
 server:
   port: 8082

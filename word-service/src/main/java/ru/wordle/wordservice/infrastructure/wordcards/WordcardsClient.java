@@ -1,4 +1,4 @@
-package ru.wordle.infrastructure.wordcards;
+package ru.wordle.wordservice.infrastructure.wordcards;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

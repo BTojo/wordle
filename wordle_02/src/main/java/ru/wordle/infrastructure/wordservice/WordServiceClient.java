@@ -6,13 +6,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         name = "word-service",
-        url = "${feign.client.config.word-service.url}"
+        url = "${feign.client.config.word-service.url}",
+        path = "${feign.client.config.word-service.path}"
 )
 public interface WordServiceClient {
 
-    @GetMapping("/api/words/random")
+    @GetMapping("/random")
     RandomWordResponseDto getRandomWord();
 
-    @GetMapping("/api/words/exists")
+    @GetMapping("/exists")
     WordExistsResponseDto checkExists(@RequestParam("word") String word);
 }
