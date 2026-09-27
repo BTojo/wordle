@@ -7,8 +7,7 @@ import org.springframework.util.ObjectUtils;
 import ru.wordle.domain.exception.AttemptValidateException;
 import ru.wordle.domain.exception.MakeAttemptException;
 import ru.wordle.domain.exception.UserNotStartedGameException;
-import ru.wordle.domain.model.Game;
-import ru.wordle.domain.model.MakeAttemptResult;
+import ru.wordle.domain.model.*;
 import ru.wordle.domain.repository.AttemptRepository;
 import ru.wordle.domain.repository.GameRepository;
 import ru.wordle.domain.repository.WordRepository;
@@ -17,6 +16,7 @@ import ru.wordle.domain.validator.AttemptValidator;
 
 import java.util.Locale;
 import java.util.UUID;
+import ru.wordle.infrastructure.kafka.GameFinishedKafkaProducer;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +26,7 @@ public class ApplicationGameService {
     private final GameRepository gameRepository;
     private final AttemptRepository attemptRepository;
     private final AttemptValidator attemptValidator;
+    private final GameFinishedKafkaProducer gameFinishedKafkaProducer;
 
     public Game startNewGame(String ownerId) {
         String secretWord = wordRepository.getRandomWord();
@@ -75,6 +76,15 @@ public class ApplicationGameService {
         attemptRepository.save(result.getAttempt());
         gameRepository.save(game);
 
+        if (!game.isInProgress()) {
+            GameFinishedEvent event = new GameFinishedEvent(
+                    game.getGameId(),
+                    game.getOwnerId(),
+                    game.getGameStatus()
+            );
+
+            gameFinishedKafkaProducer.send(event);
+        }
         return game;
     }
 
