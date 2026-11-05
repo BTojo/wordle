@@ -16,7 +16,7 @@ import ru.wordle.domain.validator.AttemptValidator;
 
 import java.util.Locale;
 import java.util.UUID;
-import ru.wordle.infrastructure.kafka.GameFinishedKafkaProducer;
+import ru.wordle.domain.event.EventSender;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class ApplicationGameService {
     private final GameRepository gameRepository;
     private final AttemptRepository attemptRepository;
     private final AttemptValidator attemptValidator;
-    private final GameFinishedKafkaProducer gameFinishedKafkaProducer;
+    private final EventSender eventSender;
 
     public Game startNewGame(String ownerId) {
         String secretWord = wordRepository.getRandomWord();
@@ -83,7 +83,7 @@ public class ApplicationGameService {
                     game.getGameStatus()
             );
 
-            gameFinishedKafkaProducer.send(event);
+            eventSender.send(event);
         }
         return game;
     }

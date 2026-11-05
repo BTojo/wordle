@@ -36,7 +36,7 @@ spring:
     liquibase-schema: wordle
 
   profiles:
-    active: word-service
+    active: jpa
 
   jackson:
     default-property-inclusion: non_null
