@@ -77,11 +77,7 @@ public class ApplicationGameService {
         gameRepository.save(game);
 
         if (!game.isInProgress()) {
-            GameFinishedEvent event = new GameFinishedEvent(
-                    game.getGameId(),
-                    game.getOwnerId(),
-                    game.getGameStatus()
-            );
+            GameFinishedEvent event = new GameFinishedEvent(game);
 
             eventSender.send(event);
         }

@@ -4,18 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import ru.wordle.domain.event.*;
-        import ru.wordle.domain.model.GameFinishedEvent;
+import ru.wordle.domain.model.GameFinishedEvent;
+import ru.wordle.infrastructure.kafka.converter.GameFinishedEventConverter;
+import ru.wordle.infrastructure.kafka.dto.GameFinishedEventDto;
 
 @Component
 @RequiredArgsConstructor
 public class GameFinishedKafkaProducer implements EventSender {
 
     private static final String TOPIC = "wordle-game-finished";
-
-    private final KafkaTemplate<String, GameFinishedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, GameFinishedEventDto> kafkaTemplate;
+    private final GameFinishedEventConverter converter;
 
     @Override
     public void send(GameFinishedEvent event) {
-        kafkaTemplate.send(TOPIC, event.getGameId(), event);
+        GameFinishedEventDto eventDto = converter.convert(event);
+        kafkaTemplate.send(TOPIC, event.getGame().getGameId(), eventDto);
     }
 }

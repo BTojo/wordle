@@ -9,7 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GameFinishedEvent {
 
-    private String gameId;
-    private String ownerId;
-    private GameStatus gameStatus;
+    private Game game;
 }
