@@ -7,18 +7,21 @@ import ru.wordle.domain.event.*;
 import ru.wordle.domain.model.GameFinishedEvent;
 import ru.wordle.infrastructure.kafka.converter.GameFinishedEventConverter;
 import ru.wordle.infrastructure.kafka.dto.GameFinishedEventDto;
+import org.springframework.beans.factory.annotation.Value;
 
 @Component
 @RequiredArgsConstructor
 public class GameFinishedKafkaProducer implements EventSender {
 
-    private static final String TOPIC = "wordle-game-finished";
     private final KafkaTemplate<String, GameFinishedEventDto> kafkaTemplate;
     private final GameFinishedEventConverter converter;
+
+    @Value("${kafka.topics.game-finished}")
+    private String topic;
 
     @Override
     public void send(GameFinishedEvent event) {
         GameFinishedEventDto eventDto = converter.convert(event);
-        kafkaTemplate.send(TOPIC, event.getGame().getGameId(), eventDto);
+        kafkaTemplate.send(topic, event.getGame().getGameId(), eventDto);
     }
 }

@@ -9,10 +9,9 @@ import ru.wordle.infrastructure.kafka.dto.GameFinishedEventDto;
 @Slf4j
 @Component
 public class GameFinishedKafkaConsumer {
-
     @KafkaListener(
-            topics = "wordle-game-finished",
-            groupId = "wordle-game-finished-consumer"
+            topics = "${kafka.topics.game-finished}",
+            groupId = "${spring.kafka.consumer.group-id}"
     )
     public void consume(GameFinishedEventDto event) {
         log.info("Получено событие о завершении игры: {}", event);

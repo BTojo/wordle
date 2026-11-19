@@ -4,12 +4,17 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+
     consumer:
-      group-id: wordle-game-finished-consumer
+      group-id: wordle-game-service
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: ru.wordle.infrastructure.kafka.dto.GameFinishedEventDto
         spring.json.trusted.packages: ru.wordle.infrastructure.kafka.dto
 
   datasource:
@@ -49,6 +54,9 @@ spring:
             connectTimeout: ${FEIGN_CONNECT_TIMEOUT:90000}
             readTimeout: ${FEIGN_READ_TIMEOUT:90000}
             loggerLevel: ${FEIGN_LOGGER_LEVEL:none}
+kafka:
+  topics:
+    game-finished: wordle-game-finished
 
 feign:
   client:
