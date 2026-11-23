@@ -1,6 +1,12 @@
 spring:
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+    properties:
+      security.protocol: SASL_PLAINTEXT
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="${KAFKA_USERNAME:wordle-app}" password="${KAFKA_PASSWORD:12345}";'
+
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -56,7 +62,10 @@ spring:
             loggerLevel: ${FEIGN_LOGGER_LEVEL:none}
 kafka:
   topics:
-    game-finished: wordle-game-finished
+    game-finished:
+      name: wordle-game-finished
+      producer-enabled: true
+      consumer-enabled: true
 
 feign:
   client:

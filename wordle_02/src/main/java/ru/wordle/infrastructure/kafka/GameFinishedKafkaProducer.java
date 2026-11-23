@@ -8,6 +8,12 @@ import ru.wordle.domain.model.GameFinishedEvent;
 import ru.wordle.infrastructure.kafka.converter.GameFinishedEventConverter;
 import ru.wordle.infrastructure.kafka.dto.GameFinishedEventDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+
+@ConditionalOnProperty(
+        name = "kafka.topics.game-finished.producer-enabled",
+        havingValue = "true"
+)
 
 @Component
 @RequiredArgsConstructor
@@ -16,7 +22,7 @@ public class GameFinishedKafkaProducer implements EventSender {
     private final KafkaTemplate<String, GameFinishedEventDto> kafkaTemplate;
     private final GameFinishedEventConverter converter;
 
-    @Value("${kafka.topics.game-finished}")
+    @Value("${kafka.topics.game-finished.name}")
     private String topic;
 
     @Override
